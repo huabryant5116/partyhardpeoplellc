@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Owner Operations Dashboard | Party Hard People LLC</title>
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    .admin-nav {
+      background: #04070D;
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0.75rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .admin-tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 0.5rem;
+    }
+    .admin-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-family: var(--font-heading);
+      font-size: 1.05rem;
+      font-weight: 600;
+      padding: 0.6rem 1.25rem;
+      cursor: pointer;
+      border-radius: var(--radius-sm);
+      transition: all var(--transition-fast);
+    }
+    .admin-tab-btn.active {
+      color: var(--text-primary);
+      background: rgba(139, 92, 246, 0.15);
+      border: 1px solid var(--border-active);
+    }
+    .stat-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+    }
+    .stat-val {
+      font-size: 2.2rem;
+      font-weight: 800;
+      font-family: var(--font-heading);
+      color: var(--text-primary);
+      margin: 0.5rem 0;
+    }
+    .table-container {
+      overflow-x: auto;
+      background: var(--bg-surface);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+    th {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 1rem 1.25rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-subtle);
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+    }
+    td {
+      padding: 1.1rem 1.25rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--text-secondary);
+    }
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-primary);
+    }
+  </style>
+</head>
+<body style="background: #070B14;">
+
+  <div class="admin-nav">
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <a href="index.html" class="brand-logo" style="font-size: 1.2rem;">
+        <div class="brand-icon" style="width: 32px; height: 32px; font-size: 1.1rem;">🎉</div>
+        <span>Party Hard People</span>
+      </a>
+      <span class="badge badge-amber" style="font-size: 0.75rem;">Owner Control Center</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <span style="font-size: 0.88rem; color: var(--text-muted);">Logged in as: <strong>Owner Admin</strong></span>
+      <a href="index.html" class="btn btn-secondary btn-sm">Exit to Public Site</a>
+    </div>
+  </div>
+
+  <div class="container" style="padding-top: 2.5rem; padding-bottom: 4rem;">
+    <!-- Stat Highlights -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+      <div class="stat-card">
+        <div class="badge badge-coral">Pending Action</div>
+        <div class="stat-val" id="stat-pending-inquiries">3</div>
+        <div style="font-size: 0.85rem; color: var(--text-muted);">Inquiries awaiting owner quote</div>
+      </div>
+      <div class="stat-card">
+        <div class="badge">Pipeline</div>
+        <div class="stat-val" id="stat-active-quotes">$2,840</div>
+        <div style="font-size: 0.85rem; color: var(--text-muted);">Active 7-day quotes issued</div>
+      </div>
+      <div class="stat-card">
+        <div class="badge badge-amber">Deposits Collected</div>
+        <div class="stat-val" id="stat-deposits-collected">$1,150</div>
+        <div style="font-size: 0.85rem; color: var(--text-muted);">25% initial deposits paid</div>
+      </div>
+      <div class="stat-card">
+        <div class="badge">Inventory Health</div>
+        <div class="stat-val">100%</div>
+        <div style="font-size: 0.85rem; color: var(--text-muted);">Zero double bookings recorded</div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="admin-tabs">
+      <button class="admin-tab-btn active" onclick="switchAdminTab('inquiries')">📋 Inquiries & Quotes</button>
+      <button class="admin-tab-btn" onclick="switchAdminTab('inventory')">🏰 Rental Inventory</button>
+      <button class="admin-tab-btn" onclick="switchAdminTab('settings')">⚙️ Business Settings</button>
+    </div>
+
+    <!-- Tab 1: Inquiries & Quotes -->
+    <div id="tab-inquiries">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+          <h3>Incoming Quote Requests</h3>
+          <p style="font-size: 0.9rem;">Review party requests, customize travel fees, and issue locked 7-day quotes.</p>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="loadInquiriesTable()">↻ Refresh Inquiries</button>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Ref #</th>
+              <th>Customer</th>
+              <th>Event Date & City</th>
+              <th>Type / Kids</th>
+              <th>Est. Total</th>
+              <th>25% Deposit</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="inquiries-table-body">
+            <!-- Sample Inquiries for Immediate Testing -->
+            <tr>
+              <td><strong style="color: var(--accent-coral); font-family: monospace;">PHP-2026-1048</strong></td>
+              <td>Sarah Jenkins<br><span style="font-size: 0.8rem; color: var(--text-muted);">sarah@example.com</span></td>
+              <td>Oct 24, 2026<br><span style="font-size: 0.8rem; color: var(--text-muted);">Irvine, CA (Backyard)</span></td>
+              <td>Birthday (15 kids)</td>
+              <td><strong>$678.00</strong></td>
+              <td style="color: var(--primary-light);">$169.50</td>
+              <td><span class="badge badge-coral">Pending Review</span></td>
+              <td><button class="btn btn-primary btn-sm" onclick="openQuoteModal('PHP-2026-1048', 'Sarah Jenkins', 67800)">Review & Quote</button></td>
+            </tr>
+            <tr>
+              <td><strong style="color: var(--accent-coral); font-family: monospace;">PHP-2026-1032</strong></td>
+              <td>David Robinson<br><span style="font-size: 0.8rem; color: var(--text-muted);">drobinson@gmail.com</span></td>
+              <td>Nov 07, 2026<br><span style="font-size: 0.8rem; color: var(--text-muted);">Pasadena, CA (Park)</span></td>
+              <td>School Event (35 kids)</td>
+              <td><strong>$940.00</strong></td>
+              <td style="color: var(--primary-light);">$235.00</td>
+              <td><span class="badge badge-amber">Quote Sent (5d left)</span></td>
+              <td><button class="btn btn-secondary btn-sm" onclick="alert('Quote valid until Nov 14, 2026. Awaiting customer 25% deposit.')">View Details</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 2: Inventory Management -->
+    <div id="tab-inventory" style="display: none;">
+      <div style="margin-bottom: 1.5rem;">
+        <h3>Equipment & Inflatable Units</h3>
+        <p style="font-size: 0.9rem;">Atomic quantity tracking to ensure zero double bookings across Los Angeles, OC & San Diego.</p>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Equipment Name</th>
+              <th>Category</th>
+              <th>Units Owned</th>
+              <th>Reserved (Active Bookings)</th>
+              <th>Available Units</th>
+              <th>Buffer Time</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Pastel Castle Bounce House</strong></td>
+              <td>Inflatable</td>
+              <td>3</td>
+              <td style="color: var(--accent-coral); font-weight: 700;">1</td>
+              <td><span class="badge">2 Available</span></td>
+              <td>45 min setup / 45 min teardown</td>
+              <td><span class="badge badge-emerald" style="background: rgba(16,185,129,0.15); color: #34D399;">Active</span></td>
+            </tr>
+            <tr>
+              <td><strong>6ft Heavy-Duty Tables</strong></td>
+              <td>Rentals</td>
+              <td>30</td>
+              <td style="color: var(--accent-coral); font-weight: 700;">8</td>
+              <td><span class="badge">22 Available</span></td>
+              <td>30 min setup</td>
+              <td><span class="badge badge-emerald" style="background: rgba(16,185,129,0.15); color: #34D399;">Active</span></td>
+            </tr>
+            <tr>
+              <td><strong>White Resin Padded Chairs</strong></td>
+              <td>Rentals</td>
+              <td>120</td>
+              <td style="color: var(--accent-coral); font-weight: 700;">32</td>
+              <td><span class="badge">88 Available</span></td>
+              <td>30 min setup</td>
+              <td><span class="badge badge-emerald" style="background: rgba(16,185,129,0.15); color: #34D399;">Active</span></td>
+            </tr>
+            <tr>
+              <td><strong>Pro Sound PA & Mic Setup</strong></td>
+              <td>Audio Gear</td>
+              <td>4</td>
+              <td style="color: var(--accent-coral); font-weight: 700;">1</td>
+              <td><span class="badge">3 Available</span></td>
+              <td>45 min setup</td>
+              <td><span class="badge badge-emerald" style="background: rgba(16,185,129,0.15); color: #34D399;">Active</span></td>
+            </tr>
+            <tr>
+              <td><strong>Quiet Inverter Generator</strong></td>
+              <td>Power Gear</td>
+              <td>3</td>
+              <td style="color: var(--accent-coral); font-weight: 700;">0</td>
+              <td><span class="badge">3 Available</span></td>
+              <td>15 min check</td>
+              <td><span class="badge badge-emerald" style="background: rgba(16,185,129,0.15); color: #34D399;">Active</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 3: Business Settings -->
+    <div id="tab-settings" style="display: none;">
+      <div class="card" style="max-width: 640px;">
+        <h3 style="margin-bottom: 1.5rem;">Core Policy & Financial Settings</h3>
+        <div class="form-group">
+          <label class="form-label">Initial Booking Deposit Percentage (%)</label>
+          <input type="number" class="form-input" value="25" min="10" max="100" id="setting-deposit-pct">
+          <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.35rem;">Default policy is 25% of accepted quote total.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Quote Validity Period (Days)</label>
+          <input type="number" class="form-input" value="7" readonly>
+          <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.35rem;">Quotes expire automatically after 7 calendar days per PRD rules.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Weather Rescheduling Window (Months)</label>
+          <input type="number" class="form-input" value="12" readonly>
+          <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.35rem;">Permitted rescheduling transfer duration per policy.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Base Travel Fee Radius (Miles)</label>
+          <input type="number" class="form-input" value="15">
+          <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.35rem;">Miles included before distance-based surcharge applies.</div>
+        </div>
+
+        <button class="btn btn-primary" onclick="alert('Business policy settings saved successfully!')">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Review Quote Modal -->
+  <div id="quote-review-modal" style="display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 1.5rem;">
+    <div style="background: var(--bg-surface); border: 1px solid var(--border-active); border-radius: var(--radius-lg); max-width: 540px; width: 100%; padding: 2rem; box-shadow: var(--shadow-lg);">
+      <h3 style="margin-bottom: 0.5rem;" id="qmodal-title">Review Inquiry & Issue Quote</h3>
+      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Ref: <strong id="qmodal-ref">PHP-2026-XXXX</strong></p>
+
+      <div class="form-group">
+        <label class="form-label">Package & Equipment Subtotal</label>
+        <input type="text" class="form-input" id="qmodal-subtotal" readonly>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Travel Surcharge / Fee (USD)</label>
+        <input type="number" class="form-input" id="qmodal-travel" value="40" oninput="recalcModalQuote()">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Quote Total</label>
+        <input type="text" class="form-input" id="qmodal-total" readonly style="font-weight: 700; color: var(--accent-coral);">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Required 25% Deposit</label>
+        <input type="text" class="form-input" id="qmodal-deposit" readonly style="font-weight: 700; color: var(--primary-light);">
+      </div>
+
+      <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
+        <button class="btn btn-secondary" onclick="document.getElementById('quote-review-modal').style.display='none'">Cancel</button>
+        <button class="btn btn-primary" onclick="approveAndSendQuote()">Approve & Email 7-Day Quote</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let activeSubtotalCents = 0;
+
+    function switchAdminTab(tabName) {
+      document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('#tab-inquiries, #tab-inventory, #tab-settings').forEach(d => d.style.display = 'none');
+      
+      const targetDiv = document.getElementById('tab-' + tabName);
+      if (targetDiv) targetDiv.style.display = 'block';
+      event.currentTarget.classList.add('active');
+    }
+
+    function openQuoteModal(ref, customer, subtotalCents) {
+      activeSubtotalCents = subtotalCents;
+      document.getElementById('qmodal-title').textContent = 'Quote Review: ' + customer;
+      document.getElementById('qmodal-ref').textContent = ref;
+      document.getElementById('qmodal-subtotal').value = '$' + (subtotalCents / 100).toFixed(2);
+      recalcModalQuote();
+      document.getElementById('quote-review-modal').style.display = 'flex';
+    }
+
+    function recalcModalQuote() {
+      const travel = parseFloat(document.getElementById('qmodal-travel').value || 0);
+      const totalCents = activeSubtotalCents + Math.round(travel * 100);
+      const depositCents = Math.round(totalCents * 0.25);
+
+      document.getElementById('qmodal-total').value = '$' + (totalCents / 100).toFixed(2);
+      document.getElementById('qmodal-deposit').value = '$' + (depositCents / 100).toFixed(2);
+    }
+
+    function approveAndSendQuote() {
+      alert('Quote approved! Client has been emailed a secure quote link with 7-day expiration guarantee and 25% deposit checkout.');
+      document.getElementById('quote-review-modal').style.display = 'none';
+    }
+
+    function loadInquiriesTable() {
+      const stored = localStorage.getItem('php_inquiries');
+      if (stored) {
+        try {
+          const list = JSON.parse(stored);
+          const tbody = document.getElementById('inquiries-table-body');
+          if (list.length > 0 && tbody) {
+            // Prepend new submissions
+            list.forEach(inq => {
+              const tr = document.createElement('tr');
+              tr.innerHTML = `
+                <td><strong style="color: var(--accent-coral); font-family: monospace;">${inq.refCode}</strong></td>
+                <td>${inq.details.contactName || 'Parent'}<br><span style="font-size: 0.8rem; color: var(--text-muted);">${inq.details.contactEmail || ''}</span></td>
+                <td>${inq.details.eventDate || 'Pending'}<br><span style="font-size: 0.8rem; color: var(--text-muted);">${inq.details.address || ''}</span></td>
+                <td>${inq.details.eventType} (${inq.details.childrenCount} kids)</td>
+                <td><strong>${inq.estimate.subtotalFormatted}</strong></td>
+                <td style="color: var(--primary-light);">${inq.estimate.depositFormatted}</td>
+                <td><span class="badge badge-coral">New Submission</span></td>
+                <td><button class="btn btn-primary btn-sm" onclick="openQuoteModal('${inq.refCode}', '${inq.details.contactName}', ${inq.estimate.subtotalCents})">Review & Quote</button></td>
+              `;
+              tbody.prepend(tr);
+            });
+            document.getElementById('stat-pending-inquiries').textContent = 3 + list.length;
+          }
+        } catch(e) {}
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadInquiriesTable);
+  </script>
+</body>
+</html>
