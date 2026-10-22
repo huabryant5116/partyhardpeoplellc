@@ -143,6 +143,16 @@ function initPartyBuilder() {
     });
   });
 
+  // Bind step header nodes
+  document.querySelectorAll('.step-node').forEach(node => {
+    node.addEventListener('click', (e) => {
+      const targetStep = parseInt(e.currentTarget.getAttribute('data-step-index'), 10);
+      if (targetStep < partyState.step || validateCurrentStep(partyState.step, targetStep)) {
+        goToStep(targetStep);
+      }
+    });
+  });
+
   // Bind input listeners
   const bindInput = (id, key) => {
     const el = document.getElementById(id);
@@ -150,6 +160,8 @@ function initPartyBuilder() {
       if (partyState[key]) el.value = partyState[key];
       el.addEventListener('input', (e) => {
         partyState[key] = e.target.value;
+        const group = el.closest('.form-group');
+        if (group) group.classList.remove('has-error');
         saveState();
       });
     }
@@ -172,134 +184,141 @@ function initPartyBuilder() {
   bindInput('pb-contact-method', 'contactMethod');
   bindInput('pb-referral', 'referral');
 
-  // Entertainment checkboxes
-  document.querySelectorAll('.entertainment-toggle').forEach(card => {
-    const key = card.getAttribute('data-service-key');
-    if (partyState.entertainment.includes(key)) {
-      card.classList.add('selected');
-    }
-    card.addEventListener('click', () => {
-      if (partyState.entertainment.includes(key)) {
-        partyState.entertainment = partyState.entertainment.filter(k => k !== key);
-        card.classList.remove('selected');
-      } else {
-        partyState.entertainment.push(key);
-        card.classList.add('selected');
-      }
-      saveState();
-    });
-  });
-
-  // Age group checkboxes
+  // Option toggles for age groups
   document.querySelectorAll('.age-group-toggle').forEach(card => {
     const age = card.getAttribute('data-age-group');
-    if (partyState.ageRanges.includes(age)) {
-      card.classList.add('selected');
-    }
+    if (partyState.ageRanges.includes(age)) card.classList.add('selected');
     card.addEventListener('click', () => {
-      if (partyState.ageRanges.includes(age)) {
-        partyState.ageRanges = partyState.ageRanges.filter(a => a !== age);
-        card.classList.remove('selected');
+      card.classList.toggle('selected');
+      if (card.classList.contains('selected')) {
+        if (!partyState.ageRanges.includes(age)) partyState.ageRanges.push(age);
       } else {
-        partyState.ageRanges.push(age);
-        card.classList.add('selected');
+        partyState.ageRanges = partyState.ageRanges.filter(a => a !== age);
       }
       saveState();
     });
   });
 
-  // Rental Quantity steppers
-  document.querySelectorAll('.rental-stepper').forEach(stepper => {
-    const key = stepper.getAttribute('data-rental-key');
-    const valEl = stepper.querySelector('.qty-value');
-    const btnDec = stepper.querySelector('.qty-dec');
-    const btnInc = stepper.querySelector('.qty-inc');
-    
-    if (valEl) {
-      valEl.textContent = partyState.rentals[key] || 0;
-    }
-
-    if (btnDec) {
-      btnDec.addEventListener('click', () => {
-        const current = partyState.rentals[key] || 0;
-        if (current > 0) {
-          partyState.rentals[key] = current - 1;
-          valEl.textContent = partyState.rentals[key];
-          saveState();
-        }
-      });
-    }
-
-    if (btnInc) {
-      btnInc.addEventListener('click', () => {
-        const current = partyState.rentals[key] || 0;
-        partyState.rentals[key] = current + 1;
-        valEl.textContent = partyState.rentals[key];
-        saveState();
-      });
-    }
+  // Option toggles for entertainment shows
+  document.querySelectorAll('.show-toggle').forEach(card => {
+    const key = card.getAttribute('data-show-key');
+    if (partyState.entertainment.includes(key)) card.classList.add('selected');
+    card.addEventListener('click', () => {
+      card.classList.toggle('selected');
+      if (card.classList.contains('selected')) {
+        if (!partyState.entertainment.includes(key)) partyState.entertainment.push(key);
+      } else {
+        partyState.entertainment = partyState.entertainment.filter(s => s !== key);
+      }
+      saveState();
+    });
   });
 
-  // Submit quote handler
+  // Quantity steppers for rentals
+  document.querySelectorAll('.rental-stepper').forEach(stepper => {
+    const rentalKey = stepper.getAttribute('data-rental-key');
+    const valDisplay = stepper.querySelector('.qty-value');
+    const btnDec = stepper.querySelector('.qty-dec');
+    const btnInc = stepper.querySelector('.qty-inc');
+
+    if (partyState.rentals[rentalKey] !== undefined) {
+      valDisplay.textContent = partyState.rentals[rentalKey];
+    }
+
+    btnDec.addEventListener('click', () => {
+      let cur = parseInt(valDisplay.textContent, 10) || 0;
+      if (cur > 0) {
+        cur -= 1;
+        valDisplay.textContent = cur;
+        partyState.rentals[rentalKey] = cur;
+        saveState();
+      }
+    });
+
+    btnInc.addEventListener('click', () => {
+      let cur = parseInt(valDisplay.textContent, 10) || 0;
+      cur += 1;
+      valDisplay.textContent = cur;
+      partyState.rentals[rentalKey] = cur;
+      saveState();
+    });
+  });
+
+  // Submission button
   const submitBtn = document.getElementById('pb-submit-quote');
   if (submitBtn) {
     submitBtn.addEventListener('click', handleQuoteSubmission);
   }
 }
 
-function goToStep(stepNumber) {
-  partyState.step = stepNumber;
-  document.querySelectorAll('.builder-step-content').forEach(el => {
-    el.style.display = 'none';
-  });
+// Step navigation
+function goToStep(step) {
+  partyState.step = step;
   
-  const targetContent = document.getElementById(`step-content-${stepNumber}`);
-  if (targetContent) {
-    targetContent.style.display = 'block';
-  }
+  // Hide all step contents
+  document.querySelectorAll('.builder-step-content').forEach(s => s.style.display = 'none');
+  
+  // Show target step
+  const target = document.getElementById(`step-content-${step}`);
+  if (target) target.style.display = 'block';
 
-  // Update indicators
+  // Update header step nodes
   document.querySelectorAll('.step-node').forEach(node => {
-    const n = parseInt(node.getAttribute('data-step-index'), 10);
+    const idx = parseInt(node.getAttribute('data-step-index'), 10);
     node.classList.remove('active', 'completed');
-    if (n === stepNumber) {
+    if (idx === step) {
       node.classList.add('active');
-    } else if (n < stepNumber) {
+    } else if (idx < step) {
       node.classList.add('completed');
     }
   });
 
   saveState();
-  window.scrollTo({ top: document.getElementById('party-builder').offsetTop - 90, behavior: 'smooth' });
 }
 
+// Form validation
 function validateCurrentStep(currentStep, targetStep) {
-  // If navigating backwards, allow freely
-  if (targetStep < currentStep) return true;
+  if (targetStep < currentStep) return true; // Always allow going back
 
   if (currentStep === 1) {
-    const date = document.getElementById('pb-event-date');
-    const addr = document.getElementById('pb-address');
-    if (date && !date.value) {
-      alert('Please select an event date before proceeding.');
-      date.focus();
-      return false;
+    const dateInput = document.getElementById('pb-event-date');
+    const addressInput = document.getElementById('pb-address');
+
+    let valid = true;
+    if (!dateInput.value) {
+      showFieldError(dateInput, 'Please choose an event date');
+      valid = false;
     }
-    if (addr && !addr.value.trim()) {
-      alert('Please enter your event city or location in Southern California.');
-      addr.focus();
-      return false;
+    if (!addressInput.value.trim()) {
+      showFieldError(addressInput, 'Please enter your event city or address in SoCal');
+      valid = false;
     }
+    return valid;
   }
 
   if (currentStep === 2) {
     if (partyState.ageRanges.length === 0) {
-      alert('Please select at least one age range for the children.');
+      alert('Please select at least one age group attending.');
       return false;
     }
   }
 
   return true;
+}
+
+function showFieldError(input, msg) {
+  const group = input.closest('.form-group');
+  if (group) {
+    group.classList.add('has-error');
+    let errEl = group.querySelector('.form-error-msg');
+    if (!errEl) {
+      errEl = document.createElement('div');
+      errEl.className = 'form-error-msg';
+      group.appendChild(errEl);
+    }
+    errEl.textContent = msg;
+  }
+  input.focus();
 }
 
 // Calculate financial figures accurately in integer minor units (cents)
@@ -347,33 +366,33 @@ function updateSummarySidebar() {
   if (subtotalEl) subtotalEl.textContent = est.subtotalFormatted;
   if (depositEl) depositEl.textContent = est.depositFormatted;
   if (balanceEl) balanceEl.textContent = est.balanceFormatted;
-  if (dateEl) dateEl.textContent = partyState.eventDate || 'Not selected';
+  if (dateEl) dateEl.textContent = partyState.eventDate || 'Pending';
   if (guestsEl) guestsEl.textContent = `${partyState.childrenCount} kids / ${partyState.estimatedGuests} guests`;
 }
 
 // Submission handler
 function handleQuoteSubmission(e) {
-  e.preventDefault();
+  if (e) e.preventDefault();
 
   const name = document.getElementById('pb-contact-name');
   const email = document.getElementById('pb-contact-email');
   const phone = document.getElementById('pb-contact-phone');
 
+  let valid = true;
   if (!name || !name.value.trim()) {
-    alert('Please enter your full name.');
-    name?.focus();
-    return;
+    showFieldError(name, 'Please enter your full name');
+    valid = false;
   }
   if (!email || !email.value.trim() || !email.value.includes('@')) {
-    alert('Please enter a valid email address so we can send your quote.');
-    email?.focus();
-    return;
+    showFieldError(email, 'Please enter a valid email address');
+    valid = false;
   }
   if (!phone || !phone.value.trim()) {
-    alert('Please enter a valid phone number for quote follow-up.');
-    phone?.focus();
-    return;
+    showFieldError(phone, 'Please enter your phone number');
+    valid = false;
   }
+
+  if (!valid) return;
 
   // Generate Reference ID: PHP-2026-XXXX
   const randomSuffix = Math.floor(1000 + Math.random() * 9000);
@@ -381,40 +400,26 @@ function handleQuoteSubmission(e) {
   const now = new Date();
   const expiryDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000); // 7-day expiration per PRD
 
+  const estimate = calculateEstimate();
+
   const inquiryRecord = {
     id: 'inq_' + Date.now(),
     refCode,
     submittedAt: now.toISOString(),
     expiresAt: expiryDate.toISOString(),
     status: 'pending_review',
-    estimate: calculateEstimate(),
+    estimate,
     details: { ...partyState }
   };
 
-  // Store into localStorage to simulate backend DB storage
+  // Store into localStorage
   const existingInquiries = JSON.parse(localStorage.getItem('php_inquiries') || '[]');
   existingInquiries.unshift(inquiryRecord);
   localStorage.setItem('php_inquiries', JSON.stringify(existingInquiries));
 
-  // Show confirmation modal
-  showConfirmationModal(inquiryRecord);
-}
+  // Clear session draft state
+  sessionStorage.removeItem('php_party_state');
 
-function showConfirmationModal(record) {
-  const modal = document.getElementById('confirmation-modal');
-  if (!modal) return;
-
-  const refEl = document.getElementById('modal-ref-code');
-  const customerNameEl = document.getElementById('modal-customer-name');
-  const customerEmailEl = document.getElementById('modal-customer-email');
-  const totalEl = document.getElementById('modal-estimate-total');
-  const depositEl = document.getElementById('modal-estimate-deposit');
-
-  if (refEl) refEl.textContent = record.refCode;
-  if (customerNameEl) customerNameEl.textContent = record.details.contactName;
-  if (customerEmailEl) customerEmailEl.textContent = record.details.contactEmail;
-  if (totalEl) totalEl.textContent = record.estimate.subtotalFormatted;
-  if (depositEl) depositEl.textContent = record.estimate.depositFormatted;
-
-  modal.style.display = 'flex';
+  // Seamless redirect to thank-you.html
+  window.location.href = `thank-you.html?ref=${refCode}&name=${encodeURIComponent(partyState.contactName)}&total=${encodeURIComponent(estimate.subtotalFormatted)}&deposit=${encodeURIComponent(estimate.depositFormatted)}`;
 }

@@ -5,13 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Event Gallery | Party Hard People LLC</title>
   <meta name="description" content="View real photos of kids birthday celebrations, DJ dance parties, bounce castle setups, and karaoke events coordinated by Party Hard People LLC across Southern California.">
+  <meta property="og:title" content="Event Gallery | Party Hard People LLC">
+  <meta property="og:description" content="View real photos of kids birthday celebrations, DJ dance parties, and bounce castle setups across Southern California.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://partyhardpeoplellc.com/gallery.html">
+  <meta property="og:image" content="https://partyhardpeoplellc.com/assets/images/hero-celebration.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎉</text></svg>">
 </head>
 <body>
   <header class="header">
     <div class="container nav-wrapper">
       <a href="index.html" class="brand-logo">
-        <div class="brand-icon">🎉</div>
+        <div class="brand-icon" aria-hidden="true">🎉</div>
         <span>Party Hard People</span>
       </a>
       <ul class="nav-links">
@@ -25,7 +34,7 @@
       </ul>
       <div class="nav-actions">
         <a href="admin.html" class="btn btn-secondary btn-sm">Owner Portal</a>
-        <a href="index.html#party-builder" class="btn btn-primary btn-sm btn-glow">Build Your Party</a>
+        <a href="index.html#party-builder" class="btn btn-primary btn-sm btn-glow">Build Your Party Quote</a>
       </div>
     </div>
   </header>
@@ -42,47 +51,46 @@
         <div class="grid-3" style="margin-bottom: 4rem;">
           <div class="card" style="padding: 1rem;">
             <div style="height: 260px; overflow: hidden; border-radius: var(--radius-md); margin-bottom: 1rem;">
-              <img src="assets/images/hero-celebration.jpg" alt="Children dancing with DJ Leo" style="width: 100%; height: 100%; object-fit: cover;">
+              <img src="assets/images/hero-celebration.jpg" alt="Children dancing with DJ Leo" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
             </div>
             <h4>Maya's 6th Birthday Bash</h4>
-            <p style="font-size: 0.88rem;">Pasadena, CA • Kids DJ, Balloon Garland & Dance Contests</p>
+            <p style="font-size: 0.88rem;">Pasadena, CA · Kids DJ, Balloon Garland & Dance Contests</p>
           </div>
 
           <div class="card" style="padding: 1rem;">
             <div style="height: 260px; overflow: hidden; border-radius: var(--radius-md); margin-bottom: 1rem;">
-              <img src="assets/images/bounce-rentals.jpg" alt="Pastel Bounce Castle on green lawn" style="width: 100%; height: 100%; object-fit: cover;">
+              <img src="assets/images/bounce-rentals.jpg" alt="Pastel Bounce Castle on green lawn" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
             </div>
             <h4>Outdoor Castle Play Day</h4>
-            <p style="font-size: 0.88rem;">Irvine, CA • Pastel Bounce Castle, Tables & White Resin Chairs</p>
+            <p style="font-size: 0.88rem;">Irvine, CA · Pastel Bounce Castle, Tables & White Resin Chairs</p>
           </div>
 
           <div class="card" style="padding: 1rem;">
             <div style="height: 260px; overflow: hidden; border-radius: var(--radius-md); margin-bottom: 1rem;">
-              <img src="assets/images/sound-lighting.jpg" alt="Karaoke jam party with lights" style="width: 100%; height: 100%; object-fit: cover;">
+              <img src="assets/images/sound-lighting.jpg" alt="Karaoke jam party with lights" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
             </div>
             <h4>Pre-Teen Karaoke Jam</h4>
-            <p style="font-size: 0.88rem;">Carlsbad, CA • Pro Sound System, Laser Lighting & Karaoke Screen</p>
+            <p style="font-size: 0.88rem;">Carlsbad, CA · Pro Sound System, Laser Lighting & Karaoke Screen</p>
           </div>
         </div>
 
         <div class="card" style="text-align: center; padding: 3rem; background: var(--bg-surface);">
           <h3>Want your celebration featured in our gallery?</h3>
           <p style="margin: 0.75rem auto 1.5rem auto; max-width: 500px;">We strictly respect family privacy and only publish photos with signed parental authorization.</p>
-          <a href="index.html#party-builder" class="btn btn-primary btn-glow">Get Your Custom Quote Today →</a>
+          <a href="index.html#party-builder" class="btn btn-primary btn-glow">Build Your Party Quote</a>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <div class="container">
-      <div class="footer-bottom">
-        <div>© 2026 Party Hard People LLC. All rights reserved.</div>
-        <div style="display: flex; gap: 1.5rem;">
-          <a href="privacy.html">Privacy Policy</a>
-          <a href="terms.html">Terms of Service</a>
-          <a href="admin.html">Owner Portal</a>
-        </div>
+    <div class="container footer-bottom">
+      <p>© 2026 Party Hard People LLC. All rights reserved. Southern California Kids Party Entertainment & Equipment Rentals.</p>
+      <div class="footer-legal-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms & Policies</a>
+        <a href="legal.html">Legal & SMS Terms</a>
+        <a href="privacy.html#cookies" id="cookie-settings-link">Cookie Settings</a>
       </div>
     </div>
   </footer>
