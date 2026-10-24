@@ -416,9 +416,13 @@ const WorkforceManager = (() => {
     // Candidate Applications
     getApplications: (filterStage = null) => {
       const apps = loadData(STORAGE_KEYS.APPLICATIONS, DEFAULT_APPLICATIONS);
-      return filterStage ? apps.filter(a => a.stage === filterStage) : apps;
+      return (filterStage && filterStage !== 'all') ? apps.filter(a => a.stage === filterStage) : apps;
     },
     getApplicationById: (id) => {
+      const apps = loadData(STORAGE_KEYS.APPLICATIONS, DEFAULT_APPLICATIONS);
+      return apps.find(a => a.id === id);
+    },
+    getApplication: (id) => {
       const apps = loadData(STORAGE_KEYS.APPLICATIONS, DEFAULT_APPLICATIONS);
       return apps.find(a => a.id === id);
     },

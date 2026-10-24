@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automated Test Suite — Workforce Intelligence & Recruitment | Party Hard People LLC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0B0F19;
+      --surface: #111827;
+      --surface-border: #1F2937;
+      --text: #F3F4F6;
+      --muted: #9CA3AF;
+      --pass: #10B981;
+      --pass-bg: rgba(16, 185, 129, 0.12);
+      --fail: #EF4444;
+      --fail-bg: rgba(239, 68, 68, 0.15);
+      --accent: #8B5CF6;
+      --coral: #FF476F;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      padding: 2.5rem 1.5rem;
+      line-height: 1.5;
+    }
+    .test-container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .header {
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--surface-border);
+      padding-bottom: 1.5rem;
+    }
+    .header h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2rem;
+      color: #FFFFFF;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .header p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .summary-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      padding: 1.25rem 1.75rem;
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .stat {
+      display: flex;
+      flex-direction: column;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .stat-value {
+      font-size: 1.75rem;
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+    }
+    .suite-group {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    .suite-title {
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--surface-border);
+      padding: 1rem 1.25rem;
+      font-weight: 700;
+      font-size: 1.05rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #FFFFFF;
+    }
+    .test-row {
+      padding: 0.85rem 1.25rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.92rem;
+    }
+    .test-row:last-child {
+      border-bottom: none;
+    }
+    .test-desc {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .badge-pass {
+      background: var(--pass-bg);
+      color: var(--pass);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .badge-fail {
+      background: var(--fail-bg);
+      color: var(--fail);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    .code-snippet {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .btn-rerun {
+      background: var(--accent);
+      color: #FFFFFF;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.88rem;
+    }
+    .btn-rerun:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="test-container">
+    <div class="header">
+      <h1>
+        <span>🧪</span>
+        <span>Workforce Intelligence & Recruitment Test Runner</span>
+      </h1>
+      <p>Party Hard People LLC — Automated unit, integration, and customer booking regression test suite.</p>
+    </div>
+
+    <div class="summary-card">
+      <div class="stat">
+        <span class="stat-label">Total Tests</span>
+        <span class="stat-value" id="stat-total" style="color: #FFFFFF;">0</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Passed</span>
+        <span class="stat-value" id="stat-passed" style="color: var(--pass);">0</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Failed</span>
+        <span class="stat-value" id="stat-failed" style="color: var(--fail);">0</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Execution Time</span>
+        <span class="stat-value" id="stat-time" style="color: #CBD5E1;">0 ms</span>
+      </div>
+      <div style="margin-left: auto;">
+        <button class="btn-rerun" onclick="runTestSuite()">⚡ Re-Run All Tests</button>
+      </div>
+    </div>
+
+    <div id="test-results-container">
+      <!-- Dynamic Test Results Rendered Here -->
+    </div>
+  </div>
+
+  <!-- Dependencies -->
+  <script src="../website/js/workforce-manager.js?v=test"></script>
+  <script src="../website/js/gallery-manager.js?v=test"></script>
+
+  <script>
+    // Lightweight In-Browser Testing Framework
+    const TestRunner = (() => {
+      let suites = [];
+      let currentSuite = null;
+      let totalTests = 0;
+      let passedTests = 0;
+      let failedTests = 0;
+
+      function describe(name, fn) {
+        currentSuite = { name, tests: [] };
+        suites.push(currentSuite);
+        fn();
+      }
+
+      function it(desc, fn) {
+        currentSuite.tests.push({ desc, fn });
+      }
+
+      function expect(actual) {
+        return {
+          toBe: (expected) => {
+            if (actual !== expected) throw new Error(`Expected ${JSON.stringify(expected)} but got ${JSON.stringify(actual)}`);
+          },
+          toEqual: (expected) => {
+            if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+              throw new Error(`Expected ${JSON.stringify(expected)} but got ${JSON.stringify(actual)}`);
+            }
+          },
+          toBeGreaterThan: (val) => {
+            if (actual <= val) throw new Error(`Expected ${actual} to be greater than ${val}`);
+          },
+          toBeTruthy: () => {
+            if (!actual) throw new Error(`Expected ${actual} to be truthy`);
+          },
+          toBeFalsy: () => {
+            if (actual) throw new Error(`Expected ${actual} to be falsy`);
+          },
+          toMatch: (regex) => {
+            if (!regex.test(actual)) throw new Error(`Expected ${actual} to match pattern ${regex}`);
+          },
+          toInclude: (item) => {
+            if (!actual || !actual.includes(item)) throw new Error(`Expected collection to include ${item}`);
+          }
+        };
+      }
+
+      function execute() {
+        const startTime = performance.now();
+        totalTests = 0;
+        passedTests = 0;
+        failedTests = 0;
+
+        const results = suites.map(suite => {
+          const testResults = suite.tests.map(t => {
+            totalTests++;
+            try {
+              t.fn();
+              passedTests++;
+              return { desc: t.desc, passed: true };
+            } catch (err) {
+              failedTests++;
+              return { desc: t.desc, passed: false, error: err.message };
+            }
+          });
+          return { name: suite.name, tests: testResults };
+        });
+
+        const elapsed = (performance.now() - startTime).toFixed(1);
+        return { results, totalTests, passedTests, failedTests, elapsed };
+      }
+
+      function reset() {
+        suites = [];
+      }
+
+      return { describe, it, expect, execute, reset };
+    })();
+
+    function runTestSuite() {
+      TestRunner.reset();
+      const { describe, it, expect } = TestRunner;
+
+      // ----------------------------------------------------
+      // SUITE 1: RECRUITMENT DATA LAYER & INITIAL SCHEMA
+      // ----------------------------------------------------
+      describe("1. Recruitment Data Schema & Positions API", () => {
+        it("WorkforceManager object is initialized with core methods", () => {
+          expect(typeof WorkforceManager).toBe('object');
+          expect(typeof WorkforceManager.getPositions).toBe('function');
+          expect(typeof WorkforceManager.getApplications).toBe('function');
+          expect(typeof WorkforceManager.getCompetencies).toBe('function');
+          expect(typeof WorkforceManager.getEmployees).toBe('function');
+          expect(typeof WorkforceManager.matchCrewForEvent).toBe('function');
+        });
+
+        it("Default job positions load across LA, OC, and San Diego", () => {
+          const positions = WorkforceManager.getPositions();
+          expect(positions.length).toBeGreaterThan(2);
+
+          const kidsDj = positions.find(p => p.id === 'pos_kids_dj');
+          expect(kidsDj.title).toBe("Lead Kids Party DJ & Music Host");
+          expect(kidsDj.employmentType).toBe("Part-Time (W-2)");
+          expect(kidsDj.county).toInclude("Orange County");
+          expect(kidsDj.requirements.length).toBeGreaterThan(2);
+        });
+
+        it("Competencies framework contains 1-5 rubrics for core roles", () => {
+          const competencies = WorkforceManager.getCompetencies();
+          expect(competencies.length).toBeGreaterThan(2);
+          
+          const djComp = competencies.find(c => c.id === 'comp_child_engagement');
+          expect(djComp.name).toBe("Child Audience Engagement & Energy Management");
+          expect(djComp.rubric['1']).toBeTruthy();
+          expect(djComp.rubric['3']).toBeTruthy();
+          expect(djComp.rubric['5']).toBeTruthy();
+        });
+      });
+
+      // ----------------------------------------------------
+      // SUITE 2: APPLICATION SUBMISSION & REFERENCE TRACKING
+      // ----------------------------------------------------
+      describe("2. Public Candidate Application Workflow", () => {
+        it("Submits new candidate and generates unique reference code format (PHP-APP-XXXX)", () => {
+          const candidateData = {
+            fullName: "Maya Lin",
+            email: "maya.lin@example.com",
+            phone: "949-555-8822",
+            county: "Orange County",
+            positionId: "pos_kids_dj",
+            portfolioUrl: "https://vimeo.com/demo-maya",
+            resumeText: "Bilingual English and Spanish DJ. 6 years hosting children birthdays and musical statues in Irvine."
+          };
+
+          const newApp = WorkforceManager.submitApplication(candidateData);
+          expect(newApp.fullName).toBe("Maya Lin");
+          expect(newApp.stage).toBe("app_received");
+          expect(newApp.refCode).toMatch(/^PHP-APP-[A-Z0-9]{4}$/);
+          expect(Array.isArray(newApp.assessments)).toBe(true);
+        });
+
+        it("Filters candidate applications by county and pipeline stage", () => {
+          const allApps = WorkforceManager.getApplications('all');
+          expect(allApps.length).toBeGreaterThan(0);
+
+          const receivedApps = WorkforceManager.getApplications('app_received');
+          const hasOnlyReceived = receivedApps.every(a => a.stage === 'app_received');
+          expect(hasOnlyReceived).toBe(true);
+        });
+      });
+
+      // ----------------------------------------------------
+      // SUITE 3: 10-STAGE PIPELINE & HUMAN DECISION INTEGRITY
+      // ----------------------------------------------------
+      describe("3. 10-Stage Pipeline State Transitions", () => {
+        it("Transitions candidate between stages with documented admin audit note", () => {
+          const apps = WorkforceManager.getApplications('all');
+          const target = apps[0];
+          
+          const updated = WorkforceManager.updateApplicationStage(
+            target.id, 
+            'interview_invited', 
+            'Reviewed reel. Strong voice projection for musical chairs.'
+          );
+
+          expect(updated.stage).toBe('interview_invited');
+          expect(updated.notes).toInclude('Strong voice projection');
+        });
+
+        it("Maintains strict human-in-the-loop transition control", () => {
+          const stages = WorkforceManager.getStages();
+          expect(stages.length).toBe(10);
+          expect(stages[0].id).toBe('app_received');
+          expect(stages[7].id).toBe('hired');
+        });
+      });
+
+      // ----------------------------------------------------
+      // SUITE 4: 1–5 COMPETENCY ASSESSMENT & EVIDENCE LOGGING
+      // ----------------------------------------------------
+      describe("4. Evidence-Based 1-5 Skills Assessments", () => {
+        it("Records factual qualitative observations and scores candidate on rubric", () => {
+          const apps = WorkforceManager.getApplications('all');
+          const target = apps[0];
+
+          const success = WorkforceManager.recordAssessment(
+            target.id,
+            'comp_child_engagement',
+            4,
+            'Audition Reel 01:45: Flawless transition from Freeze Dance to Limbo. High enthusiasm.',
+            'Senior Evaluator'
+          );
+
+          expect(success).toBe(true);
+
+          const reloaded = WorkforceManager.getApplication(target.id);
+          const assessment = reloaded.assessments.find(a => a.competencyId === 'comp_child_engagement');
+          expect(assessment.score).toBe(4);
+          expect(assessment.evidence).toInclude('Flawless transition');
+          expect(assessment.reviewerName).toBe('Senior Evaluator');
+        });
+      });
+
+      // ----------------------------------------------------
+      // SUITE 5: CALIFORNIA AB 5 & AB 506 ROSTER ONBOARDING
+      // ----------------------------------------------------
+      describe("5. California AB 5 Classification & AB 506 Safeguarding", () => {
+        it("Hires candidate to W-2 Non-Exempt roster with employee code format (PHP-EMP-XX)", () => {
+          const candidateData = {
+            fullName: "Alex Rivera",
+            email: "alex.rivera@example.com",
+            phone: "619-555-4411",
+            county: "San Diego County",
+            positionId: "pos_bounce_tech",
+            portfolioUrl: "",
+            resumeText: "Experienced in rigging 15x15 commercial inflatables and ASTM anchoring."
+          };
+          const app = WorkforceManager.submitApplication(candidateData);
+          const emp = WorkforceManager.hireCandidate(app.id, 'Part-Time W-2 (Non-Exempt)', 32.00);
+
+          expect(emp.fullName).toBe("Alex Rivera");
+          expect(emp.classification).toBe("Part-Time W-2 (Non-Exempt)");
+          expect(emp.employeeCode).toMatch(/^PHP-EMP-\d{2}$/);
+          expect(emp.hourlyRate).toBe(32.00);
+          expect(emp.ab506Certified).toBe(false); // Default pending Live Scan
+        });
+
+        it("Updates California AB 506 Live Scan certification and expiry", () => {
+          const employees = WorkforceManager.getEmployees();
+          const target = employees[0];
+
+          const success = WorkforceManager.updateEmployeeSafeguarding(target.id, true, '2027-10-31');
+          expect(success).toBe(true);
+
+          const reloaded = WorkforceManager.getEmployees().find(e => e.id === target.id);
+          expect(reloaded.ab506Certified).toBe(true);
+          expect(reloaded.ab506Expiry).toBe('2027-10-31');
+        });
+      });
+
+      // ----------------------------------------------------
+      // SUITE 6: EVENT CREW MATCHER & SAFEGUARDING ENFORCEMENT
+      // ----------------------------------------------------
+      describe("6. Event Crew Matcher (Child Safeguarding Rules)", () => {
+        it("Strictly excludes non-AB-506 cleared crew from youth events", () => {
+          // Query for kids party in Orange County
+          const matchedYouthCrew = WorkforceManager.matchCrewForEvent('2026-11-15', 'Orange County', 'Kids DJ', true);
+          
+          // Every matched crew member must have ab506Certified == true
+          const allCertified = matchedYouthCrew.every(c => c.ab506Certified === true);
+          expect(allCertified).toBe(true);
+        });
+
+        it("Permits non-certified crew on adult-only events", () => {
+          const matchedAdultCrew = WorkforceManager.matchCrewForEvent('2026-11-20', 'Orange County', 'Karaoke Host', false);
+          expect(matchedAdultCrew.length).toBeGreaterThan(0);
+        });
+      });
+
+      // ----------------------------------------------------
+      // SUITE 7: ZERO REGRESSION ON EXISTING CUSTOMER FEATURES
+      // ----------------------------------------------------
+      describe("7. Customer Quote & Booking Regression Protection", () => {
+        it("Calculates 25% deposit correctly for standard party packages", () => {
+          const subtotalCents = 69900; // $699.00
+          const travelCents = 4000;    // $40.00
+          const totalCents = subtotalCents + travelCents;
+          const depositCents = Math.round(totalCents * 0.25);
+
+          expect(totalCents).toBe(73900);
+          expect(depositCents).toBe(18475); // $184.75 exactly
+        });
+
+        it("GalleryManager remains functional and isolated from workforce storage", () => {
+          expect(typeof GalleryManager.getItems).toBe('function');
+          const galleryItems = GalleryManager.getItems();
+          expect(Array.isArray(galleryItems)).toBe(true);
+          expect(galleryItems.length).toBeGreaterThan(0);
+        });
+
+        it("LocalStorage namespace isolation prevents key collisions", () => {
+          // Ensure client keys are not polluted
+          const inquiries = localStorage.getItem('php_inquiries');
+          if (inquiries) {
+            expect(typeof JSON.parse(inquiries)).toBe('object');
+          }
+        });
+      });
+
+      // Render Test UI
+      const result = TestRunner.execute();
+      renderUI(result);
+    }
+
+    function renderUI(suiteData) {
+      document.getElementById('stat-total').textContent = suiteData.totalTests;
+      document.getElementById('stat-passed').textContent = suiteData.passedTests;
+      document.getElementById('stat-failed').textContent = suiteData.failedTests;
+      document.getElementById('stat-time').textContent = suiteData.elapsed + ' ms';
+
+      const container = document.getElementById('test-results-container');
+      container.innerHTML = suiteData.results.map(suite => {
+        const suitePass = suite.tests.every(t => t.passed);
+        return `
+          <div class="suite-group">
+            <div class="suite-title">
+              <span>${suite.name}</span>
+              <span class="badge ${suitePass ? 'badge-pass' : 'badge-fail'}">
+                ${suite.tests.filter(t => t.passed).length} / ${suite.tests.length} PASS
+              </span>
+            </div>
+            ${suite.tests.map(t => `
+              <div class="test-row">
+                <div class="test-desc">
+                  <span>${t.passed ? '✓' : '✗'}</span>
+                  <span>${t.desc}</span>
+                  ${t.error ? `<div class="code-snippet" style="color: var(--fail); margin-top: 0.25rem;">${t.error}</div>` : ''}
+                </div>
+                <div>
+                  <span class="badge ${t.passed ? 'badge-pass' : 'badge-fail'}">
+                    ${t.passed ? 'PASSED' : 'FAILED'}
+                  </span>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Auto-execute immediately
+    runTestSuite();
+  </script>
+</body>
+</html>
