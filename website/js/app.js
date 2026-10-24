@@ -64,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initPartyBuilder();
   checkUrlVibeParams();
   updateSummarySidebar();
+  initCelebrationQuoteCarousel();
 });
 
 // Vibe & Event Experience Master Catalog
@@ -985,4 +986,141 @@ function processDepositPayment(e) {
 function printBookingReceipt() {
   window.print();
 }
+
+// ==========================================================================
+// Celebration Quote Carousel Controller (Warm Neutral Editorial Aesthetic)
+// ==========================================================================
+function initCelebrationQuoteCarousel() {
+  const card = document.getElementById('celebration-quote-card');
+  if (!card) return;
+
+  const slides = card.querySelectorAll('.quote-slide');
+  const dotsContainer = document.getElementById('quote-dots-container');
+  const prevBtn = document.getElementById('quote-prev-btn');
+  const nextBtn = document.getElementById('quote-next-btn');
+  const pauseIndicator = document.getElementById('quote-pause-indicator');
+
+  if (!slides.length || !dotsContainer) return;
+
+  let currentIndex = 0;
+  let timer = null;
+  let isPaused = false;
+  const intervalTime = 5000;
+
+  // Build dot indicators dynamically
+  dotsContainer.innerHTML = '';
+  slides.forEach((_, idx) => {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'quote-dot' + (idx === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', `Go to quote ${idx + 1} of ${slides.length}`);
+    dot.addEventListener('click', (e) => {
+      e.preventDefault();
+      goToSlide(idx);
+    });
+    dotsContainer.appendChild(dot);
+  });
+
+  const dots = dotsContainer.querySelectorAll('.quote-dot');
+
+  function updateSlideDisplay() {
+    slides.forEach((slide, idx) => {
+      if (idx === currentIndex) {
+        slide.classList.add('active');
+        slide.setAttribute('aria-hidden', 'false');
+      } else {
+        slide.classList.remove('active');
+        slide.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    dots.forEach((dot, idx) => {
+      if (idx === currentIndex) {
+        dot.classList.add('active');
+        dot.setAttribute('aria-selected', 'true');
+      } else {
+        dot.classList.remove('active');
+        dot.setAttribute('aria-selected', 'false');
+      }
+    });
+  }
+
+  function goToSlide(index) {
+    currentIndex = (index + slides.length) % slides.length;
+    updateSlideDisplay();
+    resetTimer();
+  }
+
+  function nextSlide() {
+    goToSlide(currentIndex + 1);
+  }
+
+  function prevSlide() {
+    goToSlide(currentIndex - 1);
+  }
+
+  function startTimer() {
+    if (timer) clearInterval(timer);
+    timer = setInterval(() => {
+      if (!isPaused) {
+        nextSlide();
+      }
+    }, intervalTime);
+  }
+
+  function resetTimer() {
+    startTimer();
+  }
+
+  function pause() {
+    isPaused = true;
+    if (pauseIndicator) pauseIndicator.textContent = 'Paused';
+  }
+
+  function resume() {
+    isPaused = false;
+    if (pauseIndicator) pauseIndicator.textContent = 'Auto-playing (5s)';
+  }
+
+  // Prev / Next button listeners
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      nextSlide();
+    });
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      prevSlide();
+    });
+  }
+
+  // Hover pauses auto-rotation
+  card.addEventListener('mouseenter', pause);
+  card.addEventListener('mouseleave', resume);
+
+  // Touch pauses auto-rotation
+  card.addEventListener('touchstart', pause, { passive: true });
+  card.addEventListener('touchend', () => {
+    setTimeout(resume, 2500);
+  }, { passive: true });
+
+  // Keyboard navigation when focused inside card
+  card.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      nextSlide();
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      prevSlide();
+    }
+  });
+
+  // Start active presentation
+  updateSlideDisplay();
+  startTimer();
+}
+
 

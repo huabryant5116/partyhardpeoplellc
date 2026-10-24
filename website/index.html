@@ -17,7 +17,7 @@
   <!-- Preconnect for Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,500;1,600&family=Montserrat:wght@500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="css/main.css?v=5.0">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎉</text></svg>">
@@ -385,9 +385,12 @@
               </a>
             </div>
           </div>
+        </div>
 
+        <!-- Row 2: Community & School Festivals side-by-side with Warm Neutral Celebration Quote Carousel -->
+        <div class="community-quote-container">
           <!-- Card 4: Community -->
-          <div class="card" style="padding: 2.25rem; display: flex; flex-direction: column; border-top: 5px solid #10B981; box-shadow: var(--shadow-md); border-radius: var(--radius-lg);">
+          <div class="card" style="padding: 2.25rem; display: flex; flex-direction: column; border-top: 5px solid #10B981; box-shadow: var(--shadow-md); border-radius: var(--radius-lg); height: 100%;">
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
               <div style="width: 52px; height: 52px; border-radius: 14px; background: #D1FAE5; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">🎪</div>
               <span class="badge" style="background: #D1FAE5; color: #10B981;">Community & Schools</span>
@@ -410,6 +413,115 @@
                 Explore Packages
               </a>
             </div>
+          </div>
+
+          <!-- Card 5: Automatic Celebration Quote Carousel (Warm Neutral Editorial Aesthetic) -->
+          <div class="card celebration-quote-card" id="celebration-quote-card" style="background: #FAF8F5; border: 1px solid #E8E3DC; border-top: 5px solid #C5A880; border-radius: var(--radius-lg); padding: 2.25rem; display: flex; flex-direction: column; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(74, 60, 49, 0.05), 0 2px 6px rgba(74, 60, 49, 0.03); height: 100%;">
+            
+            <!-- Watermark Icon: Oversized, low-opacity (5–8%) decorative quote glyph in warm champagne -->
+            <div class="quote-watermark" aria-hidden="true">“</div>
+
+            <!-- Top Header & Badge -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; z-index: 1;">
+              <div style="display: flex; align-items: center; gap: 0.65rem;">
+                <div style="width: 52px; height: 52px; border-radius: 14px; background: rgba(197, 168, 128, 0.18); display: flex; align-items: center; justify-content: center; font-size: 1.6rem;">✨</div>
+                <div>
+                  <div style="font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.12em; color: #7A7269; text-transform: uppercase;">Spirit of Celebration</div>
+                  <div style="font-size: 0.78rem; color: #9A9187;">Timeless Perspectives</div>
+                </div>
+              </div>
+              <span class="badge" style="background: rgba(197, 168, 128, 0.18); color: #73532C; border: 1px solid rgba(197, 168, 128, 0.35); font-family: 'Montserrat', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;">
+                Daily Inspiration
+              </span>
+            </div>
+
+            <!-- Slides Container with Cross-Fade Transitions -->
+            <div class="quote-slides-wrapper" style="position: relative; flex: 1; min-height: 195px; display: flex; align-items: center; z-index: 1;">
+              
+              <!-- Slide 1 -->
+              <div class="quote-slide active" data-index="0">
+                <blockquote class="quote-text">“The more you praise and celebrate your life, the more there is in life to celebrate.”</blockquote>
+                <div class="quote-author">&mdash; Oprah Winfrey</div>
+              </div>
+
+              <!-- Slide 2 -->
+              <div class="quote-slide" data-index="1">
+                <blockquote class="quote-text">“Celebrate what you want to see more of.”</blockquote>
+                <div class="quote-author">&mdash; Tom Peters</div>
+              </div>
+
+              <!-- Slide 3 -->
+              <div class="quote-slide" data-index="2">
+                <blockquote class="quote-text">“Life is what you celebrate. All of it. Even its end.”</blockquote>
+                <div class="quote-author">&mdash; Audre Lorde</div>
+              </div>
+
+              <!-- Slide 4 -->
+              <div class="quote-slide" data-index="3">
+                <blockquote class="quote-text">“There are always flowers for those who want to see them.”</blockquote>
+                <div class="quote-author">&mdash; Henri Matisse</div>
+              </div>
+
+              <!-- Slide 5 -->
+              <div class="quote-slide" data-index="4">
+                <blockquote class="quote-text">“Life is a party. Dress like it.”</blockquote>
+                <div class="quote-author">&mdash; Audrey Hepburn</div>
+              </div>
+
+              <!-- Slide 6 -->
+              <div class="quote-slide" data-index="5">
+                <blockquote class="quote-text">“It is not that we have so little time to celebrate, but that we celebrate so little.”</blockquote>
+                <div class="quote-author">&mdash; Seneca</div>
+              </div>
+
+              <!-- Slide 7 -->
+              <div class="quote-slide" data-index="6">
+                <blockquote class="quote-text">“A little nonsense now and then is relished by the wisest men.”</blockquote>
+                <div class="quote-author">&mdash; Roald Dahl</div>
+              </div>
+
+              <!-- Slide 8 -->
+              <div class="quote-slide" data-index="7">
+                <blockquote class="quote-text">“A party without cake is just a meeting.”</blockquote>
+                <div class="quote-author">&mdash; Julia Child</div>
+              </div>
+
+              <!-- Slide 9 -->
+              <div class="quote-slide" data-index="8">
+                <blockquote class="quote-text">“Sometimes you will never know the value of a moment until it becomes a memory.”</blockquote>
+                <div class="quote-author">&mdash; Dr. Seuss</div>
+              </div>
+
+              <!-- Slide 10 -->
+              <div class="quote-slide" data-index="9">
+                <blockquote class="quote-text">“Let us celebrate the occasion with wine and sweet words.”</blockquote>
+                <div class="quote-author">&mdash; Plautus</div>
+              </div>
+
+            </div>
+
+            <!-- Bottom Carousel Controls & Indicators -->
+            <div class="quote-carousel-controls" style="margin-top: auto; padding-top: 1.25rem; border-top: 1px solid rgba(232, 227, 220, 0.7); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; z-index: 1;">
+              
+              <!-- Subtle Nav Controls (Prev / Next & Pause Hint) -->
+              <div style="display: flex; align-items: center; gap: 0.45rem;">
+                <button type="button" class="quote-nav-btn" id="quote-prev-btn" aria-label="Previous quote" title="Previous quote">
+                  &#8249;
+                </button>
+                <button type="button" class="quote-nav-btn" id="quote-next-btn" aria-label="Next quote" title="Next quote">
+                  &#8250;
+                </button>
+                <span class="quote-pause-indicator" id="quote-pause-indicator" style="font-size: 0.72rem; color: #A8A095; font-family: 'Montserrat', sans-serif; letter-spacing: 0.04em; margin-left: 0.35rem;">
+                  Auto-playing (5s)
+                </span>
+              </div>
+
+              <!-- Dot Indicators (10 slides) -->
+              <div class="quote-dots-container" id="quote-dots-container" role="tablist" aria-label="Quote slides">
+                <!-- 10 dots generated/rendered dynamically by JS -->
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
