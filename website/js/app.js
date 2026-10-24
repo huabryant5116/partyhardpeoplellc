@@ -148,6 +148,82 @@ function handleLandingDropdownChange(val) {
   }
 }
 
+// Hero Quick Selector Data & Switcher
+const HERO_VIBE_PREVIEWS = {
+  kids: {
+    title: '🎈 Kids & Youth Birthday Packages (Ages 1–12)',
+    desc: 'Commercial sanitized pastel bounce castles, high-energy kids DJ, musical freeze games, bubble blast stations, and balloon fun. 100% on-time early setup guarantee.',
+    quoteType: 'birthday',
+    quoteBtnText: 'Build Kids Quote →',
+    quoteColor: '#FF476F',
+    pageUrl: 'experience-kids.html'
+  },
+  adult: {
+    title: '🍸 Adult Milestones & VIP Karaoke Lounges',
+    desc: 'Private VIP karaoke lounges with 50,000+ licensed tracks, studio wireless mics, pro club sound, laser light shows, and patio cocktail audio. Strict decibel & sound-ordinance compliance.',
+    quoteType: 'milestone',
+    quoteBtnText: 'Build Adult Social Quote →',
+    quoteColor: '#7C3AED',
+    pageUrl: 'experience-adults.html'
+  },
+  corporate: {
+    title: '🏢 Corporate Galas & Company Picnics',
+    desc: 'Turnkey company picnics, employee appreciation celebrations, and outdoor keynote PA systems. $2M COI insurance certificates, W-9 vendor onboarding, and Net-30 invoicing.',
+    quoteType: 'corporate-picnic',
+    quoteBtnText: 'Build Corporate Quote →',
+    quoteColor: '#0284C7',
+    pageUrl: 'experience-corporate.html'
+  },
+  community: {
+    title: '🎪 Community Festivals & School Carnivals',
+    desc: 'School PTA carnivals, church family days, and neighborhood HOA block parties. High-capacity bounce houses, crowd sound distribution, and volunteer-friendly coordination.',
+    quoteType: 'community',
+    quoteBtnText: 'Build Festival Quote →',
+    quoteColor: '#059669',
+    pageUrl: 'experience-community.html'
+  }
+};
+
+function switchLandingHeroVibe(vibeKey) {
+  const data = HERO_VIBE_PREVIEWS[vibeKey] || HERO_VIBE_PREVIEWS.kids;
+  ['kids', 'adult', 'corporate', 'community'].forEach(v => {
+    const tab = document.getElementById(`vibe-tab-${v}`);
+    if (tab) {
+      if (v === vibeKey) {
+        tab.style.border = `2px solid ${data.quoteColor}`;
+        tab.style.background = v === 'kids' ? '#FFF1F2' : v === 'adult' ? '#EDE9FE' : v === 'corporate' ? '#E0F2FE' : '#D1FAE5';
+      } else {
+        tab.style.border = '1px solid var(--border-subtle)';
+        tab.style.background = '#FFFFFF';
+      }
+    }
+  });
+
+  const titleEl = document.getElementById('vibe-preview-title');
+  const descEl = document.getElementById('vibe-preview-desc');
+  const quoteBtn = document.getElementById('vibe-preview-btn-quote');
+  const pageBtn = document.getElementById('vibe-preview-btn-page');
+
+  if (titleEl) titleEl.textContent = data.title;
+  if (descEl) descEl.textContent = data.desc;
+  if (pageBtn) pageBtn.href = data.pageUrl;
+  if (quoteBtn) {
+    quoteBtn.textContent = data.quoteBtnText;
+    quoteBtn.style.background = data.quoteColor;
+    quoteBtn.style.borderColor = data.quoteColor;
+    quoteBtn.onclick = (e) => {
+      e.preventDefault();
+      const typeSelect = document.getElementById('pb-event-type');
+      if (typeSelect) {
+        typeSelect.value = data.quoteType;
+        handlePartyExperienceDropdown(data.quoteType);
+      }
+      const builderSection = document.getElementById('party-builder');
+      if (builderSection) builderSection.scrollIntoView({ behavior: 'smooth' });
+    };
+  }
+}
+
 // URL query parameter loader
 function checkUrlVibeParams() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -172,6 +248,7 @@ function checkUrlVibeParams() {
       landingSelect.value = defaultType;
       handleLandingDropdownChange(defaultType);
     }
+    switchLandingHeroVibe(vibe);
   }
 }
 

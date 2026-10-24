@@ -19,8 +19,107 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/main.css?v=2.0">
+  <link rel="stylesheet" href="css/main.css?v=5.0">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎉</text></svg>">
+  <style>
+    /* Absolute Fail-Safe Header Dropdown Isolation */
+    .nav-dropdown {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+    .nav-dropdown-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: var(--text-sm, 0.875rem);
+      font-weight: 600;
+      color: var(--text-secondary, #334155);
+      cursor: pointer;
+      padding: 0.4rem 0;
+    }
+    .nav-dropdown-trigger:hover {
+      color: var(--primary, #7C3AED);
+    }
+    .nav-dropdown-trigger::after {
+      content: '▾';
+      font-size: 0.8rem;
+      transition: transform 0.2s ease;
+    }
+    .nav-dropdown:hover .nav-dropdown-trigger::after,
+    .nav-dropdown:focus-within .nav-dropdown-trigger::after {
+      transform: rotate(180deg);
+    }
+    .nav-dropdown-menu {
+      display: none !important;
+      position: absolute !important;
+      top: calc(100% + 0.5rem) !important;
+      left: 0 !important;
+      min-width: 360px !important;
+      width: 360px !important;
+      background: #FFFFFF !important;
+      border: 1px solid rgba(226, 232, 240, 0.95) !important;
+      border-radius: 16px !important;
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.16), 0 4px 12px rgba(15, 23, 42, 0.06) !important;
+      padding: 0.75rem !important;
+      z-index: 99999 !important;
+      flex-direction: column !important;
+      gap: 0.35rem !important;
+    }
+    .nav-dropdown-menu::before {
+      content: '';
+      position: absolute;
+      top: -12px;
+      left: 0;
+      right: 0;
+      height: 12px;
+    }
+    .nav-dropdown:hover .nav-dropdown-menu,
+    .nav-dropdown:focus-within .nav-dropdown-menu {
+      display: flex !important;
+    }
+    .nav-dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0.7rem 0.85rem;
+      border-radius: 12px;
+      text-decoration: none;
+      color: #0F172A;
+      transition: all 0.18s ease;
+      background: transparent;
+    }
+    .nav-dropdown-item:hover {
+      background: #F8FAFC;
+      transform: translateX(3px);
+    }
+    .nav-dropdown-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+    .nav-dropdown-title {
+      font-family: var(--font-heading, 'Outfit', sans-serif);
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: #0F172A;
+      line-height: 1.25;
+    }
+    .nav-dropdown-desc {
+      font-size: 0.78rem;
+      color: #64748B;
+      line-height: 1.35;
+      margin-top: 2px;
+    }
+  </style>
 </head>
 <body>
 
@@ -130,66 +229,186 @@
             </div>
           </div>
         </div>
+
+        <!-- Interactive Celebration Quick Selector (Executive Quality) -->
+        <div class="hero-quick-selector" style="margin-top: 3.5rem; background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 1.75rem; box-shadow: var(--shadow-md);">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+            <div>
+              <span style="font-family: var(--font-heading); font-weight: 800; font-size: 1.15rem; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem;">
+                🎯 What Type of Event Are You Planning?
+              </span>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.2rem;">Select an experience below to instantly preview package details and jump straight to custom pricing.</p>
+            </div>
+            <span class="badge" style="background: var(--primary-tint); color: var(--primary); font-weight: 700;">Zero Obligation Quotes</span>
+          </div>
+          
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0.85rem;">
+            <button type="button" class="vibe-btn active" onclick="switchLandingHeroVibe('kids')" id="vibe-tab-kids" style="display: flex; align-items: center; gap: 0.85rem; padding: 1rem 1.15rem; border-radius: 14px; border: 2px solid #FF476F; background: #FFF1F2; cursor: pointer; text-align: left; transition: all 0.2s ease;">
+              <span style="font-size: 1.8rem; line-height: 1;">🎈</span>
+              <div>
+                <div style="font-weight: 800; font-size: 1rem; color: #9F1239; font-family: var(--font-heading);">Kids & Youth</div>
+                <div style="font-size: 0.82rem; color: #BE123C; margin-top: 2px;">Bounce, DJs & Games (Ages 1–12)</div>
+              </div>
+            </button>
+            <button type="button" class="vibe-btn" onclick="switchLandingHeroVibe('adult')" id="vibe-tab-adult" style="display: flex; align-items: center; gap: 0.85rem; padding: 1rem 1.15rem; border-radius: 14px; border: 1px solid var(--border-subtle); background: #FFFFFF; cursor: pointer; text-align: left; transition: all 0.2s ease;">
+              <span style="font-size: 1.8rem; line-height: 1;">🍸</span>
+              <div>
+                <div style="font-weight: 800; font-size: 1rem; color: var(--text-primary); font-family: var(--font-heading);">Adult Milestones</div>
+                <div style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 2px;">VIP Karaoke & Nightclub PA</div>
+              </div>
+            </button>
+            <button type="button" class="vibe-btn" onclick="switchLandingHeroVibe('corporate')" id="vibe-tab-corporate" style="display: flex; align-items: center; gap: 0.85rem; padding: 1rem 1.15rem; border-radius: 14px; border: 1px solid var(--border-subtle); background: #FFFFFF; cursor: pointer; text-align: left; transition: all 0.2s ease;">
+              <span style="font-size: 1.8rem; line-height: 1;">🏢</span>
+              <div>
+                <div style="font-weight: 800; font-size: 1rem; color: var(--text-primary); font-family: var(--font-heading);">Corporate & Galas</div>
+                <div style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 2px;">$2M COI & Keynote AV</div>
+              </div>
+            </button>
+            <button type="button" class="vibe-btn" onclick="switchLandingHeroVibe('community')" id="vibe-tab-community" style="display: flex; align-items: center; gap: 0.85rem; padding: 1rem 1.15rem; border-radius: 14px; border: 1px solid var(--border-subtle); background: #FFFFFF; cursor: pointer; text-align: left; transition: all 0.2s ease;">
+              <span style="font-size: 1.8rem; line-height: 1;">🎪</span>
+              <div>
+                <div style="font-weight: 800; font-size: 1rem; color: var(--text-primary); font-family: var(--font-heading);">Community & HOA</div>
+                <div style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 2px;">School Carnivals & Festivals</div>
+              </div>
+            </button>
+          </div>
+
+          <!-- Dynamic Live Vibe Preview Container -->
+          <div id="hero-vibe-preview" style="margin-top: 1.25rem; padding: 1.25rem 1.5rem; background: #F8FAFC; border-radius: 14px; border: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 280px;">
+              <div id="vibe-preview-title" style="font-weight: 800; font-size: 1.1rem; color: #0F172A; margin-bottom: 0.35rem; font-family: var(--font-heading);">🎈 Kids & Youth Birthday Packages (Ages 1–12)</div>
+              <div id="vibe-preview-desc" style="font-size: 0.92rem; color: #475569; line-height: 1.5;">Commercial sanitized pastel bounce castles, high-energy kids DJ, musical freeze games, bubble blast stations, and balloon fun. 100% on-time early setup guarantee.</div>
+            </div>
+            <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+              <a id="vibe-preview-btn-quote" href="#party-builder" class="btn btn-primary btn-sm btn-glow" style="background: #FF476F; border-color: #FF476F;" onclick="handlePartyExperienceDropdown('birthday')">
+                Build Kids Quote &rarr;
+              </a>
+              <a id="vibe-preview-btn-page" href="experience-kids.html" class="btn btn-secondary btn-sm">
+                Explore All Packages
+              </a>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
-    <!-- All Party Options Interactive Dropdown Hub -->
-    <section class="section" style="padding-top: 1.5rem; padding-bottom: 2.5rem; background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);">
-      <div class="container" style="max-width: 860px;">
-        <div class="section-title-wrap" style="text-align: center; margin-bottom: 2rem;">
-          <div class="badge badge-coral">All-Ages Celebrations</div>
-          <h2 style="font-size: 2.3rem;">Explore All Party & Event Options</h2>
-          <p>Select any event experience below to view tailored packages or begin your custom quote.</p>
+    <!-- Four Signature Event Experiences (Spacious, Senior Director Standard) -->
+    <section class="section" style="padding-top: 3.5rem; padding-bottom: 4.5rem; background: #FFFFFF;">
+      <div class="container">
+        <div class="section-title-wrap" style="text-align: center; max-width: 760px; margin: 0 auto 3rem auto;">
+          <div class="badge badge-coral" style="margin-bottom: 0.75rem;">All-Ages Celebrations</div>
+          <h2 style="font-size: 2.6rem; letter-spacing: -0.02em; margin-bottom: 0.75rem;">
+            Four Signature Event Experiences. One Reliable Partner.
+          </h2>
+          <p style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+            We have engineered dedicated entertainment and equipment production packages tailored precisely to your audience.
+          </p>
         </div>
 
-        <div class="card" style="padding: 2.5rem; box-shadow: var(--shadow-lg); border: 2px solid var(--border-active); border-radius: var(--radius-lg); background: #FFFFFF;">
-          <label for="landing-party-experience-dropdown" style="display: block; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.75rem;">
-            Select Your Party Experience:
-          </label>
-          
-          <select id="landing-party-experience-dropdown" class="form-select" style="font-size: 1.05rem; padding: 1rem 1.25rem; font-weight: 600; border: 2px solid var(--primary); border-radius: var(--radius-md); width: 100%; margin-bottom: 1.5rem; background-color: #FFFFFF; color: var(--text-primary); cursor: pointer;" onchange="handleLandingDropdownChange(this.value)">
-            <optgroup label="🎈 Kids & Youth Celebrations">
-              <option value="birthday" selected>Kids Birthday Party (Ages 1–12) — DJ, Games & Bounce</option>
-              <option value="school">School Carnival or Daycare Field Day</option>
-              <option value="toddler">Toddler & Soft Play Castle Celebration</option>
-              <option value="preteen">Pre-Teen Dance Party & Glow Disco</option>
-            </optgroup>
-            <optgroup label="🍸 Adult Social & Milestone Celebrations">
-              <option value="milestone">Milestone Birthday (21st, 30th, 40th, 50th)</option>
-              <option value="karaoke-lounge">Private VIP Karaoke Lounge Experience</option>
-              <option value="cocktail">Backyard Cocktail Mixer & Patio Sound</option>
-              <option value="nightclub">Milestone Dance Floor & Nightclub Audio</option>
-            </optgroup>
-            <optgroup label="🏢 Corporate & Brand Events">
-              <option value="corporate-picnic">Annual Company Picnic (Family Day)</option>
-              <option value="corporate-keynote">Corporate Keynote & Outdoor PA Audio</option>
-              <option value="holiday-gala">Corporate Holiday Gala & Staging</option>
-              <option value="team-building">Team Appreciation & Field Games</option>
-            </optgroup>
-            <optgroup label="🎪 Community, Schools & Festivals">
-              <option value="community">Community / HOA Block Party</option>
-              <option value="school-festival">School PTA Carnival & Fundraiser</option>
-              <option value="church-festival">Church & Religious Family Festival</option>
-              <option value="family-reunion">Large Family Reunion & Gathering</option>
-            </optgroup>
-          </select>
-
-          <!-- Dynamic Preview & Description -->
-          <div style="background: var(--bg-surface-alt); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; margin-bottom: 1.75rem; border-left: 4px solid var(--primary);">
-            <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--primary); letter-spacing: 0.05em; margin-bottom: 0.35rem;">Experience Details</div>
-            <p id="landing-dropdown-desc" style="font-size: 1rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
-              DJ dance games, musical statues, bubble blasts, and sanitized pastel bounce castles.
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+          <!-- Card 1: Kids -->
+          <div class="card" style="padding: 2.25rem; display: flex; flex-direction: column; border-top: 5px solid #FF476F; box-shadow: var(--shadow-md); border-radius: var(--radius-lg);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+              <div style="width: 52px; height: 52px; border-radius: 14px; background: #FFE4E6; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">🎈</div>
+              <span class="badge badge-coral">Ages 1–12</span>
+            </div>
+            <h3 style="font-size: 1.45rem; margin-bottom: 0.5rem; color: var(--text-primary);">Kids & Youth Celebrations</h3>
+            <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem;">
+              Commercial pastel bounce castles, high-energy kids DJs, freeze dance games, and bubble blast stations. Hospital-grade sanitized vinyl and 100% on-time setup guarantee.
             </p>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.75rem;">
+              <span class="vibe-tag">Sanitized Bounce Castles</span>
+              <span class="vibe-tag">Interactive Kids DJ</span>
+              <span class="vibe-tag">Musical Games</span>
+              <span class="vibe-tag">Weather-Flex Guarantee</span>
+            </div>
+            <div style="margin-top: auto; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+              <a href="index.html?vibe=kids#party-builder" class="btn btn-primary btn-sm btn-glow" style="flex: 1; justify-content: center; padding: 0.75rem 1rem;">
+                Build Kids Quote &rarr;
+              </a>
+              <a href="experience-kids.html" class="btn btn-secondary btn-sm" style="flex: 1; justify-content: center; padding: 0.75rem 1rem;">
+                Explore Packages
+              </a>
+            </div>
           </div>
 
-          <!-- Dual Action Buttons -->
-          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-            <button type="button" class="btn btn-primary btn-glow" id="landing-dropdown-btn-quote" style="flex: 1; min-width: 200px; justify-content: center; padding: 0.95rem 1.5rem; font-size: 1.05rem;" onclick="handleLandingDropdownChange(document.getElementById('landing-party-experience-dropdown').value); document.getElementById('party-builder').scrollIntoView({behavior:'smooth'});">
-              🎉 Build Quote For This Party &rarr;
-            </button>
-            <a href="experience-kids.html" class="btn btn-secondary" id="landing-dropdown-btn-details" style="flex: 1; min-width: 180px; justify-content: center; padding: 0.95rem 1.5rem; font-size: 1.05rem;">
-              View Full Experience Page
-            </a>
+          <!-- Card 2: Adult Social -->
+          <div class="card" style="padding: 2.25rem; display: flex; flex-direction: column; border-top: 5px solid #7C3AED; box-shadow: var(--shadow-md); border-radius: var(--radius-lg);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+              <div style="width: 52px; height: 52px; border-radius: 14px; background: #EDE9FE; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">🍸</div>
+              <span class="badge" style="background: #EDE9FE; color: #7C3AED;">Milestones & Evening</span>
+            </div>
+            <h3 style="font-size: 1.45rem; margin-bottom: 0.5rem; color: var(--text-primary);">Adult Social & Milestones</h3>
+            <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem;">
+              Turning 30, 40, or 50? Backyard cocktail mixers and VIP karaoke lounges with 50,000+ songs, twin wireless studio mics, deep-bass club audio, and sound-reactive lasers.
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.75rem;">
+              <span class="vibe-tag">VIP Karaoke Lounge</span>
+              <span class="vibe-tag">Pro PA & Subwoofer</span>
+              <span class="vibe-tag">Club Laser Truss</span>
+              <span class="vibe-tag">Patio Acoustic Sound</span>
+            </div>
+            <div style="margin-top: auto; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+              <a href="index.html?vibe=adult#party-builder" class="btn btn-primary btn-sm btn-glow" style="flex: 1; justify-content: center; padding: 0.75rem 1rem;">
+                Build Social Quote &rarr;
+              </a>
+              <a href="experience-adults.html" class="btn btn-secondary btn-sm" style="flex: 1; justify-content: center; padding: 0.75rem 1rem;">
+                Explore Packages
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 3: Corporate -->
+          <div class="card" style="padding: 2.25rem; display: flex; flex-direction: column; border-top: 5px solid #0284C7; box-shadow: var(--shadow-md); border-radius: var(--radius-lg);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+              <div style="width: 52px; height: 52px; border-radius: 14px; background: #E0F2FE; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">🏢</div>
+              <span class="badge" style="background: #E0F2FE; color: #0284C7;">Enterprise Ready</span>
+            </div>
+            <h3 style="font-size: 1.45rem; margin-bottom: 0.5rem; color: var(--text-primary);">Corporate & Brand Galas</h3>
+            <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem;">
+              Turnkey company picnics, team appreciation galas, and outdoor keynote PA systems. Fully backed with $2M General Liability COI certificates, W-9 vendor onboarding, and Net-30 invoicing.
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.75rem;">
+              <span class="vibe-tag">$2M COI Policy</span>
+              <span class="vibe-tag">W-9 Ready Invoicing</span>
+              <span class="vibe-tag">Keynote AV Setup</span>
+              <span class="vibe-tag">Quiet Generators</span>
+            </div>
+            <div style="margin-top: auto; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+              <a href="index.html?vibe=corporate#party-builder" class="btn btn-primary btn-sm btn-glow" style="flex: 1; justify-content: center; padding: 0.75rem 1rem; background: #0284C7; border-color: #0284C7;">
+                Build Corporate Quote &rarr;
+              </a>
+              <a href="experience-corporate.html" class="btn btn-secondary btn-sm" style="flex: 1; justify-content: center; padding: 0.75rem 1rem;">
+                Explore Packages
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 4: Community -->
+          <div class="card" style="padding: 2.25rem; display: flex; flex-direction: column; border-top: 5px solid #10B981; box-shadow: var(--shadow-md); border-radius: var(--radius-lg);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+              <div style="width: 52px; height: 52px; border-radius: 14px; background: #D1FAE5; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">🎪</div>
+              <span class="badge" style="background: #D1FAE5; color: #10B981;">Community & Schools</span>
+            </div>
+            <h3 style="font-size: 1.45rem; margin-bottom: 0.5rem; color: var(--text-primary);">Community & School Festivals</h3>
+            <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem;">
+              Elementary school carnivals, church family days, and neighborhood HOA block parties. High-throughput inflatable setups, crowd sound distribution, and volunteer-friendly coordination.
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.75rem;">
+              <span class="vibe-tag">School PTA Approved</span>
+              <span class="vibe-tag">Crowd Control PA</span>
+              <span class="vibe-tag">Sandbag Turf Anchors</span>
+              <span class="vibe-tag">High Throughput</span>
+            </div>
+            <div style="margin-top: auto; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+              <a href="index.html?vibe=community#party-builder" class="btn btn-primary btn-sm btn-glow" style="flex: 1; justify-content: center; padding: 0.75rem 1rem; background: #059669; border-color: #059669;">
+                Build Festival Quote &rarr;
+              </a>
+              <a href="experience-community.html" class="btn btn-secondary btn-sm" style="flex: 1; justify-content: center; padding: 0.75rem 1rem;">
+                Explore Packages
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -880,6 +1099,6 @@
     </div>
   </div>
 
-  <script src="js/app.js?v=2.0"></script>
+  <script src="js/app.js?v=5.0"></script>
 </body>
 </html>
