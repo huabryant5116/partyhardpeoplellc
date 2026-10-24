@@ -567,13 +567,77 @@ const WorkforceManager = (() => {
       });
     },
 
+    // Interview Management & Candidate Notifications
+    scheduleInterview: (appId, { date, time, format = 'Video Audition & Sound Check', locationOrLink = 'https://meet.partyhardpeoplellc.com/audition', interviewer = 'Bryant Hua', notes = '' }) => {
+      const apps = loadData(STORAGE_KEYS.APPLICATIONS, DEFAULT_APPLICATIONS);
+      const app = apps.find(a => a.id === appId);
+      if (!app) return false;
+
+      const pos = WorkforceManager.getPositionById(app.positionId);
+      const roleTitle = pos ? pos.title : app.positionId;
+      const notificationPreview = `Hello ${app.fullName},\n\nThank you for applying to Party Hard People LLC. We are pleased to invite you to an audition & interview for the ${roleTitle} role:\n\nDate: ${date}\nTime: ${time}\nFormat: ${format}\nLink/Location: ${locationOrLink}\nInterviewer: ${interviewer}\n\nPlease confirm receipt of this invitation.`;
+
+      app.interview = {
+        date,
+        time,
+        format,
+        locationOrLink,
+        interviewer,
+        notes,
+        scheduledAt: new Date().toISOString(),
+        notificationSent: true,
+        notificationPreview,
+        status: 'Scheduled'
+      };
+
+      if (app.stage === 'app_received' || app.stage === 'awaiting_review') {
+        app.stage = 'interview_invited';
+      }
+
+      saveData(STORAGE_KEYS.APPLICATIONS, apps);
+      logAudit('SCHEDULE_INTERVIEW', `Scheduled ${format} for ${app.fullName} on ${date} at ${time}. Notification generated.`, interviewer);
+      return app;
+    },
+
+    completeInterview: (appId, feedback, nextStage = 'skills_assessment', interviewer = 'Bryant Hua') => {
+      const apps = loadData(STORAGE_KEYS.APPLICATIONS, DEFAULT_APPLICATIONS);
+      const app = apps.find(a => a.id === appId);
+      if (!app || !app.interview) return false;
+
+      app.interview.status = 'Completed';
+      app.interview.feedback = (feedback || '').trim();
+      app.interview.completedDate = new Date().toISOString().split('T')[0];
+      app.stage = nextStage;
+
+      saveData(STORAGE_KEYS.APPLICATIONS, apps);
+      logAudit('COMPLETE_INTERVIEW', `Completed interview for ${app.fullName}. Advanced to ${nextStage}. Feedback: ${feedback}`, interviewer);
+      return app;
+    },
+
+    // Privacy Protections & PII Masking (California Privacy Best Practices)
+    maskEmail: (email) => {
+      if (!email || !email.includes('@')) return email || '';
+      const [name, domain] = email.split('@');
+      const maskedName = name.length > 2 ? name[0] + '***' + name[name.length - 1] : name[0] + '***';
+      return `${maskedName}@${domain}`;
+    },
+
+    maskPhone: (phone) => {
+      if (!phone) return '';
+      const digits = phone.replace(/\D/g, '');
+      if (digits.length >= 10) {
+        return `(${digits.slice(0, 3)}) ***-${digits.slice(-4)}`;
+      }
+      return phone.slice(0, 3) + '***' + phone.slice(-2);
+    },
+
     // AI Controlled Prompt Builders (Strict Human-in-the-loop)
     aiHelpers: {
       generateApplicantSummaryPrompt: (app) => {
         const compList = WorkforceManager.getCompetencies();
         return `Summarize the documented qualifications for applicant ${app.fullName} applying for ${app.positionId}.
 Applicant Bio & Resume: "${app.resumeText}"
-Documented Skills Assessments: ${JSON.stringify(app.assessments.map(a => ({
+Documented Skills Assessments: ${JSON.stringify((app.assessments || []).map(a => ({
           competency: compList.find(c => c.id === a.competencyId)?.name || a.competencyId,
           score: a.score + '/5',
           evidence: a.evidence
@@ -581,15 +645,35 @@ Documented Skills Assessments: ${JSON.stringify(app.assessments.map(a => ({
 Provide a 3-bullet factual summary of strengths and potential training opportunities. Do not make an employability decision.`;
       },
       generateStructuredInterviewQuestions: (posTitle) => {
-        return `Generate 4 structured, evidence-based behavioral interview questions for the role "${posTitle}" at Party Hard People LLC in Southern California. Focus on:
-1. Handling unexpected equipment or sound challenges during a live party.
-2. Managing child attention and ensuring physical safety (California AB 506).
-3. Client communication and punctuality on weekend schedules.
-4. Team coordination during fast-paced setup and teardown.`;
+        return [
+          {
+            topic: "Live Party Troubleshooting",
+            question: "Describe a scenario where audio equipment failed or Bluetooth dropped during a high-stakes party moment. What exact steps did you take to maintain crowd momentum?",
+            evaluationBenchmark: "Looks for calm problem-solving, backup cable usage, and mic interaction to keep guests entertained."
+          },
+          {
+            topic: "Child Engagement & De-escalation",
+            question: "How do you handle a child who feels left out or starts crying during a competitive dance game like musical statues?",
+            evaluationBenchmark: "Looks for empathy, positive reinforcement, and seamless inclusive game modifications."
+          },
+          {
+            topic: "California AB 506 Safety Compliance",
+            question: "What physical boundaries and mandatory reporting obligations are you expected to uphold when working around minors at private and public events?",
+            evaluationBenchmark: "Demonstrates clear understanding of California child safeguarding standards and two-adult rule."
+          },
+          {
+            topic: "Punctuality & Weekend Reliability",
+            question: "Weekend events in SoCal often require navigating traffic across LA, OC, and San Diego. How do you plan your transit, load-in buffer, and contingency timing?",
+            evaluationBenchmark: "Requires standard 45-60 min pre-party buffer, vehicle readiness, and clear dispatch check-ins."
+          }
+        ];
       }
     },
 
-    // Audit Logs
+    // Audit Logging
+    recordAudit: (action, details, actor = 'Bryant Hua') => {
+      logAudit(action, details, actor);
+    },
     getAuditLogs: () => loadData(STORAGE_KEYS.AUDIT_LOGS, [])
   };
 })();

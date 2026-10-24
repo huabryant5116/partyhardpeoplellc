@@ -480,6 +480,69 @@
         });
       });
 
+      // ----------------------------------------------------
+      // SUITE 8: INTERVIEWS, PII PRIVACY & AUDIT LOGS (MILESTONE 2)
+      // ----------------------------------------------------
+      describe("8. Interview Management, Privacy & Audit Trail", () => {
+        it("Schedules audition, generates candidate invitation preview, and updates stage", () => {
+          const apps = WorkforceManager.getApplications('all');
+          const target = apps[0];
+
+          const scheduledApp = WorkforceManager.scheduleInterview(target.id, {
+            date: '2026-11-05',
+            time: '3:00 PM PST',
+            format: 'Live Video Audition & Sound Check',
+            interviewer: 'Bryant Hua',
+            locationOrLink: 'https://meet.partyhardpeoplellc.com/audition'
+          });
+
+          expect(scheduledApp.interview).toBeTruthy();
+          expect(scheduledApp.interview.status).toBe('Scheduled');
+          expect(scheduledApp.interview.notificationSent).toBe(true);
+          expect(scheduledApp.interview.notificationPreview).toInclude('Live Video Audition & Sound Check');
+        });
+
+        it("Completes interview with recorded feedback and advances candidate stage", () => {
+          const apps = WorkforceManager.getApplications('all');
+          const target = apps[0];
+
+          const completedApp = WorkforceManager.completeInterview(
+            target.id,
+            'Superb energy on musical statues. Recommended for Level 4 rubric.',
+            'skills_assessment',
+            'Lead Talent Evaluator'
+          );
+
+          expect(completedApp.interview.status).toBe('Completed');
+          expect(completedApp.interview.feedback).toInclude('Superb energy');
+          expect(completedApp.stage).toBe('skills_assessment');
+        });
+
+        it("Masks candidate email and phone to protect PII by default", () => {
+          const maskedEmail = WorkforceManager.maskEmail("jessica.chen@yahoo.com");
+          const maskedPhone = WorkforceManager.maskPhone("(619) 320-9981");
+
+          expect(maskedEmail).toBe("j***n@yahoo.com");
+          expect(maskedPhone).toBe("(619) ***-9981");
+        });
+
+        it("Generates 4 structured behavioral interview benchmarks for role", () => {
+          const questions = WorkforceManager.aiHelpers.generateStructuredInterviewQuestions("Lead Kids Party DJ");
+          expect(questions.length).toBe(4);
+          expect(questions[0].topic).toBe("Live Party Troubleshooting");
+          expect(questions[1].topic).toBe("Child Engagement & De-escalation");
+          expect(questions[2].topic).toBe("California AB 506 Safety Compliance");
+        });
+
+        it("Records immutable audit trail event and verifies retrieval", () => {
+          WorkforceManager.recordAudit('TEST_AUDIT_ACTION', 'Verification of audit trail functionality', 'Test Runner');
+          const logs = WorkforceManager.getAuditLogs();
+          expect(logs.length).toBeGreaterThan(0);
+          expect(logs[0].action).toBe('TEST_AUDIT_ACTION');
+          expect(logs[0].performedBy).toBe('Test Runner');
+        });
+      });
+
       // Render Test UI
       const result = TestRunner.execute();
       renderUI(result);

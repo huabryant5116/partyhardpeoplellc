@@ -898,6 +898,34 @@
           <div style="font-size: 0.85rem; color: #94A3B8;">Active positions on /careers.html</div>
         </div>
       </div>
+
+      <!-- Audit Trail & Compliance Activity Log (Task 8) -->
+      <div style="background: var(--admin-surface); border: 1px solid var(--admin-border); border-radius: var(--radius-md); padding: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+          <h3 style="color: #FFFFFF; font-size: 1.2rem; font-family: var(--font-heading);">
+            🛡️ Security, Privacy & Compliance Audit Trail
+          </h3>
+          <span class="badge" style="background: rgba(16,185,129,0.15); color: #6EE7B7;">Immutable Event Log</span>
+        </div>
+        <p style="font-size: 0.85rem; color: #94A3B8; margin-bottom: 1.25rem;">
+          Real-time audit records of applicant status changes, PII reveals, interview dispatches, and AB 506 certifications.
+        </p>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Action Type</th>
+                <th>Audit Details</th>
+                <th>Authorized Actor</th>
+              </tr>
+            </thead>
+            <tbody id="wf-audit-table-body">
+              <!-- Dynamically populated from WorkforceManager.getAuditLogs() -->
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -946,12 +974,22 @@
         <button type="button" onclick="document.getElementById('candidate-detail-modal').style.display='none'" style="background: none; border: none; font-size: 1.5rem; color: #94A3B8; cursor: pointer;">✕</button>
       </div>
 
-      <!-- Contact Info Bar -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; background: rgba(255,255,255,0.03); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem; font-size: 0.88rem;">
-        <div><strong>Email:</strong> <span id="cmodal-email" style="color: #A78BFA;"></span></div>
-        <div><strong>Phone:</strong> <span id="cmodal-phone" style="color: #F8FAFC;"></span></div>
-        <div style="grid-column: 1 / -1;" id="cmodal-portfolio-wrap">
+      <!-- Contact Info Bar with PII Masking & Privacy Controls -->
+      <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--admin-border); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem; font-size: 0.88rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div style="display: flex; gap: 1.25rem; flex-wrap: wrap;">
+            <div><strong>Email:</strong> <span id="cmodal-email" style="color: #A78BFA; font-family: monospace;"></span></div>
+            <div><strong>Phone:</strong> <span id="cmodal-phone" style="color: #F8FAFC; font-family: monospace;"></span></div>
+          </div>
+          <button type="button" id="btn-toggle-pii" class="btn btn-sm" onclick="toggleCandidatePii()" style="background: rgba(255,255,255,0.08); font-size: 0.75rem; padding: 0.25rem 0.6rem; color: #CBD5E1;">
+            👁️ Reveal Contact PII (Logged)
+          </button>
+        </div>
+        <div id="cmodal-portfolio-wrap" style="padding-top: 0.4rem; border-top: 1px solid rgba(255,255,255,0.05); margin-bottom: 0.4rem;">
           <strong>Reel / Showcase:</strong> <a id="cmodal-portfolio" href="#" target="_blank" style="color: var(--accent-coral); text-decoration: underline;">View Reel ↗</a>
+        </div>
+        <div id="cmodal-interview-badge-wrap" style="display: none; background: rgba(2,132,199,0.12); border: 1px solid rgba(56,189,248,0.3); border-radius: 6px; padding: 0.5rem 0.75rem; font-size: 0.82rem; color: #BAE6FD;">
+          📅 <strong id="cmodal-interview-badge-text">Interview Scheduled</strong>
         </div>
       </div>
 
@@ -967,6 +1005,15 @@
           🤖 AI Recruitment Assistant Summary (Human-in-the-Loop):
         </div>
         <div id="cmodal-ai-text" style="font-size: 0.85rem; color: #E2E8F0; line-height: 1.5;"></div>
+      </div>
+
+      <!-- Standardized Behavioral Interview Questions Guide -->
+      <div id="cmodal-questions-box" style="display: none; background: rgba(2,132,199,0.08); border: 1px solid rgba(56,189,248,0.25); border-radius: var(--radius-sm); padding: 1.1rem; margin-bottom: 1.5rem;">
+        <div style="display: flex; align-items: center; justify-content: space-between; color: #7DD3FC; font-weight: 700; font-size: 0.88rem; margin-bottom: 0.75rem;">
+          <span>📋 Standardized Behavioral Interview Guide</span>
+          <span style="font-size: 0.72rem; color: #94A3B8; background: rgba(255,255,255,0.06); padding: 0.2rem 0.5rem; border-radius: 4px;">California Compliance</span>
+        </div>
+        <div id="cmodal-questions-list" style="display: flex; flex-direction: column; gap: 0.85rem;"></div>
       </div>
 
       <!-- Pipeline Stage Transition Controls (Strict Human Control) -->
@@ -994,14 +1041,73 @@
 
       <!-- Action Buttons -->
       <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
-        <button type="button" class="btn btn-sm" onclick="triggerAISummary()" style="background: rgba(139,92,246,0.25); color: #C4B5FD; border: 1px solid var(--admin-border-hover);">
-          🤖 Generate AI Summary
-        </button>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <button type="button" class="btn btn-sm" onclick="triggerAISummary()" style="background: rgba(139,92,246,0.25); color: #C4B5FD; border: 1px solid var(--admin-border-hover);">
+            🤖 AI Summary
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="openScheduleInterviewModal()">
+            📅 Schedule Audition
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="toggleInterviewQuestionsBox()">
+            📋 Interview Guide
+          </button>
+        </div>
         <div style="display: flex; gap: 0.75rem;">
           <button type="button" class="btn btn-secondary btn-sm" onclick="openRecordAssessmentFromCandidate()">🎯 Score Rubric</button>
           <button type="button" class="btn btn-primary btn-sm btn-glow" id="cmodal-btn-hire" onclick="executeHireFromCandidate()">🎉 Hire & Onboard (W-2)</button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Schedule Audition & Interview Modal (Milestone 2) -->
+  <div id="schedule-interview-modal" style="display: none; position: fixed; inset: 0; z-index: 1100; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 1.5rem; overflow-y: auto;">
+    <div style="background: var(--admin-surface); border: 1px solid var(--admin-border-hover); border-radius: var(--radius-lg); max-width: 600px; width: 100%; padding: 2rem; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
+      <h3 style="color: #FFFFFF; font-size: 1.4rem; margin-bottom: 0.35rem;">Schedule Audition & Interview</h3>
+      <p style="font-size: 0.85rem; color: #94A3B8; margin-bottom: 1.25rem;">Dispatch formal audition invitation with California AB 506 youth safety guidelines.</p>
+
+      <form id="schedule-interview-form" onsubmit="handleScheduleInterviewSubmit(event)">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          <div class="form-group">
+            <label class="form-label" style="color: #CBD5E1;">Interview Date <span style="color: var(--accent-coral);">*</span></label>
+            <input type="date" class="executive-input" id="sched-date" required onchange="updateInterviewNotificationPreview()">
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="color: #CBD5E1;">Interview Time <span style="color: var(--accent-coral);">*</span></label>
+            <input type="text" class="executive-input" id="sched-time" placeholder="e.g. 2:00 PM PST" value="2:00 PM PST" required oninput="updateInterviewNotificationPreview()">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          <div class="form-group">
+            <label class="form-label" style="color: #CBD5E1;">Audition Format <span style="color: var(--accent-coral);">*</span></label>
+            <select class="executive-input" id="sched-format" required onchange="updateInterviewNotificationPreview()">
+              <option value="Live Video Audition & Sound Check">Live Video Audition & Sound Check</option>
+              <option value="In-Person Rigging & Safety Trial">In-Person Rigging & Safety Trial</option>
+              <option value="Onsite Shadowing & Mic Demonstration">Onsite Shadowing & Mic Demonstration</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="color: #CBD5E1;">Lead Interviewer <span style="color: var(--accent-coral);">*</span></label>
+            <input type="text" class="executive-input" id="sched-interviewer" value="Bryant Hua (Executive Admin)" required oninput="updateInterviewNotificationPreview()">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label" style="color: #CBD5E1;">Meeting Link or Venue Address <span style="color: var(--accent-coral);">*</span></label>
+          <input type="text" class="executive-input" id="sched-location" value="https://meet.partyhardpeoplellc.com/audition" required oninput="updateInterviewNotificationPreview()">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <label class="form-label" style="color: #CBD5E1;">Candidate Notification Email Preview (Simulated Dispatch)</label>
+          <div id="sched-email-preview" style="background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); border-radius: var(--radius-sm); padding: 0.85rem; font-size: 0.8rem; color: #94A3B8; font-family: monospace; white-space: pre-wrap; line-height: 1.4;"></div>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+          <button type="button" class="btn btn-secondary" onclick="document.getElementById('schedule-interview-modal').style.display='none'">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-glow">Confirm & Dispatch Invitation</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -1158,6 +1264,7 @@
         renderEventStaffingTable();
       } else if (tabName === 'wf-analytics') {
         renderWorkforceAnalytics();
+        renderAuditLogsTable();
       }
     }
 
@@ -1481,6 +1588,8 @@
       return stages.find(s => s.id === stageId) || { id: stageId, label: stageId, color: '#94A3B8' };
     }
 
+    let candidatePiiRevealed = false;
+
     function renderRecruitmentTable(stageFilter) {
       const filter = stageFilter || currentRecruitmentStageFilter;
       const candidates = WorkforceManager.getApplications(filter);
@@ -1516,13 +1625,17 @@
           avgScore = (sum / assessCount).toFixed(1) + ' / 5.0';
         }
 
+        const maskedEmail = WorkforceManager.maskEmail(app.email);
+        const maskedPhone = WorkforceManager.maskPhone(app.phone);
+
         return `
           <tr>
             <td><strong style="color: var(--accent-coral); font-family: monospace;">${app.refCode || app.id}</strong></td>
             <td>
               <strong style="color: #FFFFFF;">${app.fullName}</strong><br>
-              <span style="font-size: 0.8rem; color: #94A3B8;">${app.email} · ${app.phone}</span>
+              <span style="font-size: 0.8rem; color: #94A3B8; font-family: monospace;">${maskedEmail} · ${maskedPhone}</span>
               ${app.portfolioUrl ? `<br><a href="${app.portfolioUrl}" target="_blank" style="font-size: 0.78rem; color: #A78BFA; text-decoration: underline;">View Reel / Audition ↗</a>` : ''}
+              ${app.interview && app.interview.status === 'Scheduled' ? `<br><span style="font-size: 0.75rem; color: #38BDF8;">📅 Audition: ${app.interview.date} (${app.interview.time})</span>` : ''}
             </td>
             <td>
               <span style="color: #CBD5E1; font-weight: 500;">${posTitle}</span><br>
@@ -1562,6 +1675,7 @@
 
     function openCandidateModal(appId) {
       activeCandidateId = appId;
+      candidatePiiRevealed = false;
       const app = WorkforceManager.getApplication(appId);
       if (!app) return;
 
@@ -1570,8 +1684,22 @@
 
       document.getElementById('cmodal-name').textContent = app.fullName;
       document.getElementById('cmodal-role-region').textContent = `${pos ? pos.title : app.positionId} · ${app.county}`;
-      document.getElementById('cmodal-email').textContent = app.email;
-      document.getElementById('cmodal-phone').textContent = app.phone;
+      
+      // Default to PII Masked
+      document.getElementById('cmodal-email').textContent = WorkforceManager.maskEmail(app.email);
+      document.getElementById('cmodal-phone').textContent = WorkforceManager.maskPhone(app.phone);
+      const piiBtn = document.getElementById('btn-toggle-pii');
+      if (piiBtn) piiBtn.textContent = '👁️ Reveal Contact PII (Logged)';
+
+      // Interview status badge
+      const intBadgeWrap = document.getElementById('cmodal-interview-badge-wrap');
+      const intBadgeText = document.getElementById('cmodal-interview-badge-text');
+      if (app.interview && app.interview.status === 'Scheduled') {
+        intBadgeWrap.style.display = 'block';
+        intBadgeText.textContent = `Interview Scheduled: ${app.interview.date} at ${app.interview.time} (${app.interview.format})`;
+      } else {
+        intBadgeWrap.style.display = 'none';
+      }
       
       const reelWrap = document.getElementById('cmodal-portfolio-wrap');
       const reelLink = document.getElementById('cmodal-portfolio');
@@ -1593,12 +1721,153 @@
       document.getElementById('cmodal-stage-select').value = app.stage;
       document.getElementById('cmodal-admin-notes').value = '';
 
-      // Reset AI box
+      // Reset AI box & questions box
       const aiBox = document.getElementById('cmodal-ai-box');
       aiBox.style.display = 'none';
       document.getElementById('cmodal-ai-text').innerHTML = '';
 
+      const qBox = document.getElementById('cmodal-questions-box');
+      if (qBox) qBox.style.display = 'none';
+
       document.getElementById('candidate-detail-modal').style.display = 'flex';
+    }
+
+    function toggleCandidatePii() {
+      if (!activeCandidateId) return;
+      const app = WorkforceManager.getApplication(activeCandidateId);
+      if (!app) return;
+
+      const emailEl = document.getElementById('cmodal-email');
+      const phoneEl = document.getElementById('cmodal-phone');
+      const piiBtn = document.getElementById('btn-toggle-pii');
+
+      if (candidatePiiRevealed) {
+        candidatePiiRevealed = false;
+        emailEl.textContent = WorkforceManager.maskEmail(app.email);
+        phoneEl.textContent = WorkforceManager.maskPhone(app.phone);
+        piiBtn.textContent = '👁️ Reveal Contact PII (Logged)';
+      } else {
+        candidatePiiRevealed = true;
+        emailEl.textContent = app.email;
+        phoneEl.textContent = app.phone;
+        piiBtn.textContent = '🔒 Mask Contact PII';
+
+        WorkforceManager.recordAudit('VIEW_PII', `Administrator unmasked candidate PII (${app.email}, ${app.phone}) for ${app.fullName}`, 'Bryant Hua (Super Admin)');
+        showToast('PII unmasked. Access recorded in audit log.');
+        renderAuditLogsTable();
+      }
+    }
+
+    function openScheduleInterviewModal() {
+      if (!activeCandidateId) return;
+      const app = WorkforceManager.getApplication(activeCandidateId);
+      if (!app) return;
+
+      // Set tomorrow as default date
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 2);
+      document.getElementById('sched-date').value = tomorrow.toISOString().split('T')[0];
+      document.getElementById('sched-time').value = '2:00 PM PST';
+      updateInterviewNotificationPreview();
+
+      document.getElementById('schedule-interview-modal').style.display = 'flex';
+    }
+
+    function updateInterviewNotificationPreview() {
+      if (!activeCandidateId) return;
+      const app = WorkforceManager.getApplication(activeCandidateId);
+      if (!app) return;
+
+      const date = document.getElementById('sched-date').value || 'Pending Date';
+      const time = document.getElementById('sched-time').value || 'Pending Time';
+      const format = document.getElementById('sched-format').value;
+      const interviewer = document.getElementById('sched-interviewer').value;
+      const location = document.getElementById('sched-location').value;
+
+      const pos = WorkforceManager.getPositionById(app.positionId);
+      const roleTitle = pos ? pos.title : app.positionId;
+
+      const previewText = 
+`Subject: Invitation to Audition & Interview — Party Hard People LLC
+To: ${app.fullName} <${app.email}>
+
+Hi ${app.fullName},
+
+Thank you for your application to Party Hard People LLC! We were impressed by your background and would love to invite you to an interview & audition for the ${roleTitle} role.
+
+• Date: ${date}
+• Time: ${time}
+• Format: ${format}
+• Link / Location: ${location}
+• Lead Interviewer: ${interviewer}
+
+Please review the California AB 506 youth safety guidelines linked in your portal prior to our session. Reply to this email to confirm your attendance.
+
+Best regards,
+Party Hard People Talent Team
+Los Angeles • Orange County • San Diego`;
+
+      document.getElementById('sched-email-preview').textContent = previewText;
+    }
+
+    function handleScheduleInterviewSubmit(e) {
+      e.preventDefault();
+      if (!activeCandidateId) return;
+
+      const date = document.getElementById('sched-date').value;
+      const time = document.getElementById('sched-time').value;
+      const format = document.getElementById('sched-format').value;
+      const interviewer = document.getElementById('sched-interviewer').value;
+      const locationOrLink = document.getElementById('sched-location').value;
+
+      WorkforceManager.scheduleInterview(activeCandidateId, {
+        date,
+        time,
+        format,
+        interviewer,
+        locationOrLink
+      });
+
+      showToast(`📅 Audition scheduled for ${date}! Candidate invitation dispatched.`);
+      document.getElementById('schedule-interview-modal').style.display = 'none';
+
+      // Refresh Candidate Modal & Table
+      openCandidateModal(activeCandidateId);
+      renderRecruitmentTable();
+      renderAuditLogsTable();
+      renderWorkforceAnalytics();
+    }
+
+    function toggleInterviewQuestionsBox() {
+      if (!activeCandidateId) return;
+      const app = WorkforceManager.getApplication(activeCandidateId);
+      if (!app) return;
+
+      const qBox = document.getElementById('cmodal-questions-box');
+      if (qBox.style.display === 'block') {
+        qBox.style.display = 'none';
+        return;
+      }
+
+      const pos = WorkforceManager.getPositionById(app.positionId);
+      const questions = WorkforceManager.aiHelpers.generateStructuredInterviewQuestions(pos ? pos.title : app.positionId);
+      const listContainer = document.getElementById('cmodal-questions-list');
+
+      listContainer.innerHTML = questions.map((q, idx) => `
+        <div style="background: rgba(0,0,0,0.25); border-left: 3px solid #38BDF8; padding: 0.75rem 0.9rem; border-radius: 0 6px 6px 0;">
+          <div style="font-size: 0.78rem; text-transform: uppercase; font-weight: 700; color: #7DD3FC; margin-bottom: 0.25rem;">
+            Question ${idx + 1}: ${q.topic}
+          </div>
+          <div style="color: #F8FAFC; font-size: 0.88rem; margin-bottom: 0.35rem; line-height: 1.4;">
+            "${q.question}"
+          </div>
+          <div style="font-size: 0.78rem; color: #94A3B8; line-height: 1.3;">
+            <strong style="color: #CBD5E1;">Evaluation Benchmark:</strong> ${q.evaluationBenchmark}
+          </div>
+        </div>
+      `).join('');
+
+      qBox.style.display = 'block';
     }
 
     function saveCandidateStageChange() {
@@ -1946,6 +2215,39 @@
       showToast(`Roster officially dispatched for ${bookingRef}`);
     }
 
+    function renderAuditLogsTable() {
+      const tbody = document.getElementById('wf-audit-table-body');
+      if (!tbody) return;
+
+      const logs = WorkforceManager.getAuditLogs();
+      if (logs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #94A3B8; padding: 1.5rem;">No audit records logged yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = logs.map(l => {
+        const dateStr = new Date(l.timestamp).toLocaleString();
+        let badgeColor = '#94A3B8';
+        if (l.action.includes('HIRE') || l.action.includes('SAFEGUARDING')) badgeColor = '#34D399';
+        else if (l.action.includes('INTERVIEW')) badgeColor = '#38BDF8';
+        else if (l.action.includes('PII')) badgeColor = '#F59E0B';
+        else if (l.action.includes('ASSESSMENT')) badgeColor = '#A78BFA';
+
+        return `
+          <tr>
+            <td style="font-family: monospace; font-size: 0.8rem; color: #94A3B8; white-space: nowrap;">${dateStr}</td>
+            <td>
+              <span class="badge" style="background: ${badgeColor}22; color: ${badgeColor}; border: 1px solid ${badgeColor}44; font-size: 0.72rem;">
+                ${l.action}
+              </span>
+            </td>
+            <td style="color: #CBD5E1; font-size: 0.84rem;">${l.details}</td>
+            <td><strong style="color: #FFFFFF; font-size: 0.82rem;">${l.performedBy || 'System Admin'}</strong></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
     function renderWorkforceAnalytics() {
       const candidates = WorkforceManager.getApplications('all');
       const employees = WorkforceManager.getEmployees();
@@ -1959,6 +2261,8 @@
 
       const posTotalEl = document.getElementById('wf-stat-open-positions');
       if (posTotalEl) posTotalEl.textContent = positions.filter(p => p.isOpen).length;
+
+      renderAuditLogsTable();
     }
 
     function openNewPositionModal() {
@@ -2007,6 +2311,7 @@
       renderEmployeeTable();
       renderEventStaffingTable();
       renderWorkforceAnalytics();
+      renderAuditLogsTable();
 
       // Check query parameter for direct tab access (e.g. admin.html?tab=recruitment)
       const urlParams = new URLSearchParams(window.location.search);
