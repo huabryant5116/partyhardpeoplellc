@@ -310,28 +310,36 @@
         <button type="button" onclick="closeApplicationModal()" style="background: none; border: none; font-size: 1.6rem; color: var(--text-muted); cursor: pointer; padding: 0.25rem;">✕</button>
       </div>
 
-      <form id="candidate-application-form" onsubmit="handleCandidateApplicationSubmit(event)">
-        <input type="hidden" id="app-job-id" value="">
+      <form id="candidate-application-form" name="candidate-application" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleCandidateApplicationSubmit(event)">
+        <input type="hidden" name="form-name" value="candidate-application">
+        <input type="hidden" id="app-job-id" name="jobId" value="">
+        <input type="hidden" id="app-ref-code" name="refCode" value="">
+        <input type="hidden" id="app-job-title-hidden" name="jobTitle" value="">
+        
+        <!-- Netlify Honeypot for Bot Protection -->
+        <p style="display: none;">
+          <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+        </p>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
           <div class="form-group">
             <label class="form-label" for="app-full-name">Full Name <span class="req">*</span></label>
-            <input type="text" class="form-input" id="app-full-name" placeholder="First and last name" required>
+            <input type="text" class="form-input" id="app-full-name" name="fullName" placeholder="First and last name" required>
           </div>
           <div class="form-group">
             <label class="form-label" for="app-phone">Phone Number <span class="req">*</span></label>
-            <input type="tel" class="form-input" id="app-phone" placeholder="(555) 000-0000" required>
+            <input type="tel" class="form-input" id="app-phone" name="phone" placeholder="(555) 000-0000" required>
           </div>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
           <div class="form-group">
             <label class="form-label" for="app-email">Email Address <span class="req">*</span></label>
-            <input type="email" class="form-input" id="app-email" placeholder="you@domain.com" required>
+            <input type="email" class="form-input" id="app-email" name="email" placeholder="you@domain.com" required>
           </div>
           <div class="form-group">
             <label class="form-label" for="app-county">Primary County / Region <span class="req">*</span></label>
-            <select class="form-select" id="app-county" required>
+            <select class="form-select" id="app-county" name="county" required>
               <option value="Los Angeles County">Los Angeles County</option>
               <option value="Orange County" selected>Orange County</option>
               <option value="San Diego County">San Diego County</option>
@@ -342,13 +350,13 @@
 
         <div class="form-group" style="margin-bottom: 1rem;">
           <label class="form-label" for="app-portfolio">Performance Reel, DJ Mix, or Social Showcase Link</label>
-          <input type="url" class="form-input" id="app-portfolio" placeholder="https://instagram.com/..., TikTok, YouTube reel or SoundCloud">
+          <input type="url" class="form-input" id="app-portfolio" name="portfolioUrl" placeholder="https://instagram.com/..., TikTok, YouTube reel or SoundCloud">
           <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Optional but highly recommended for performers and DJs.</div>
         </div>
 
         <div class="form-group" style="margin-bottom: 1rem;">
           <label class="form-label" for="app-experience">Relevant Experience & Brief Bio <span class="req">*</span></label>
-          <textarea class="form-input" id="app-experience" rows="3" placeholder="Tell us about your background hosting parties, playing music, camp counseling, or equipment logistics..." required></textarea>
+          <textarea class="form-input" id="app-experience" name="experience" rows="3" placeholder="Tell us about your background hosting parties, playing music, camp counseling, or equipment logistics..." required></textarea>
         </div>
 
         <!-- Availability Checkboxes -->
@@ -356,13 +364,13 @@
           <label class="form-label">Typical Weekend Availability</label>
           <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.35rem; font-size: 0.9rem;">
             <label style="display: flex; align-items: center; gap: 0.45rem; cursor: pointer;">
-              <input type="checkbox" id="avail-sat" checked> Saturdays (Peak Party Day)
+              <input type="checkbox" id="avail-sat" name="availSaturdays" value="Yes" checked> Saturdays (Peak Party Day)
             </label>
             <label style="display: flex; align-items: center; gap: 0.45rem; cursor: pointer;">
-              <input type="checkbox" id="avail-sun" checked> Sundays
+              <input type="checkbox" id="avail-sun" name="availSundays" value="Yes" checked> Sundays
             </label>
             <label style="display: flex; align-items: center; gap: 0.45rem; cursor: pointer;">
-              <input type="checkbox" id="avail-fri"> Friday Evenings
+              <input type="checkbox" id="avail-fri" name="availFridayNights" value="Yes"> Friday Evenings
             </label>
           </div>
         </div>
@@ -373,7 +381,7 @@
           Party Hard People LLC is dedicated to safety. Selected entertainment and field operations candidates for youth events undergo California Department of Justice / FBI Live Scan fingerprint background clearances prior to solo dispatch.
           <div style="margin-top: 0.5rem;">
             <label style="display: flex; align-items: flex-start; gap: 0.45rem; cursor: pointer; color: var(--text-primary); font-weight: 600;">
-              <input type="checkbox" id="app-consent-check" required style="margin-top: 2px;">
+              <input type="checkbox" id="app-consent-check" name="ab506Consent" value="Agreed" required style="margin-top: 2px;">
               I certify the above information is accurate and agree to undergo standard verification upon formal offer extension.
             </label>
           </div>
@@ -535,6 +543,7 @@
       if (!job) return;
 
       document.getElementById('app-job-id').value = job.id;
+      document.getElementById('app-job-title-hidden').value = job.title;
       document.getElementById('modal-job-title').textContent = job.title;
       document.getElementById('modal-job-dept').textContent = job.department;
       document.getElementById('modal-job-region').textContent = `${job.county} · ${job.employmentType} · ${job.payRange}`;
@@ -566,6 +575,26 @@
         portfolioUrl,
         resumeText
       });
+
+      // Synchronize ref code into Netlify cloud form submission
+      document.getElementById('app-ref-code').value = newApp.refCode;
+
+      // Post to Netlify Forms in the background for centralized cloud ingestion
+      try {
+        const formElement = e.target;
+        const formData = new FormData(formElement);
+        fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(formData).toString()
+        }).then(res => {
+          console.log('Application securely transmitted to Netlify Cloud:', res.status);
+        }).catch(err => {
+          console.log('Local fallback queued:', err);
+        });
+      } catch (err) {
+        console.warn('Netlify form transmission fallback:', err);
+      }
 
       closeApplicationModal();
       document.getElementById('success-tracking-code').textContent = newApp.refCode;

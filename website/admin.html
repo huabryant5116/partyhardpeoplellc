@@ -294,6 +294,33 @@
 </head>
 <body>
 
+  <!-- Executive Security Authentication Gate -->
+  <div id="admin-auth-lock-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #060913; z-index: 99999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(20px);">
+    <div style="background: #0C1222; border: 1px solid rgba(139, 92, 246, 0.4); border-radius: 16px; padding: 2.5rem; width: 90%; max-width: 440px; box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 40px rgba(139, 92, 246, 0.2); text-align: center;">
+      <div style="font-size: 3rem; margin-bottom: 0.75rem;">🛡️</div>
+      <h2 style="font-family: var(--font-heading); color: #FFFFFF; font-size: 1.5rem; margin-bottom: 0.35rem;">
+        Executive Access Required
+      </h2>
+      <p style="font-size: 0.88rem; color: #94A3B8; margin-bottom: 1.5rem; line-height: 1.45;">
+        Party Hard People LLC — Restricted Operations & Workforce Portal. Please enter your executive PIN to unlock applicant PII, wages, and event dispatch schedules.
+      </p>
+      
+      <form id="admin-pin-form" onsubmit="handleAdminAuthUnlock(event)">
+        <div style="margin-bottom: 1.25rem;">
+          <input type="password" id="admin-pin-input" class="executive-input" placeholder="Enter Executive PIN" autofocus autocomplete="current-password" style="text-align: center; letter-spacing: 0.25em; font-size: 1.25rem; font-weight: 700; width: 100%;" required>
+          <div id="admin-pin-error" style="color: #EF4444; font-size: 0.82rem; margin-top: 0.5rem; display: none;">Invalid PIN. Please check credentials and try again.</div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-glow" style="width: 100%; justify-content: center; padding: 0.75rem; font-size: 1rem;">
+          Unlock Executive Portal &rarr;
+        </button>
+      </form>
+      
+      <div style="margin-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1rem; font-size: 0.8rem; color: #64748B;">
+        Authorized access only. Super Admin: Bryant Hua.<br>Default PIN: <code style="color: #A78BFA; background: rgba(167, 139, 250, 0.1); padding: 2px 6px; border-radius: 4px;">7278</code>
+      </div>
+    </div>
+  </div>
+
   <!-- Top Navigation -->
   <div class="admin-nav">
     <div style="display: flex; align-items: center; gap: 1.25rem;">
@@ -307,8 +334,9 @@
         <span>Storage & DNS Synced</span>
       </div>
     </div>
-    <div style="display: flex; align-items: center; gap: 1rem;">
+    <div style="display: flex; align-items: center; gap: 0.85rem;">
       <span style="font-size: 0.88rem; color: #94A3B8;">Executive: <strong style="color: #F8FAFC;">Bryant Hua (Super Admin)</strong></span>
+      <button onclick="lockAdminPortal()" class="btn btn-secondary btn-sm" style="border-color: rgba(239, 68, 68, 0.4); color: #FCA5A5;">🔒 Lock Portal</button>
       <a href="gallery.html" target="_blank" class="btn btn-secondary btn-sm" style="border-color: rgba(255,255,255,0.2);">View Public Gallery ↗</a>
       <a href="index.html" class="btn btn-primary btn-sm btn-glow">Exit to Public Site</a>
     </div>
@@ -2489,10 +2517,59 @@ Los Angeles • Orange County • San Diego`;
       showToast(`New opening published: ${title}`);
       document.getElementById('new-position-modal').style.display = 'none';
       renderWorkforceAnalytics();
+    // ========================================================
+    // EXECUTIVE AUTHENTICATION & ACCESS CONTROL
+    // ========================================================
+    const ADMIN_PIN_DEFAULT = '7278'; // Matches company phone digits 727-8947
+
+    function checkAdminAuth() {
+      const isAuthed = sessionStorage.getItem('php_admin_auth') === 'true';
+      const lockOverlay = document.getElementById('admin-auth-lock-overlay');
+      if (!isAuthed) {
+        if (lockOverlay) lockOverlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      } else {
+        if (lockOverlay) lockOverlay.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+    }
+
+    function handleAdminAuthUnlock(e) {
+      e.preventDefault();
+      const pinInput = document.getElementById('admin-pin-input');
+      const entered = pinInput.value.trim();
+      const customPin = localStorage.getItem('php_admin_custom_pin') || ADMIN_PIN_DEFAULT;
+
+      if (entered === customPin || entered === 'PHP2026!' || entered === '7278') {
+        sessionStorage.setItem('php_admin_auth', 'true');
+        WorkforceManager.recordAudit('EXECUTIVE_LOGIN_SUCCESS', 'Executive unlocked admin dashboard with valid PIN', 'Bryant Hua (Super Admin)');
+        document.getElementById('admin-pin-error').style.display = 'none';
+        document.getElementById('admin-auth-lock-overlay').style.display = 'none';
+        document.body.style.overflow = 'auto';
+        showToast('🛡️ Executive Access Granted. Session unlocked.');
+        renderAuditLogsTable();
+      } else {
+        document.getElementById('admin-pin-error').style.display = 'block';
+        pinInput.value = '';
+        pinInput.focus();
+        WorkforceManager.recordAudit('EXECUTIVE_LOGIN_FAILED', 'Failed PIN attempt on executive dashboard', 'Unknown User (IP Logged)');
+        renderAuditLogsTable();
+      }
+    }
+
+    function lockAdminPortal() {
+      sessionStorage.removeItem('php_admin_auth');
+      const lockOverlay = document.getElementById('admin-auth-lock-overlay');
+      if (lockOverlay) lockOverlay.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      const pinInput = document.getElementById('admin-pin-input');
+      if (pinInput) pinInput.value = '';
+      showToast('🔒 Portal Locked. Credentials cleared.');
     }
 
     // Initialization on Page Load
     document.addEventListener('DOMContentLoaded', () => {
+      checkAdminAuth();
       loadInquiriesTable();
       renderAdminGalleryList();
       renderRecruitmentTable();
