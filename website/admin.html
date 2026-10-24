@@ -316,7 +316,7 @@
       </form>
       
       <div style="margin-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1rem; font-size: 0.8rem; color: #64748B;">
-        Authorized access only. Super Admin: Bryant Hua.<br>Default PIN: <code style="color: #A78BFA; background: rgba(167, 139, 250, 0.1); padding: 2px 6px; border-radius: 4px;">7278</code>
+        Authorized access only. Super Admin: Bryant Hua.<br>Executive PIN: <code style="color: #A78BFA; background: rgba(167, 139, 250, 0.1); padding: 2px 6px; border-radius: 4px;">5116</code>
       </div>
     </div>
   </div>
@@ -2522,7 +2522,7 @@ Los Angeles • Orange County • San Diego`;
     // ========================================================
     // EXECUTIVE AUTHENTICATION & ACCESS CONTROL
     // ========================================================
-    const ADMIN_PIN_DEFAULT = '7278'; // Matches company phone digits 727-8947
+    const ADMIN_PIN_DEFAULT = '5116';
 
     function checkAdminAuth() {
       const isAuthed = sessionStorage.getItem('php_admin_auth') === 'true';
@@ -2543,7 +2543,7 @@ Los Angeles • Orange County • San Diego`;
       const entered = pinInput.value.trim();
       const customPin = localStorage.getItem('php_admin_custom_pin') || ADMIN_PIN_DEFAULT;
 
-      if (entered === customPin || entered === 'PHP2026!' || entered === '7278') {
+      if (entered === customPin || entered === '5116' || entered === 'PHP2026!' || entered === '7278') {
         sessionStorage.setItem('php_admin_auth', 'true');
         if (typeof WorkforceManager !== 'undefined' && WorkforceManager.recordAudit) {
           WorkforceManager.recordAudit('EXECUTIVE_LOGIN_SUCCESS', 'Executive unlocked admin dashboard with valid PIN', 'Bryant Hua (Super Admin)');
