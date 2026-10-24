@@ -2517,6 +2517,8 @@ Los Angeles • Orange County • San Diego`;
       showToast(`New opening published: ${title}`);
       document.getElementById('new-position-modal').style.display = 'none';
       renderWorkforceAnalytics();
+    }
+
     // ========================================================
     // EXECUTIVE AUTHENTICATION & ACCESS CONTROL
     // ========================================================
@@ -2535,24 +2537,32 @@ Los Angeles • Orange County • San Diego`;
     }
 
     function handleAdminAuthUnlock(e) {
-      e.preventDefault();
+      if (e) e.preventDefault();
       const pinInput = document.getElementById('admin-pin-input');
+      if (!pinInput) return;
       const entered = pinInput.value.trim();
       const customPin = localStorage.getItem('php_admin_custom_pin') || ADMIN_PIN_DEFAULT;
 
       if (entered === customPin || entered === 'PHP2026!' || entered === '7278') {
         sessionStorage.setItem('php_admin_auth', 'true');
-        WorkforceManager.recordAudit('EXECUTIVE_LOGIN_SUCCESS', 'Executive unlocked admin dashboard with valid PIN', 'Bryant Hua (Super Admin)');
-        document.getElementById('admin-pin-error').style.display = 'none';
-        document.getElementById('admin-auth-lock-overlay').style.display = 'none';
+        if (typeof WorkforceManager !== 'undefined' && WorkforceManager.recordAudit) {
+          WorkforceManager.recordAudit('EXECUTIVE_LOGIN_SUCCESS', 'Executive unlocked admin dashboard with valid PIN', 'Bryant Hua (Super Admin)');
+        }
+        const errEl = document.getElementById('admin-pin-error');
+        if (errEl) errEl.style.display = 'none';
+        const lockOverlay = document.getElementById('admin-auth-lock-overlay');
+        if (lockOverlay) lockOverlay.style.display = 'none';
         document.body.style.overflow = 'auto';
         showToast('🛡️ Executive Access Granted. Session unlocked.');
         renderAuditLogsTable();
       } else {
-        document.getElementById('admin-pin-error').style.display = 'block';
+        const errEl = document.getElementById('admin-pin-error');
+        if (errEl) errEl.style.display = 'block';
         pinInput.value = '';
         pinInput.focus();
-        WorkforceManager.recordAudit('EXECUTIVE_LOGIN_FAILED', 'Failed PIN attempt on executive dashboard', 'Unknown User (IP Logged)');
+        if (typeof WorkforceManager !== 'undefined' && WorkforceManager.recordAudit) {
+          WorkforceManager.recordAudit('EXECUTIVE_LOGIN_FAILED', 'Failed PIN attempt on executive dashboard', 'Unknown User (IP Logged)');
+        }
         renderAuditLogsTable();
       }
     }
@@ -2566,6 +2576,10 @@ Los Angeles • Orange County • San Diego`;
       if (pinInput) pinInput.value = '';
       showToast('🔒 Portal Locked. Credentials cleared.');
     }
+
+    window.checkAdminAuth = checkAdminAuth;
+    window.handleAdminAuthUnlock = handleAdminAuthUnlock;
+    window.lockAdminPortal = lockAdminPortal;
 
     // Initialization on Page Load
     document.addEventListener('DOMContentLoaded', () => {
