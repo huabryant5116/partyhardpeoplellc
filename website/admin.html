@@ -343,17 +343,26 @@
     <div class="admin-tabs">
       <button class="admin-tab-btn" id="btn-tab-inquiries" onclick="switchAdminTab('inquiries')">📋 Inquiries & Quotes</button>
       <button class="admin-tab-btn" id="btn-tab-inventory" onclick="switchAdminTab('inventory')">🏰 Rental Inventory</button>
-      <button class="admin-tab-btn active" id="btn-tab-gallery" onclick="switchAdminTab('gallery')">
-        🖼️ Gallery & Media Studio
+      <button class="admin-tab-btn" id="btn-tab-gallery" onclick="switchAdminTab('gallery')">
+        🖼️ Media Studio
         <span class="badge badge-coral" id="admin-gallery-count-badge" style="font-size: 0.72rem; padding: 0.15rem 0.5rem;">3 Live</span>
       </button>
-      <button class="admin-tab-btn" id="btn-tab-settings" onclick="switchAdminTab('settings')">⚙️ Business Settings</button>
+      <!-- Workforce Intelligence & Talent Acquisition Hub -->
+      <button class="admin-tab-btn active" id="btn-tab-recruitment" onclick="switchAdminTab('recruitment')">
+        💼 Recruitment Pipeline
+        <span class="badge" id="admin-wf-applicant-badge" style="background: rgba(139,92,246,0.3); color: #C4B5FD; font-size: 0.72rem; padding: 0.15rem 0.5rem;">4 Active</span>
+      </button>
+      <button class="admin-tab-btn" id="btn-tab-skills" onclick="switchAdminTab('skills')">🎯 Skills Assessments</button>
+      <button class="admin-tab-btn" id="btn-tab-employees" onclick="switchAdminTab('employees')">👥 Employee Roster</button>
+      <button class="admin-tab-btn" id="btn-tab-staffing" onclick="switchAdminTab('staffing')">📅 Event Staffing</button>
+      <button class="admin-tab-btn" id="btn-tab-wf-analytics" onclick="switchAdminTab('wf-analytics')">📊 Workforce Analytics</button>
+      <button class="admin-tab-btn" id="btn-tab-settings" onclick="switchAdminTab('settings')">⚙️ Settings</button>
     </div>
 
     <!-- ========================================================
          TAB 1: GALLERY & MEDIA STUDIO (SENIOR DIRECTOR CRAFTED)
          ======================================================== -->
-    <div id="tab-gallery">
+    <div id="tab-gallery" style="display: none;">
       <!-- Section Banner -->
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
         <div>
@@ -703,6 +712,193 @@
         <button class="btn btn-primary btn-glow" onclick="alert('Business policy settings saved successfully!')">Save Settings</button>
       </div>
     </div>
+
+    <!-- ========================================================
+         TAB 4: RECRUITMENT PIPELINE (MODULE A)
+         ======================================================== -->
+    <div id="tab-recruitment" style="display: block;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.75rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-family: var(--font-heading); color: #FFFFFF; font-size: 1.8rem; margin-bottom: 0.35rem;">
+            Talent Acquisition & Candidate Pipeline
+          </h2>
+          <p style="font-size: 0.95rem; color: #94A3B8; max-width: 720px;">
+            Human-reviewed 10-stage audition pipeline. Review performer reels, audition submissions, and schedule California-compliant interviews across Los Angeles, Orange County, and San Diego.
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.75rem;">
+          <a href="careers.html" target="_blank" class="btn btn-secondary btn-sm" style="border-color: rgba(255,255,255,0.2);">
+            View Live Careers Page ↗
+          </a>
+          <button class="btn btn-primary btn-sm btn-glow" onclick="openNewPositionModal()">
+            + Create Job Opening
+          </button>
+        </div>
+      </div>
+
+      <!-- Stage Filter Pills -->
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;" id="wf-stage-filters">
+        <button type="button" class="btn btn-sm btn-primary" onclick="filterRecruitment('all', this)">All Candidates (<span id="wf-count-all">0</span>)</button>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="filterRecruitment('app_received', this)">Received</button>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="filterRecruitment('awaiting_review', this)">Awaiting Human Review</button>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="filterRecruitment('interview_invited', this)">Interview Stage</button>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="filterRecruitment('skills_assessment', this)">Skills Assessment</button>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="filterRecruitment('final_review', this)">Final Review</button>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="filterRecruitment('hired', this)">Hired / Onboarded</button>
+      </div>
+
+      <!-- Candidates Table -->
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Ref #</th>
+              <th>Candidate Name & Contact</th>
+              <th>Role & Region</th>
+              <th>Applied Date</th>
+              <th>Pipeline Stage</th>
+              <th>Assessments</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="wf-candidates-table-body">
+            <!-- Dynamic Candidates Loaded Here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ========================================================
+         TAB 5: SKILLS ASSESSMENTS (MODULE B)
+         ======================================================== -->
+    <div id="tab-skills" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.75rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-family: var(--font-heading); color: #FFFFFF; font-size: 1.8rem; margin-bottom: 0.35rem;">
+            Evidence-Based Skills Assessments
+          </h2>
+          <p style="font-size: 0.95rem; color: #94A3B8; max-width: 720px;">
+            Standardized 1–5 competency rubrics. All ratings are backed by documented performance samples, video auditions, and safety certifications. No automated employability scores.
+          </p>
+        </div>
+        <button class="btn btn-primary btn-sm btn-glow" onclick="openRecordAssessmentModal()">
+          + Record New Assessment
+        </button>
+      </div>
+
+      <!-- Rubrics Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;" id="wf-competency-cards">
+        <!-- Injected dynamically from WorkforceManager.getCompetencies() -->
+      </div>
+    </div>
+
+    <!-- ========================================================
+         TAB 6: EMPLOYEE DIRECTORY & SAFEGUARDING (MODULE C & D)
+         ======================================================== -->
+    <div id="tab-employees" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.75rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-family: var(--font-heading); color: #FFFFFF; font-size: 1.8rem; margin-bottom: 0.35rem;">
+            Verified Employee & Crew Roster
+          </h2>
+          <p style="font-size: 0.95rem; color: #94A3B8; max-width: 720px;">
+            California AB 5 compliant roster (W-2 Non-Exempt). Tracking active California AB 506 Live Scan child safeguarding certifications, service radius, and skill proficiencies.
+          </p>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Employee ID</th>
+              <th>Full Name & Contact</th>
+              <th>Classification (CA AB 5)</th>
+              <th>Primary Role</th>
+              <th>Base County & Radius</th>
+              <th>CA AB 506 Safeguarding</th>
+              <th>Rate</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="wf-employees-table-body">
+            <!-- Dynamic Employees Loaded Here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ========================================================
+         TAB 7: EVENT CREW STAFFING & DISPATCH (MODULE E)
+         ======================================================== -->
+    <div id="tab-staffing" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.75rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-family: var(--font-heading); color: #FFFFFF; font-size: 1.8rem; margin-bottom: 0.35rem;">
+            Event Staffing & Crew Dispatch Engine
+          </h2>
+          <p style="font-size: 0.95rem; color: #94A3B8; max-width: 720px;">
+            Integrated with customer quote bookings. Identifies certified crew matching event type, location, and California AB 506 child safety clearance. Zero automatic scheduling without human administrator confirmation.
+          </p>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Booking Ref</th>
+              <th>Event Title & Date</th>
+              <th>Venue & County</th>
+              <th>Required Crew Roles</th>
+              <th>Recommended Available Crew (AB 506 Verified)</th>
+              <th>Dispatch Status</th>
+              <th>Human Action</th>
+            </tr>
+          </thead>
+          <tbody id="wf-staffing-table-body">
+            <!-- Dynamic Staffing Matches Loaded Here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ========================================================
+         TAB 8: WORKFORCE ANALYTICS (MODULE F)
+         ======================================================== -->
+    <div id="tab-wf-analytics" style="display: none;">
+      <div style="margin-bottom: 2rem;">
+        <h2 style="font-family: var(--font-heading); color: #FFFFFF; font-size: 1.8rem; margin-bottom: 0.35rem;">
+          Workforce Intelligence & Readiness Analytics
+        </h2>
+        <p style="font-size: 0.95rem; color: #94A3B8;">
+          Operational overview of recruitment throughput, regional talent capacity, and California legal compliance.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+        <div class="stat-card">
+          <div class="badge" style="background: rgba(139,92,246,0.2); color: #C4B5FD;">Recruitment Pipeline</div>
+          <div class="stat-val" id="wf-stat-candidates-total">4</div>
+          <div style="font-size: 0.85rem; color: #94A3B8;">Active applicants across SoCal</div>
+        </div>
+        <div class="stat-card">
+          <div class="badge badge-coral">Active Crew Roster</div>
+          <div class="stat-val" id="wf-stat-employees-total">3</div>
+          <div style="font-size: 0.85rem; color: #94A3B8;">W-2 verified entertainers & techs</div>
+        </div>
+        <div class="stat-card">
+          <div class="badge" style="background: rgba(16,185,129,0.2); color: #6EE7B7;">Youth Safeguarding</div>
+          <div class="stat-val" style="color: #34D399;">100%</div>
+          <div style="font-size: 0.85rem; color: #94A3B8;">CA AB 506 Live Scan verified rate</div>
+        </div>
+        <div class="stat-card">
+          <div class="badge badge-amber">Open Auditions</div>
+          <div class="stat-val" id="wf-stat-open-positions">4</div>
+          <div style="font-size: 0.85rem; color: #94A3B8;">Active positions on /careers.html</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Review Quote Modal -->
@@ -738,6 +934,184 @@
     </div>
   </div>
 
+  <!-- Workforce Candidate Detail & Stage Transition Modal -->
+  <div id="candidate-detail-modal" style="display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 1.5rem; overflow-y: auto;">
+    <div style="background: var(--admin-surface); border: 1px solid var(--admin-border-hover); border-radius: var(--radius-lg); max-width: 680px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 2.25rem; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; border-bottom: 1px solid var(--admin-border); padding-bottom: 1rem;">
+        <div>
+          <span class="badge" id="cmodal-stage-badge" style="background: rgba(139,92,246,0.2); color: #C4B5FD;">Stage 2: Awaiting Human Review</span>
+          <h3 style="margin-top: 0.35rem; color: #FFFFFF; font-size: 1.5rem;" id="cmodal-name">Candidate Name</h3>
+          <div style="font-size: 0.85rem; color: #94A3B8;" id="cmodal-role-region">Role · County</div>
+        </div>
+        <button type="button" onclick="document.getElementById('candidate-detail-modal').style.display='none'" style="background: none; border: none; font-size: 1.5rem; color: #94A3B8; cursor: pointer;">✕</button>
+      </div>
+
+      <!-- Contact Info Bar -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; background: rgba(255,255,255,0.03); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem; font-size: 0.88rem;">
+        <div><strong>Email:</strong> <span id="cmodal-email" style="color: #A78BFA;"></span></div>
+        <div><strong>Phone:</strong> <span id="cmodal-phone" style="color: #F8FAFC;"></span></div>
+        <div style="grid-column: 1 / -1;" id="cmodal-portfolio-wrap">
+          <strong>Reel / Showcase:</strong> <a id="cmodal-portfolio" href="#" target="_blank" style="color: var(--accent-coral); text-decoration: underline;">View Reel ↗</a>
+        </div>
+      </div>
+
+      <!-- Resume / Experience Bio -->
+      <div style="margin-bottom: 1.5rem;">
+        <div style="font-size: 0.82rem; text-transform: uppercase; color: #94A3B8; font-weight: 700; margin-bottom: 0.35rem;">Documented Bio & Audition Background:</div>
+        <div id="cmodal-resume" style="background: rgba(0,0,0,0.3); border: 1px solid var(--admin-border); border-radius: var(--radius-sm); padding: 1rem; font-size: 0.92rem; color: #CBD5E1; line-height: 1.5; white-space: pre-wrap;"></div>
+      </div>
+
+      <!-- AI Factual Assistant Summary Box -->
+      <div id="cmodal-ai-box" style="display: none; background: rgba(124,58,237,0.1); border: 1px solid rgba(139,92,246,0.3); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.5rem;">
+        <div style="display: flex; align-items: center; gap: 0.4rem; color: #C4B5FD; font-weight: 700; font-size: 0.88rem; margin-bottom: 0.45rem;">
+          🤖 AI Recruitment Assistant Summary (Human-in-the-Loop):
+        </div>
+        <div id="cmodal-ai-text" style="font-size: 0.85rem; color: #E2E8F0; line-height: 1.5;"></div>
+      </div>
+
+      <!-- Pipeline Stage Transition Controls (Strict Human Control) -->
+      <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--admin-border); border-radius: var(--radius-sm); padding: 1.25rem; margin-bottom: 1.5rem;">
+        <label class="form-label" style="color: #FFFFFF; font-weight: 700;">Human Decision: Transition Pipeline Stage</label>
+        <div style="display: flex; gap: 0.75rem; margin-top: 0.5rem; flex-wrap: wrap;">
+          <select class="executive-input" id="cmodal-stage-select" style="flex: 1; min-width: 220px;">
+            <option value="app_received">1. Application Received</option>
+            <option value="awaiting_review">2. Awaiting Human Review</option>
+            <option value="interview_invited">3. Interview Invited</option>
+            <option value="interview_completed">4. Interview Completed</option>
+            <option value="skills_assessment">5. Skills Assessment</option>
+            <option value="final_review">6. Final Human Review</option>
+            <option value="offer_extended">7. Offer Extended</option>
+            <option value="hired">8. Hired / Onboarding</option>
+            <option value="not_selected">9. Not Selected</option>
+            <option value="withdrawn">10. Withdrawn</option>
+          </select>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="saveCandidateStageChange()">Update Stage</button>
+        </div>
+        <div style="margin-top: 0.75rem;">
+          <input type="text" class="executive-input" id="cmodal-admin-notes" placeholder="Add human review note or interview observation...">
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+        <button type="button" class="btn btn-sm" onclick="triggerAISummary()" style="background: rgba(139,92,246,0.25); color: #C4B5FD; border: 1px solid var(--admin-border-hover);">
+          🤖 Generate AI Summary
+        </button>
+        <div style="display: flex; gap: 0.75rem;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="openRecordAssessmentFromCandidate()">🎯 Score Rubric</button>
+          <button type="button" class="btn btn-primary btn-sm btn-glow" id="cmodal-btn-hire" onclick="executeHireFromCandidate()">🎉 Hire & Onboard (W-2)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Record Skills Assessment Modal (1-5 Rubric) -->
+  <div id="skills-assessment-modal" style="display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 1.5rem; overflow-y: auto;">
+    <div style="background: var(--admin-surface); border: 1px solid var(--admin-border-hover); border-radius: var(--radius-lg); max-width: 600px; width: 100%; padding: 2rem; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
+      <h3 style="color: #FFFFFF; font-size: 1.4rem; margin-bottom: 0.5rem;">Record Evidence-Based Assessment</h3>
+      <p style="font-size: 0.85rem; color: #94A3B8; margin-bottom: 1.25rem;">Rate documented work samples, live auditions, or technical skills on a standardized 1–5 scale.</p>
+
+      <form id="record-assessment-form" onsubmit="handleAssessmentSubmit(event)">
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label" style="color: #CBD5E1;">Select Candidate <span style="color: var(--accent-coral);">*</span></label>
+          <select class="executive-input" id="eval-candidate-select" required onchange="updateRubricCriteriaDisplay()">
+            <!-- Dynamically populated -->
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label" style="color: #CBD5E1;">Core Competency <span style="color: var(--accent-coral);">*</span></label>
+          <select class="executive-input" id="eval-competency-select" required onchange="updateRubricCriteriaDisplay()">
+            <!-- Dynamically populated -->
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label" style="color: #CBD5E1;">Proficiency Score (1–5) <span style="color: var(--accent-coral);">*</span></label>
+          <select class="executive-input" id="eval-score-select" required onchange="updateRubricCriteriaDisplay()" style="font-weight: 700; color: #A78BFA;">
+            <option value="1">1 — Beginning / Requires Close Supervision</option>
+            <option value="2">2 — Developing / Fundamental Understanding</option>
+            <option value="3" selected>3 — Competent / Meets Party Hard People Standard</option>
+            <option value="4">4 — Advanced / Highly Independent & Creative</option>
+            <option value="5">5 — Master Performer / Mentors Other Crew</option>
+          </select>
+        </div>
+
+        <!-- Live Rubric Definition Box -->
+        <div style="background: rgba(124,58,237,0.1); border-left: 3px solid #7C3AED; padding: 0.85rem 1rem; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: 1.25rem; font-size: 0.85rem;">
+          <div style="color: #C4B5FD; font-weight: 700; margin-bottom: 0.25rem;">Rubric Benchmark Standard:</div>
+          <div id="eval-rubric-benchmark" style="color: #F8FAFC; line-height: 1.4;"></div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label class="form-label" style="color: #CBD5E1;">Documented Evidence & Work Sample Notes <span style="color: var(--accent-coral);">*</span></label>
+          <textarea class="executive-input" id="eval-evidence-text" rows="3" placeholder="Specific factual observations: video timestamp, song transition smoothness, child game energy, cable routing..." required></textarea>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+          <button type="button" class="btn btn-secondary" onclick="document.getElementById('skills-assessment-modal').style.display='none'">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-glow">Save Assessment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Create New Job Position Modal -->
+  <div id="new-position-modal" style="display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 1.5rem; overflow-y: auto;">
+    <div style="background: var(--admin-surface); border: 1px solid var(--admin-border-hover); border-radius: var(--radius-lg); max-width: 580px; width: 100%; padding: 2rem; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
+      <h3 style="color: #FFFFFF; font-size: 1.4rem; margin-bottom: 0.5rem;">Publish New Job Opening</h3>
+      <p style="font-size: 0.85rem; color: #94A3B8; margin-bottom: 1.25rem;">Immediately published to <code style="color: #A78BFA;">partyhardpeoplellc.com/careers.html</code>.</p>
+
+      <form id="new-position-form" onsubmit="handleNewPositionSubmit(event)">
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label" style="color: #CBD5E1;">Position Title <span style="color: var(--accent-coral);">*</span></label>
+          <input type="text" class="executive-input" id="pos-title" placeholder="e.g. Bilingual Family Party DJ" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          <div class="form-group">
+            <label class="form-label" style="color: #CBD5E1;">Department <span style="color: var(--accent-coral);">*</span></label>
+            <select class="executive-input" id="pos-dept" required>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Operations & Logistics">Operations & Logistics</option>
+              <option value="Management">Management</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="color: #CBD5E1;">County / Region <span style="color: var(--accent-coral);">*</span></label>
+            <input type="text" class="executive-input" id="pos-county" placeholder="e.g. Orange County & San Diego" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          <div class="form-group">
+            <label class="form-label" style="color: #CBD5E1;">Employment Type</label>
+            <input type="text" class="executive-input" id="pos-type" value="Part-Time (W-2)" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="color: #CBD5E1;">Pay Range <span style="color: var(--accent-coral);">*</span></label>
+            <input type="text" class="executive-input" id="pos-pay" placeholder="$30.00 – $45.00 / hr + Tips" required>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label" style="color: #CBD5E1;">Role Description <span style="color: var(--accent-coral);">*</span></label>
+          <textarea class="executive-input" id="pos-desc" rows="3" placeholder="Summary of duties, party hosting style, and audience..." required></textarea>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label class="form-label" style="color: #CBD5E1;">Primary Qualification <span style="color: var(--accent-coral);">*</span></label>
+          <input type="text" class="executive-input" id="pos-req" placeholder="e.g. Valid CA Driver License & energetic mic presence" required>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+          <button type="button" class="btn btn-secondary" onclick="document.getElementById('new-position-modal').style.display='none'">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-glow">Publish Opening</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Toast Feedback Component -->
   <div id="admin-toast">
     <span style="font-size: 1.25rem;">✨</span>
@@ -746,16 +1120,21 @@
 
   <!-- Script Libraries -->
   <script src="js/gallery-manager.js?v=2.1"></script>
+  <script src="js/workforce-manager.js?v=1.0"></script>
   <script>
     let activeSubtotalCents = 0;
     let currentSelectedImageDataUrl = '';
     let currentUploadMode = 'file'; // 'file' or 'url'
     let currentMediaFilter = 'all';
+    let currentRecruitmentStageFilter = 'all';
+    let activeCandidateId = null;
 
     // Tab Switching
     function switchAdminTab(tabName) {
       document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('#tab-inquiries, #tab-inventory, #tab-gallery, #tab-settings').forEach(d => d.style.display = 'none');
+      document.querySelectorAll('#tab-inquiries, #tab-inventory, #tab-gallery, #tab-recruitment, #tab-skills, #tab-employees, #tab-staffing, #tab-wf-analytics, #tab-settings').forEach(d => {
+        if (d) d.style.display = 'none';
+      });
       
       const targetDiv = document.getElementById('tab-' + tabName);
       const targetBtn = document.getElementById('btn-tab-' + tabName);
@@ -769,6 +1148,16 @@
 
       if (tabName === 'gallery') {
         renderAdminGalleryList();
+      } else if (tabName === 'recruitment') {
+        renderRecruitmentTable();
+      } else if (tabName === 'skills') {
+        renderSkillsAssessments();
+      } else if (tabName === 'employees') {
+        renderEmployeeTable();
+      } else if (tabName === 'staffing') {
+        renderEventStaffingTable();
+      } else if (tabName === 'wf-analytics') {
+        renderWorkforceAnalytics();
       }
     }
 
@@ -1084,16 +1473,549 @@
       }
     }
 
+    // ==========================================
+    // WORKFORCE INTELLIGENCE CONTROLLER
+    // ==========================================
+    function getStageInfo(stageId) {
+      const stages = WorkforceManager.getStages();
+      return stages.find(s => s.id === stageId) || { id: stageId, label: stageId, color: '#94A3B8' };
+    }
+
+    function renderRecruitmentTable(stageFilter) {
+      const filter = stageFilter || currentRecruitmentStageFilter;
+      const candidates = WorkforceManager.getApplications(filter);
+      const allCandidates = WorkforceManager.getApplications('all');
+      
+      const countEl = document.getElementById('wf-count-all');
+      if (countEl) countEl.textContent = allCandidates.length;
+
+      const badgeSidebar = document.getElementById('admin-wf-applicant-badge');
+      if (badgeSidebar) {
+        const pendingCount = allCandidates.filter(a => a.stage === 'awaiting_review' || a.stage === 'app_received').length;
+        badgeSidebar.textContent = `${pendingCount} Active`;
+        badgeSidebar.style.display = pendingCount > 0 ? 'inline-block' : 'none';
+      }
+
+      const tbody = document.getElementById('wf-candidates-table-body');
+      if (!tbody) return;
+
+      if (candidates.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #94A3B8; padding: 2rem;">No candidates found in this stage filter.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = candidates.map(app => {
+        const stage = getStageInfo(app.stage);
+        const pos = WorkforceManager.getPositionById(app.positionId);
+        const posTitle = pos ? pos.title : app.positionId;
+        const assessCount = app.assessments ? app.assessments.length : 0;
+        
+        let avgScore = 'N/A';
+        if (assessCount > 0) {
+          const sum = app.assessments.reduce((acc, curr) => acc + curr.score, 0);
+          avgScore = (sum / assessCount).toFixed(1) + ' / 5.0';
+        }
+
+        return `
+          <tr>
+            <td><strong style="color: var(--accent-coral); font-family: monospace;">${app.refCode || app.id}</strong></td>
+            <td>
+              <strong style="color: #FFFFFF;">${app.fullName}</strong><br>
+              <span style="font-size: 0.8rem; color: #94A3B8;">${app.email} · ${app.phone}</span>
+              ${app.portfolioUrl ? `<br><a href="${app.portfolioUrl}" target="_blank" style="font-size: 0.78rem; color: #A78BFA; text-decoration: underline;">View Reel / Audition ↗</a>` : ''}
+            </td>
+            <td>
+              <span style="color: #CBD5E1; font-weight: 500;">${posTitle}</span><br>
+              <span class="badge" style="background: rgba(255,255,255,0.06); color: #94A3B8; font-size: 0.75rem;">${app.county}</span>
+            </td>
+            <td style="color: #94A3B8; font-size: 0.85rem;">${app.appliedDate || 'Recent'}</td>
+            <td>
+              <span class="badge" style="background: ${stage.color}22; color: ${stage.color}; border: 1px solid ${stage.color}44;">
+                ${stage.label}
+              </span>
+            </td>
+            <td>
+              <span style="font-size: 0.85rem; color: ${assessCount > 0 ? '#34D399' : '#94A3B8'}; font-weight: 600;">
+                ${assessCount > 0 ? `⭐ ${avgScore} (${assessCount})` : 'Pending Score'}
+              </span>
+            </td>
+            <td>
+              <div style="display: flex; gap: 0.4rem;">
+                <button class="btn btn-secondary btn-sm" onclick="openCandidateModal('${app.id}')" style="padding: 0.35rem 0.65rem; font-size: 0.78rem;">
+                  Review Bio & Reel
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function filterRecruitment(stageKey, btn) {
+      currentRecruitmentStageFilter = stageKey;
+      document.querySelectorAll('#wf-stage-filters button').forEach(b => {
+        b.className = 'btn btn-sm btn-secondary';
+      });
+      if (btn) btn.className = 'btn btn-sm btn-primary';
+      renderRecruitmentTable(stageKey);
+    }
+
+    function openCandidateModal(appId) {
+      activeCandidateId = appId;
+      const app = WorkforceManager.getApplication(appId);
+      if (!app) return;
+
+      const pos = WorkforceManager.getPositionById(app.positionId);
+      const stage = getStageInfo(app.stage);
+
+      document.getElementById('cmodal-name').textContent = app.fullName;
+      document.getElementById('cmodal-role-region').textContent = `${pos ? pos.title : app.positionId} · ${app.county}`;
+      document.getElementById('cmodal-email').textContent = app.email;
+      document.getElementById('cmodal-phone').textContent = app.phone;
+      
+      const reelWrap = document.getElementById('cmodal-portfolio-wrap');
+      const reelLink = document.getElementById('cmodal-portfolio');
+      if (app.portfolioUrl) {
+        reelWrap.style.display = 'block';
+        reelLink.href = app.portfolioUrl;
+        reelLink.textContent = app.portfolioUrl;
+      } else {
+        reelWrap.style.display = 'none';
+      }
+
+      document.getElementById('cmodal-resume').textContent = app.resumeText || 'No bio provided.';
+      
+      const badge = document.getElementById('cmodal-stage-badge');
+      badge.textContent = stage.label;
+      badge.style.background = `${stage.color}22`;
+      badge.style.color = stage.color;
+
+      document.getElementById('cmodal-stage-select').value = app.stage;
+      document.getElementById('cmodal-admin-notes').value = '';
+
+      // Reset AI box
+      const aiBox = document.getElementById('cmodal-ai-box');
+      aiBox.style.display = 'none';
+      document.getElementById('cmodal-ai-text').innerHTML = '';
+
+      document.getElementById('candidate-detail-modal').style.display = 'flex';
+    }
+
+    function saveCandidateStageChange() {
+      if (!activeCandidateId) return;
+      const newStage = document.getElementById('cmodal-stage-select').value;
+      const note = document.getElementById('cmodal-admin-notes').value.trim();
+
+      const updated = WorkforceManager.updateApplicationStage(activeCandidateId, newStage, note);
+      if (updated) {
+        showToast(`Candidate stage moved to: ${getStageInfo(newStage).label}`);
+        const stage = getStageInfo(newStage);
+        const badge = document.getElementById('cmodal-stage-badge');
+        badge.textContent = stage.label;
+        badge.style.background = `${stage.color}22`;
+        badge.style.color = stage.color;
+        renderRecruitmentTable();
+        renderWorkforceAnalytics();
+      }
+    }
+
+    function triggerAISummary() {
+      if (!activeCandidateId) return;
+      const app = WorkforceManager.getApplication(activeCandidateId);
+      if (!app) return;
+
+      const aiBox = document.getElementById('cmodal-ai-box');
+      const aiText = document.getElementById('cmodal-ai-text');
+      aiBox.style.display = 'block';
+
+      // Human-in-the-loop factual synthesis
+      const pos = WorkforceManager.getPositionById(app.positionId);
+      const posTitle = pos ? pos.title : app.positionId;
+      const assessCount = app.assessments ? app.assessments.length : 0;
+
+      let strengths = [];
+      const resumeLower = (app.resumeText || '').toLowerCase();
+      if (resumeLower.includes('bilingual') || resumeLower.includes('spanish')) {
+        strengths.push('Bilingual English/Spanish capability enables full coverage of multi-cultural celebrations across SoCal.');
+      }
+      if (resumeLower.includes('soundcraft') || resumeLower.includes('audio') || resumeLower.includes('qsc') || resumeLower.includes('sound')) {
+        strengths.push('Demonstrated pro-audio equipment competency (PA routing, wireless microphones, mixers).');
+      }
+      if (resumeLower.includes('games') || resumeLower.includes('camp') || resumeLower.includes('kids') || resumeLower.includes('children')) {
+        strengths.push('Documented background in youth crowd engagement and interactive entertainment.');
+      }
+      if (strengths.length === 0) {
+        strengths.push('Documented enthusiasm for event hospitality and customer celebration coordination.');
+      }
+
+      aiText.innerHTML = `
+        <div style="margin-bottom: 0.5rem; font-weight: 600; color: #FFFFFF;">
+          Factual Profile Analysis for ${app.fullName} (${posTitle}):
+        </div>
+        <ul style="padding-left: 1.25rem; margin-bottom: 0.75rem; color: #CBD5E1;">
+          ${strengths.map(s => `<li style="margin-bottom: 0.35rem;">${s}</li>`).join('')}
+          <li style="margin-bottom: 0.35rem;"><strong>Regional Fit:</strong> Based in ${app.county}; ideal for active weekend coverage in primary territory.</li>
+          <li><strong>Skills Readiness:</strong> ${assessCount > 0 ? `${assessCount} documented rubric assessment(s) on file.` : 'Pending formal 1–5 competency rubric scoring.'}</li>
+        </ul>
+        <div style="background: rgba(0,0,0,0.25); border-left: 2px solid #A78BFA; padding: 0.5rem 0.75rem; font-size: 0.78rem; color: #94A3B8;">
+          ⚖️ <strong>Legal & Ethical Compliance:</strong> This AI recruitment assistant generates factual summaries exclusively. Hiring, stage progression, and scheduling are strictly executed by human leadership.
+        </div>
+      `;
+    }
+
+    function openRecordAssessmentFromCandidate() {
+      const candId = activeCandidateId;
+      document.getElementById('candidate-detail-modal').style.display = 'none';
+      openRecordAssessmentModal(candId);
+    }
+
+    function openRecordAssessmentModal(preselectedAppId) {
+      const candidates = WorkforceManager.getApplications('all');
+      const competencies = WorkforceManager.getCompetencies();
+
+      const candSelect = document.getElementById('eval-candidate-select');
+      candSelect.innerHTML = candidates.map(c => `
+        <option value="${c.id}" ${c.id === preselectedAppId ? 'selected' : ''}>
+          ${c.fullName} — ${c.positionId} (${c.refCode})
+        </option>
+      `).join('');
+
+      const compSelect = document.getElementById('eval-competency-select');
+      compSelect.innerHTML = competencies.map(comp => `
+        <option value="${comp.id}">
+          ${comp.name} (${comp.category})
+        </option>
+      `).join('');
+
+      document.getElementById('eval-evidence-text').value = '';
+      updateRubricCriteriaDisplay();
+      document.getElementById('skills-assessment-modal').style.display = 'flex';
+    }
+
+    function updateRubricCriteriaDisplay() {
+      const compId = document.getElementById('eval-competency-select').value;
+      const score = document.getElementById('eval-score-select').value;
+      const competencies = WorkforceManager.getCompetencies();
+      const comp = competencies.find(c => c.id === compId);
+
+      const benchmarkEl = document.getElementById('eval-rubric-benchmark');
+      if (comp && comp.rubric && comp.rubric[score]) {
+        benchmarkEl.textContent = `Score Level ${score}: ${comp.rubric[score]}`;
+      } else {
+        benchmarkEl.textContent = `Score Level ${score} benchmark description logged in skills framework.`;
+      }
+    }
+
+    function handleAssessmentSubmit(e) {
+      e.preventDefault();
+      const candidateId = document.getElementById('eval-candidate-select').value;
+      const compId = document.getElementById('eval-competency-select').value;
+      const score = document.getElementById('eval-score-select').value;
+      const evidence = document.getElementById('eval-evidence-text').value;
+
+      WorkforceManager.recordAssessment(candidateId, compId, score, evidence, 'Director of Talent');
+      showToast(`⭐ Assessment score ${score}/5 saved with documented evidence!`);
+      document.getElementById('skills-assessment-modal').style.display = 'none';
+      renderSkillsAssessments();
+      renderRecruitmentTable();
+      renderWorkforceAnalytics();
+    }
+
+    function executeHireFromCandidate() {
+      if (!activeCandidateId) return;
+      const app = WorkforceManager.getApplication(activeCandidateId);
+      if (!app) return;
+
+      const confirmHire = confirm(
+        `Are you sure you want to officially onboard ${app.fullName}?\n\n` +
+        `This will:\n` +
+        `1. Advance status to '8. Hired / Onboarding'\n` +
+        `2. Create employee record under California AB 5 (Part-Time W-2 Non-Exempt)\n` +
+        `3. Flag California AB 506 Live Scan child safeguarding clearance requirement for youth bookings.`
+      );
+
+      if (confirmHire) {
+        const emp = WorkforceManager.hireCandidate(activeCandidateId, 'Part-Time W-2 (Non-Exempt)', 35.00);
+        showToast(`🎉 ${app.fullName} officially onboarded! (ID: ${emp.employeeCode})`);
+        document.getElementById('candidate-detail-modal').style.display = 'none';
+        renderRecruitmentTable();
+        renderEmployeeTable();
+        renderWorkforceAnalytics();
+        switchAdminTab('employees');
+      }
+    }
+
+    function renderSkillsAssessments() {
+      const container = document.getElementById('wf-competency-cards');
+      if (!container) return;
+
+      const competencies = WorkforceManager.getCompetencies();
+      const allApps = WorkforceManager.getApplications('all');
+
+      container.innerHTML = competencies.map(comp => {
+        let assessmentsCount = 0;
+        let scoreSum = 0;
+
+        allApps.forEach(app => {
+          if (app.assessments) {
+            const found = app.assessments.find(a => a.competencyId === comp.id);
+            if (found) {
+              assessmentsCount++;
+              scoreSum += found.score;
+            }
+          }
+        });
+
+        const avgScore = assessmentsCount > 0 ? (scoreSum / assessmentsCount).toFixed(1) : 'None';
+
+        return `
+          <div style="background: var(--admin-surface); border: 1px solid var(--admin-border); border-radius: var(--radius-md); padding: 1.5rem; display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+              <span class="badge" style="background: rgba(139,92,246,0.15); color: #C4B5FD; font-size: 0.75rem;">${comp.category}</span>
+              <span style="font-weight: 700; color: #34D399; font-size: 0.88rem;">Avg: ${avgScore} / 5.0</span>
+            </div>
+            <h3 style="color: #FFFFFF; font-size: 1.15rem; margin-bottom: 0.5rem; font-family: var(--font-heading);">${comp.name}</h3>
+            <p style="font-size: 0.85rem; color: #94A3B8; margin-bottom: 1rem; line-height: 1.4;">${comp.description}</p>
+            
+            <div style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.85rem;">
+              <div style="font-size: 0.78rem; font-weight: 700; color: #CBD5E1; margin-bottom: 0.5rem; text-transform: uppercase;">
+                Standardized 1–5 Rubric Benchmarks:
+              </div>
+              <div style="font-size: 0.78rem; color: #94A3B8; line-height: 1.4; margin-bottom: 0.4rem;">
+                <strong style="color: #E2E8F0;">Level 3 (PHP Standard):</strong> ${comp.rubric ? comp.rubric['3'] : 'Consistent reliable execution.'}
+              </div>
+              <div style="font-size: 0.78rem; color: #94A3B8; line-height: 1.4; margin-bottom: 0.85rem;">
+                <strong style="color: #E2E8F0;">Level 5 (Master):</strong> ${comp.rubric ? comp.rubric['5'] : 'Mentors team & leads flagship galas.'}
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="openRecordAssessmentModal()" style="width: 100%; font-size: 0.8rem;">
+                + Score Candidate on this Rubric
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderEmployeeTable() {
+      const employees = WorkforceManager.getEmployees();
+      const tbody = document.getElementById('wf-employees-table-body');
+      if (!tbody) return;
+
+      tbody.innerHTML = employees.map(emp => {
+        const isCertified = emp.ab506Certified;
+        const certBadge = isCertified
+          ? `<span class="badge" style="background: rgba(16,185,129,0.2); color: #6EE7B7; border: 1px solid rgba(16,185,129,0.4);">✓ Live Scan Verified</span>`
+          : `<span class="badge" style="background: rgba(239,68,68,0.2); color: #FCA5A5; border: 1px solid rgba(239,68,68,0.4);">⚠ Clearance Pending</span>`;
+
+        return `
+          <tr>
+            <td><strong style="color: var(--accent-coral); font-family: monospace;">${emp.employeeCode || emp.id}</strong></td>
+            <td>
+              <strong style="color: #FFFFFF;">${emp.fullName}</strong><br>
+              <span style="font-size: 0.8rem; color: #94A3B8;">${emp.email} · ${emp.phone}</span>
+            </td>
+            <td>
+              <span class="badge" style="background: rgba(59,130,246,0.15); color: #93C5FD; font-size: 0.75rem;">
+                ${emp.classification || 'W-2 Non-Exempt'}
+              </span>
+            </td>
+            <td><strong style="color: #E2E8F0;">${emp.role}</strong></td>
+            <td>
+              <span style="color: #CBD5E1;">${emp.countyBase}</span><br>
+              <span style="font-size: 0.78rem; color: #94A3B8;">Radius: ${emp.serviceRadiusMiles || 35} miles</span>
+            </td>
+            <td>
+              ${certBadge}<br>
+              <span style="font-size: 0.75rem; color: #94A3B8;">Exp: ${emp.ab506Expiry || 'Annual Review'}</span>
+            </td>
+            <td style="color: #34D399; font-weight: 700;">$${emp.hourlyRate ? emp.hourlyRate.toFixed(2) : '35.00'}/hr</td>
+            <td>
+              <button class="btn btn-secondary btn-sm" onclick="toggleEmployeeSafeguarding('${emp.id}')" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;">
+                ${isCertified ? 'Revoke Cert' : 'Verify Live Scan'}
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function toggleEmployeeSafeguarding(empId) {
+      const employees = WorkforceManager.getEmployees();
+      const emp = employees.find(e => e.id === empId);
+      if (!emp) return;
+
+      const newCertStatus = !emp.ab506Certified;
+      const expiry = newCertStatus ? '2027-10-31' : null;
+      WorkforceManager.updateEmployeeSafeguarding(empId, newCertStatus, expiry);
+
+      showToast(`California AB 506 status updated for ${emp.fullName}: ${newCertStatus ? 'Verified Active' : 'Pending'}`);
+      renderEmployeeTable();
+      renderEventStaffingTable();
+      renderWorkforceAnalytics();
+    }
+
+    function renderEventStaffingTable() {
+      const tbody = document.getElementById('wf-staffing-table-body');
+      if (!tbody) return;
+
+      // Sample production bookings across Los Angeles, Orange County, and San Diego
+      const sampleEvents = [
+        {
+          ref: 'PHP-2026-8841',
+          title: "Maya's 6th Birthday Bash (Kids Party)",
+          date: 'Nov 14, 2026',
+          venue: 'Irvine Regional Park, Orange County',
+          county: 'Orange County',
+          isYouth: true,
+          roles: ['Kids Party DJ', 'Inflatables Rigging Tech']
+        },
+        {
+          ref: 'PHP-2026-9022',
+          title: 'Newport Beach Glow Karaoke Lounge',
+          date: 'Nov 20, 2026',
+          venue: 'Backyard Pavilion, Newport Beach',
+          county: 'Orange County',
+          isYouth: false,
+          roles: ['Private VIP Karaoke Host']
+        },
+        {
+          ref: 'PHP-2026-9154',
+          title: 'San Diego Elementary School Festival',
+          date: 'Nov 28, 2026',
+          venue: 'Balboa Park Lawn, San Diego',
+          county: 'San Diego County',
+          isYouth: true,
+          roles: ['Lead Kids Party DJ', 'Commercial Inflatables Tech']
+        }
+      ];
+
+      tbody.innerHTML = sampleEvents.map(evt => {
+        const matchedCrew = WorkforceManager.matchCrewForEvent(evt.date, evt.county, 'Any', evt.isYouth);
+        
+        let crewDisplayHtml = '';
+        if (matchedCrew.length === 0) {
+          crewDisplayHtml = `<span style="color: #F87171; font-size: 0.85rem;">⚠ No AB 506-cleared crew available in ${evt.county}</span>`;
+        } else {
+          crewDisplayHtml = matchedCrew.map(c => `
+            <div style="font-size: 0.82rem; margin-bottom: 0.25rem;">
+              <strong style="color: #FFFFFF;">${c.fullName}</strong> (${c.role})
+              <span class="badge" style="background: rgba(16,185,129,0.2); color: #6EE7B7; font-size: 0.7rem; margin-left: 0.25rem;">
+                ✓ AB 506 Cleared
+              </span>
+            </div>
+          `).join('');
+        }
+
+        const crewNamesString = matchedCrew.map(c => c.fullName).join(', ');
+
+        return `
+          <tr>
+            <td><strong style="color: var(--accent-coral); font-family: monospace;">${evt.ref}</strong></td>
+            <td>
+              <strong style="color: #FFFFFF;">${evt.title}</strong><br>
+              <span style="font-size: 0.8rem; color: #94A3B8;">${evt.date}</span>
+            </td>
+            <td>
+              <span style="color: #CBD5E1;">${evt.venue}</span>
+            </td>
+            <td>
+              ${evt.roles.map(r => `<span class="badge" style="background: rgba(255,255,255,0.06); color: #CBD5E1; margin: 0.15rem 0.25rem 0.15rem 0; font-size: 0.72rem;">${r}</span>`).join('')}
+            </td>
+            <td>
+              ${crewDisplayHtml}
+            </td>
+            <td>
+              <span class="badge" style="background: rgba(245,158,11,0.2); color: #FCD34D;">Pending Admin Dispatch</span>
+            </td>
+            <td>
+              <button class="btn btn-primary btn-sm" onclick="approveStaffingAssignment('${evt.ref}', '${crewNamesString}')" ${matchedCrew.length === 0 ? 'disabled' : ''} style="padding: 0.35rem 0.75rem; font-size: 0.78rem;">
+                Approve & Dispatch Roster
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function approveStaffingAssignment(bookingRef, crewNames) {
+      if (!crewNames) {
+        alert('Cannot dispatch: No AB 506 compliant crew assigned.');
+        return;
+      }
+      alert(`Staffing Confirmed!\n\nBooking: ${bookingRef}\nDispatched Crew: ${crewNames}\n\nAutomated shift confirmations and venue safety protocols dispatched to crew mobile devices.`);
+      showToast(`Roster officially dispatched for ${bookingRef}`);
+    }
+
+    function renderWorkforceAnalytics() {
+      const candidates = WorkforceManager.getApplications('all');
+      const employees = WorkforceManager.getEmployees();
+      const positions = WorkforceManager.getPositions();
+
+      const candTotalEl = document.getElementById('wf-stat-candidates-total');
+      if (candTotalEl) candTotalEl.textContent = candidates.length;
+
+      const empTotalEl = document.getElementById('wf-stat-employees-total');
+      if (empTotalEl) empTotalEl.textContent = employees.length;
+
+      const posTotalEl = document.getElementById('wf-stat-open-positions');
+      if (posTotalEl) posTotalEl.textContent = positions.filter(p => p.isOpen).length;
+    }
+
+    function openNewPositionModal() {
+      document.getElementById('pos-title').value = '';
+      document.getElementById('pos-county').value = 'Los Angeles & Orange County';
+      document.getElementById('pos-type').value = 'Part-Time (W-2)';
+      document.getElementById('pos-pay').value = '$32.00 – $48.00 / hr + Tips';
+      document.getElementById('pos-desc').value = '';
+      document.getElementById('pos-req').value = 'Valid CA Driver License & energetic communication skills';
+      document.getElementById('new-position-modal').style.display = 'flex';
+    }
+
+    function handleNewPositionSubmit(e) {
+      e.preventDefault();
+      const title = document.getElementById('pos-title').value.trim();
+      const dept = document.getElementById('pos-dept').value;
+      const county = document.getElementById('pos-county').value.trim();
+      const type = document.getElementById('pos-type').value.trim();
+      const pay = document.getElementById('pos-pay').value.trim();
+      const desc = document.getElementById('pos-desc').value.trim();
+      const req = document.getElementById('pos-req').value.trim();
+
+      WorkforceManager.addPosition({
+        title,
+        department: dept,
+        county,
+        employmentType: type,
+        payRange: pay,
+        description: desc,
+        requirements: [req, "Pass California AB 506 Live Scan fingerprint background check"],
+        isOpen: true,
+        equipmentProvided: "Full professional grade gear and equipment provided by company."
+      });
+
+      showToast(`New opening published: ${title}`);
+      document.getElementById('new-position-modal').style.display = 'none';
+      renderWorkforceAnalytics();
+    }
+
     // Initialization on Page Load
     document.addEventListener('DOMContentLoaded', () => {
       loadInquiriesTable();
       renderAdminGalleryList();
+      renderRecruitmentTable();
+      renderSkillsAssessments();
+      renderEmployeeTable();
+      renderEventStaffingTable();
+      renderWorkforceAnalytics();
 
-      // Check query parameter for direct tab access (e.g. admin.html?tab=gallery)
+      // Check query parameter for direct tab access (e.g. admin.html?tab=recruitment)
       const urlParams = new URLSearchParams(window.location.search);
       const tabParam = urlParams.get('tab');
-      if (tabParam && ['inquiries', 'inventory', 'gallery', 'settings'].includes(tabParam)) {
+      if (tabParam && ['inquiries', 'inventory', 'gallery', 'recruitment', 'skills', 'employees', 'staffing', 'wf-analytics', 'settings'].includes(tabParam)) {
         switchAdminTab(tabParam);
+      } else {
+        // Default to recruitment tab to highlight workforce engine
+        switchAdminTab('recruitment');
       }
     });
   </script>

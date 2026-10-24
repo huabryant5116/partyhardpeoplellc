@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Careers & Auditions | Party Hard People LLC</title>
+  <meta name="description" content="Join Southern California's premier event entertainment and rentals crew. Hiring Kids DJs, Karaoke Hosts, Bounce Castle Rigging Techs, and Event Supervisors across Los Angeles, Orange County, and San Diego.">
+  <link rel="canonical" href="https://partyhardpeoplellc.com/careers.html">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/main.css?v=5.0">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎉</text></svg>">
+  <style>
+    /* Absolute Fail-Safe Header Dropdown Isolation */
+    .nav-dropdown {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+    .nav-dropdown-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: var(--text-sm, 0.875rem);
+      font-weight: 600;
+      color: var(--text-secondary, #334155);
+      cursor: pointer;
+      padding: 0.4rem 0;
+    }
+    .nav-dropdown-trigger:hover {
+      color: var(--primary, #7C3AED);
+    }
+    .nav-dropdown-trigger::after {
+      content: '▾';
+      font-size: 0.8rem;
+      transition: transform 0.2s ease;
+    }
+    .nav-dropdown:hover .nav-dropdown-trigger::after,
+    .nav-dropdown:focus-within .nav-dropdown-trigger::after {
+      transform: rotate(180deg);
+    }
+    .nav-dropdown-menu {
+      display: none !important;
+      position: absolute !important;
+      top: calc(100% + 0.5rem) !important;
+      left: 0 !important;
+      min-width: 360px !important;
+      width: 360px !important;
+      background: #FFFFFF !important;
+      border: 1px solid rgba(226, 232, 240, 0.95) !important;
+      border-radius: 16px !important;
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.16), 0 4px 12px rgba(15, 23, 42, 0.06) !important;
+      padding: 0.75rem !important;
+      z-index: 99999 !important;
+      flex-direction: column !important;
+      gap: 0.35rem !important;
+    }
+    .nav-dropdown-menu::before {
+      content: '';
+      position: absolute;
+      top: -12px;
+      left: 0;
+      right: 0;
+      height: 12px;
+    }
+    .nav-dropdown:hover .nav-dropdown-menu,
+    .nav-dropdown:focus-within .nav-dropdown-menu {
+      display: flex !important;
+    }
+    .nav-dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0.7rem 0.85rem;
+      border-radius: 12px;
+      text-decoration: none;
+      color: #0F172A;
+      transition: all 0.18s ease;
+      background: transparent;
+    }
+    .nav-dropdown-item:hover {
+      background: #F8FAFC;
+      transform: translateX(3px);
+    }
+    .nav-dropdown-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+    .nav-dropdown-title {
+      font-family: var(--font-heading, 'Outfit', sans-serif);
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: #0F172A;
+      line-height: 1.25;
+    }
+    .nav-dropdown-desc {
+      font-size: 0.78rem;
+      color: #64748B;
+      line-height: 1.35;
+      margin-top: 2px;
+    }
+
+    /* Careers Portal Styles */
+    .careers-hero {
+      background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%);
+      padding: 4.5rem 0 3rem 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .careers-filter-bar {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+    .job-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+      display: flex;
+      flex-direction: column;
+    }
+    .job-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(124, 58, 237, 0.3);
+    }
+    .job-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      overflow-y: auto;
+    }
+    .job-modal-content {
+      background: #FFFFFF;
+      border-radius: var(--radius-lg);
+      max-width: 680px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 2.25rem;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header class="header">
+    <div class="container nav-wrapper">
+      <a href="index.html" class="brand-logo" id="nav-brand">
+        <div class="brand-icon" aria-hidden="true">🎉</div>
+        <span>Party Hard People</span>
+      </a>
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li class="nav-dropdown">
+            <button class="nav-link nav-dropdown-trigger" aria-haspopup="true">Experiences</button>
+            <div class="nav-dropdown-menu">
+              <a href="experience-kids.html" class="nav-dropdown-item">
+                <div class="nav-dropdown-icon" style="background: #FFE4E6; color: #FF476F;">🎈</div>
+                <div>
+                  <div class="nav-dropdown-title">Kids & Youth Celebrations</div>
+                  <div class="nav-dropdown-desc">Bounce castles, DJ games & character fun</div>
+                </div>
+              </a>
+              <a href="experience-adults.html" class="nav-dropdown-item">
+                <div class="nav-dropdown-icon" style="background: #EDE9FE; color: #7C3AED;">🍸</div>
+                <div>
+                  <div class="nav-dropdown-title">Adult Social & Milestones</div>
+                  <div class="nav-dropdown-desc">Karaoke lounge, club lighting & pro audio</div>
+                </div>
+              </a>
+              <a href="experience-corporate.html" class="nav-dropdown-item">
+                <div class="nav-dropdown-icon" style="background: #E0F2FE; color: #0284C7;">🏢</div>
+                <div>
+                  <div class="nav-dropdown-title">Corporate & Brand Galas</div>
+                  <div class="nav-dropdown-desc">Company picnics, keynote AV & team events</div>
+                </div>
+              </a>
+              <a href="experience-community.html" class="nav-dropdown-item">
+                <div class="nav-dropdown-icon" style="background: #D1FAE5; color: #10B981;">🎪</div>
+                <div>
+                  <div class="nav-dropdown-title">Community & Festivals</div>
+                  <div class="nav-dropdown-desc">School carnivals, church & HOA bashes</div>
+                </div>
+              </a>
+            </div>
+          </li>
+          <li><a href="services.html" class="nav-link">Services & Rentals</a></li>
+          <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+          <li><a href="careers.html" class="nav-link active">Careers</a></li>
+          <li><a href="reviews.html" class="nav-link">Reviews</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="nav-actions">
+        <a href="admin.html" class="btn btn-secondary btn-sm" title="Owner Admin Portal">Owner Portal</a>
+        <a href="index.html#party-builder" class="btn btn-primary btn-sm btn-glow">Build Event Quote</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Careers Hero -->
+    <section class="careers-hero">
+      <div class="container">
+        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+          <div class="badge badge-coral" style="margin-bottom: 0.75rem;">
+            ✨ Join The Party Hard People Entertainment Crew
+          </div>
+          <h1 style="font-size: 2.8rem; letter-spacing: -0.02em; margin-bottom: 1rem; color: var(--text-primary); font-family: var(--font-heading);">
+            Get Paid to Bring Joy Across <span class="gradient-text">Southern California</span>
+          </h1>
+          <p style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 2rem;">
+            We are hiring energetic Kids DJs, dynamic Karaoke Hosts, and Inflatable Rigging Technicians across Los Angeles, Orange County, and San Diego. Flexible weekend shifts, competitive hourly pay, top-tier audio gear provided, and supportive team leadership.
+          </p>
+
+          <!-- Talent Value Pillars -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; text-align: left; margin-top: 2rem;">
+            <div style="background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; box-shadow: var(--shadow-sm);">
+              <div style="font-size: 1.5rem; margin-bottom: 0.35rem;">💰</div>
+              <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">$24 – $55 / Hour</strong>
+              <span style="font-size: 0.85rem; color: var(--text-secondary);">W-2 payroll classification + 100% of event tips & travel mileage.</span>
+            </div>
+            <div style="background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; box-shadow: var(--shadow-sm);">
+              <div style="font-size: 1.5rem; margin-bottom: 0.35rem;">🎧</div>
+              <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Pro Gear Provided</strong>
+              <span style="font-size: 0.85rem; color: var(--text-secondary);">High-end powered PA speakers, wireless mics, and clean commercial castles.</span>
+            </div>
+            <div style="background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; box-shadow: var(--shadow-sm);">
+              <div style="font-size: 1.5rem; margin-bottom: 0.35rem;">📅</div>
+              <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Weekend Flexibility</strong>
+              <span style="font-size: 0.85rem; color: var(--text-secondary);">Set your own scheduling availability. Ideal for performers, artists & students.</span>
+            </div>
+            <div style="background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; box-shadow: var(--shadow-sm);">
+              <div style="font-size: 1.5rem; margin-bottom: 0.35rem;">🛡️</div>
+              <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Safety & Compliance</strong>
+              <span style="font-size: 0.85rem; color: var(--text-secondary);">Full California AB 506 child safety training and $2M liability insurance backing.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Open Positions Section -->
+    <section class="section" style="padding-top: 3.5rem; padding-bottom: 5rem;">
+      <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <h2 style="font-size: 2.2rem; font-family: var(--font-heading); color: var(--text-primary); margin-bottom: 0.35rem;">
+              Current Open Roles
+            </h2>
+            <p style="color: var(--text-secondary); font-size: 1rem;">
+              Select an audition or operations position below to view details and submit your application.
+            </p>
+          </div>
+          <!-- County Filter -->
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="county-filter-buttons">
+            <button type="button" class="btn btn-sm btn-primary" onclick="filterJobs('all', this)">All SoCal (<span id="count-jobs-all">0</span>)</button>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="filterJobs('Los Angeles', this)">Los Angeles</button>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="filterJobs('Orange', this)">Orange County</button>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="filterJobs('San Diego', this)">San Diego</button>
+          </div>
+        </div>
+
+        <!-- Job Positions Grid -->
+        <div id="jobs-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem;">
+          <!-- Dynamically populated by JS from WorkforceManager -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Job Application Modal -->
+  <div id="application-modal" class="job-modal" role="dialog" aria-modal="true" aria-labelledby="modal-job-title">
+    <div class="job-modal-content">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
+        <div>
+          <span class="badge badge-coral" id="modal-job-dept">Entertainment Audition</span>
+          <h3 id="modal-job-title" style="font-size: 1.45rem; font-family: var(--font-heading); color: var(--text-primary); margin-top: 0.35rem;">
+            Lead Kids Party DJ & Music Host
+          </h3>
+          <div style="font-size: 0.88rem; color: var(--text-muted); margin-top: 0.2rem;" id="modal-job-region">
+            Los Angeles & Orange County · Part-Time (W-2)
+          </div>
+        </div>
+        <button type="button" onclick="closeApplicationModal()" style="background: none; border: none; font-size: 1.6rem; color: var(--text-muted); cursor: pointer; padding: 0.25rem;">✕</button>
+      </div>
+
+      <form id="candidate-application-form" onsubmit="handleCandidateApplicationSubmit(event)">
+        <input type="hidden" id="app-job-id" value="">
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          <div class="form-group">
+            <label class="form-label" for="app-full-name">Full Name <span class="req">*</span></label>
+            <input type="text" class="form-input" id="app-full-name" placeholder="First and last name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="app-phone">Phone Number <span class="req">*</span></label>
+            <input type="tel" class="form-input" id="app-phone" placeholder="(555) 000-0000" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          <div class="form-group">
+            <label class="form-label" for="app-email">Email Address <span class="req">*</span></label>
+            <input type="email" class="form-input" id="app-email" placeholder="you@domain.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="app-county">Primary County / Region <span class="req">*</span></label>
+            <select class="form-select" id="app-county" required>
+              <option value="Los Angeles County">Los Angeles County</option>
+              <option value="Orange County" selected>Orange County</option>
+              <option value="San Diego County">San Diego County</option>
+              <option value="Inland Empire">Inland Empire</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label" for="app-portfolio">Performance Reel, DJ Mix, or Social Showcase Link</label>
+          <input type="url" class="form-input" id="app-portfolio" placeholder="https://instagram.com/..., TikTok, YouTube reel or SoundCloud">
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Optional but highly recommended for performers and DJs.</div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label" for="app-experience">Relevant Experience & Brief Bio <span class="req">*</span></label>
+          <textarea class="form-input" id="app-experience" rows="3" placeholder="Tell us about your background hosting parties, playing music, camp counseling, or equipment logistics..." required></textarea>
+        </div>
+
+        <!-- Availability Checkboxes -->
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <label class="form-label">Typical Weekend Availability</label>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.35rem; font-size: 0.9rem;">
+            <label style="display: flex; align-items: center; gap: 0.45rem; cursor: pointer;">
+              <input type="checkbox" id="avail-sat" checked> Saturdays (Peak Party Day)
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.45rem; cursor: pointer;">
+              <input type="checkbox" id="avail-sun" checked> Sundays
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.45rem; cursor: pointer;">
+              <input type="checkbox" id="avail-fri"> Friday Evenings
+            </label>
+          </div>
+        </div>
+
+        <!-- California Safety & Legal Verification Notice -->
+        <div style="background: #F8FAFC; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4;">
+          <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">🛡️ California Child Safeguarding Notice (AB 506):</strong>
+          Party Hard People LLC is dedicated to safety. Selected entertainment and field operations candidates for youth events undergo California Department of Justice / FBI Live Scan fingerprint background clearances prior to solo dispatch.
+          <div style="margin-top: 0.5rem;">
+            <label style="display: flex; align-items: flex-start; gap: 0.45rem; cursor: pointer; color: var(--text-primary); font-weight: 600;">
+              <input type="checkbox" id="app-consent-check" required style="margin-top: 2px;">
+              I certify the above information is accurate and agree to undergo standard verification upon formal offer extension.
+            </label>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem;">
+          <button type="button" class="btn btn-secondary" onclick="closeApplicationModal()" style="flex: 1; justify-content: center;">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-glow" style="flex: 2; justify-content: center;">Submit My Application &rarr;</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Application Success Modal -->
+  <div id="success-modal" class="job-modal" role="dialog" aria-modal="true">
+    <div class="job-modal-content" style="text-align: center; max-width: 500px;">
+      <div style="font-size: 3rem; margin-bottom: 0.5rem;">🎉</div>
+      <h3 style="font-size: 1.5rem; font-family: var(--font-heading); color: var(--text-primary); margin-bottom: 0.5rem;">
+        Application Received!
+      </h3>
+      <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1rem;">
+        Thank you for auditioning to join Party Hard People LLC. Your application has been registered into our recruitment pipeline under tracking code:
+      </p>
+      <div style="background: var(--primary-tint); border: 1px dashed var(--primary); padding: 0.75rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem;">
+        <strong id="success-tracking-code" style="font-family: monospace; font-size: 1.25rem; color: var(--primary);">PHP-APP-1005</strong>
+      </div>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+        Our hiring manager reviews applications weekly. If your background aligns with our upcoming event schedule, we will reach out via email or phone to arrange an audition or interview!
+      </p>
+      <button type="button" class="btn btn-primary btn-glow" onclick="document.getElementById('success-modal').style.display = 'none'" style="width: 100%; justify-content: center;">
+        Done
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <a href="index.html" class="brand-logo" style="margin-bottom: 1.25rem;">
+          <div class="brand-icon" aria-hidden="true">🎉</div>
+          <span>Party Hard People</span>
+        </a>
+        <p style="font-size: 0.95rem; margin-bottom: 1.5rem;">
+          Southern California's premier children's party entertainment, karaoke, and equipment rental specialists. Coordinated in one place for busy parents and corporate hosts.
+        </p>
+        <div style="font-size: 0.9rem; color: var(--text-secondary);">
+          <div>Email: <a href="mailto:careers@partyhardpeople.com" style="color: var(--primary-light);">careers@partyhardpeople.com</a></div>
+          <div>Service Area: Los Angeles, Orange County & San Diego</div>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Talent & Careers</h4>
+        <ul class="footer-links">
+          <li><a href="careers.html">Open Auditions & Roles</a></li>
+          <li><a href="careers.html#benefits">Pay & W-2 Benefits</a></li>
+          <li><a href="admin.html">Staff & Admin Portal</a></li>
+          <li><a href="legal.html">Equal Opportunity & Safety</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="experience-kids.html">Kids & Youth</a></li>
+          <li><a href="experience-adults.html">Adult Social</a></li>
+          <li><a href="experience-corporate.html">Corporate Galas</a></li>
+          <li><a href="experience-community.html">Community Festivals</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Legal & Compliance</h4>
+        <ul class="footer-links">
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms & Policies</a></li>
+          <li><a href="legal.html">Legal & SMS Disclosures</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>© 2026 Party Hard People LLC. All rights reserved. Equal Opportunity Employer in Southern California.</p>
+    </div>
+  </footer>
+
+  <script src="js/workforce-manager.js"></script>
+  <script>
+    let currentFilter = 'all';
+
+    function renderJobs() {
+      const positions = WorkforceManager.getPositions(true);
+      document.getElementById('count-jobs-all').textContent = positions.length;
+
+      let filtered = positions;
+      if (currentFilter !== 'all') {
+        filtered = positions.filter(p => p.county.toLowerCase().includes(currentFilter.toLowerCase()));
+      }
+
+      const grid = document.getElementById('jobs-grid');
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: #FFF; border-radius: 16px; border: 1px solid var(--border-subtle);">
+          <h3>No positions currently open matching "${currentFilter}"</h3>
+          <p style="color: var(--text-muted);">Check back soon or select "All SoCal" to view regional opportunities.</p>
+        </div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(job => `
+        <div class="job-card">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+            <span class="badge" style="background: var(--primary-tint); color: var(--primary); font-weight: 700;">
+              ${job.department}
+            </span>
+            <span style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600;">
+              📍 ${job.county}
+            </span>
+          </div>
+
+          <h3 style="font-size: 1.35rem; color: var(--text-primary); margin-bottom: 0.5rem; font-family: var(--font-heading);">
+            ${job.title}
+          </h3>
+
+          <div style="font-size: 1.05rem; font-weight: 700; color: var(--accent-coral); margin-bottom: 0.85rem;">
+            ${job.payRange}
+          </div>
+
+          <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.25rem; flex-grow: 1;">
+            ${job.description}
+          </p>
+
+          <div style="margin-bottom: 1.5rem; background: #F8FAFC; border-radius: 12px; padding: 1rem; font-size: 0.85rem; color: var(--text-secondary);">
+            <strong style="color: var(--text-primary); display: block; margin-bottom: 0.35rem;">Key Qualification:</strong>
+            ${job.requirements[0]}
+          </div>
+
+          <div style="margin-top: auto; display: flex; gap: 0.65rem;">
+            <button type="button" class="btn btn-primary btn-glow" style="flex: 1; justify-content: center; padding: 0.75rem 1rem;" onclick="openApplicationModal('${job.id}')">
+              Apply For Role &rarr;
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterJobs(countyKey, btn) {
+      currentFilter = countyKey;
+      document.querySelectorAll('#county-filter-buttons button').forEach(b => {
+        b.className = 'btn btn-sm btn-secondary';
+      });
+      btn.className = 'btn btn-sm btn-primary';
+      renderJobs();
+    }
+
+    function openApplicationModal(jobId) {
+      const job = WorkforceManager.getPositionById(jobId);
+      if (!job) return;
+
+      document.getElementById('app-job-id').value = job.id;
+      document.getElementById('modal-job-title').textContent = job.title;
+      document.getElementById('modal-job-dept').textContent = job.department;
+      document.getElementById('modal-job-region').textContent = `${job.county} · ${job.employmentType} · ${job.payRange}`;
+      document.getElementById('application-modal').style.display = 'flex';
+    }
+
+    function closeApplicationModal() {
+      document.getElementById('application-modal').style.display = 'none';
+      document.getElementById('candidate-application-form').reset();
+    }
+
+    function handleCandidateApplicationSubmit(e) {
+      e.preventDefault();
+
+      const jobId = document.getElementById('app-job-id').value;
+      const fullName = document.getElementById('app-full-name').value.trim();
+      const phone = document.getElementById('app-phone').value.trim();
+      const email = document.getElementById('app-email').value.trim();
+      const county = document.getElementById('app-county').value;
+      const portfolioUrl = document.getElementById('app-portfolio').value.trim();
+      const resumeText = document.getElementById('app-experience').value.trim();
+
+      const newApp = WorkforceManager.submitApplication({
+        positionId: jobId,
+        fullName,
+        phone,
+        email,
+        county,
+        portfolioUrl,
+        resumeText
+      });
+
+      closeApplicationModal();
+      document.getElementById('success-tracking-code').textContent = newApp.refCode;
+      document.getElementById('success-modal').style.display = 'flex';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderJobs();
+    });
+  </script>
+</body>
+</html>
