@@ -241,8 +241,40 @@
       </a>
       <ul class="nav-links">
         <li><a href="index.html" class="nav-link">Home</a></li>
+        <li class="nav-dropdown">
+          <button class="nav-link nav-dropdown-trigger" aria-haspopup="true">Experiences</button>
+          <div class="nav-dropdown-menu">
+            <a href="experience-kids.html" class="nav-dropdown-item">
+              <div class="nav-dropdown-icon" style="background: #FFE4E6; color: #FF476F;">🎈</div>
+              <div>
+                <div class="nav-dropdown-title">Kids & Youth Celebrations</div>
+                <div class="nav-dropdown-desc">Bounce castles, DJ games & character fun</div>
+              </div>
+            </a>
+            <a href="experience-adults.html" class="nav-dropdown-item">
+              <div class="nav-dropdown-icon" style="background: #EDE9FE; color: #7C3AED;">🍸</div>
+              <div>
+                <div class="nav-dropdown-title">Adult Social & Milestones</div>
+                <div class="nav-dropdown-desc">Karaoke lounge, club lighting & pro audio</div>
+              </div>
+            </a>
+            <a href="experience-corporate.html" class="nav-dropdown-item">
+              <div class="nav-dropdown-icon" style="background: #E0F2FE; color: #0284C7;">🏢</div>
+              <div>
+                <div class="nav-dropdown-title">Corporate & Brand Galas</div>
+                <div class="nav-dropdown-desc">Company picnics, keynote AV & team events</div>
+              </div>
+            </a>
+            <a href="experience-community.html" class="nav-dropdown-item">
+              <div class="nav-dropdown-icon" style="background: #D1FAE5; color: #10B981;">🎪</div>
+              <div>
+                <div class="nav-dropdown-title">Community & Festivals</div>
+                <div class="nav-dropdown-desc">School carnivals, church & HOA bashes</div>
+              </div>
+            </a>
+          </div>
+        </li>
         <li><a href="services.html" class="nav-link">Services & Rentals</a></li>
-        <li><a href="about.html" class="nav-link">About</a></li>
         <li><a href="gallery.html" class="nav-link active">Gallery</a></li>
         <li><a href="reviews.html" class="nav-link">Reviews</a></li>
         <li><a href="faq.html" class="nav-link">FAQs</a></li>
@@ -252,7 +284,7 @@
         <a href="admin.html?tab=gallery" class="btn btn-secondary btn-sm" title="Upload and manage party photography">
           📸 Owner Studio
         </a>
-        <a href="index.html#party-builder" class="btn btn-primary btn-sm btn-glow">Build Your Party Quote</a>
+        <a href="index.html#party-builder" class="btn btn-primary btn-sm btn-glow">Build Event Quote</a>
       </div>
     </div>
   </header>
@@ -264,19 +296,21 @@
         <div class="section-title-wrap" style="max-width: 720px; margin-left: auto; margin-right: auto; text-align: center;">
           <div class="badge badge-coral">Live Celebrations</div>
           <h1 style="font-size: 2.75rem; letter-spacing: -0.02em; margin: 0.5rem 0 1rem 0;">
-            Event Gallery & Party Highlights
+            Event Gallery & Celebration Highlights
           </h1>
           <p style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
-            Every photograph is from real client celebrations across Los Angeles, Orange County, and San Diego with client privacy permission.
+            Real photos from children's birthdays, adult milestone gatherings, corporate picnics, and school carnivals across Southern California.
           </p>
         </div>
 
         <!-- Filter Pills Bar -->
         <div class="gallery-filter-bar" id="gallery-filter-pills">
           <button class="gallery-pill active" onclick="filterGallery('all', this)">✨ All Celebrations</button>
-          <button class="gallery-pill" onclick="filterGallery('dj-dance', this)">🎵 Kids DJ & Dance</button>
-          <button class="gallery-pill" onclick="filterGallery('inflatables', this)">🏰 Bounce Castles & Rentals</button>
-          <button class="gallery-pill" onclick="filterGallery('karaoke', this)">🎤 Karaoke Jam & Audio</button>
+          <button class="gallery-pill" onclick="filterGallery('kids', this)">🎈 Kids & Youth</button>
+          <button class="gallery-pill" onclick="filterGallery('adult-social', this)">🍸 Adult Social & Milestones</button>
+          <button class="gallery-pill" onclick="filterGallery('corporate', this)">🏢 Corporate & Galas</button>
+          <button class="gallery-pill" onclick="filterGallery('community', this)">🎪 Community & Festivals</button>
+          <button class="gallery-pill" onclick="filterGallery('inflatables', this)">🏰 Bounce Castles</button>
           <button class="gallery-pill" onclick="filterGallery('featured', this)">⭐ Featured Spotlights</button>
         </div>
 

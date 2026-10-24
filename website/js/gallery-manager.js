@@ -1,17 +1,18 @@
 /**
  * Party Hard People LLC — Executive Gallery & Media Studio Engine
  * Crafted for seamless live synchronization between the Owner Portal and Public Showcase.
+ * Supports All-Ages Pillars: Kids, Adult Social, Corporate, and Community Celebrations.
  */
 
 const GALLERY_STORAGE_KEY = 'php_gallery_items';
 
-// Default curated showcase items crafted with senior artistic direction
+// Default curated showcase items covering all 4 experience pillars
 const DEFAULT_GALLERY_ITEMS = [
   {
     id: 'gal-def-1',
     title: "Maya's 6th Birthday Bash",
-    category: 'dj-dance',
-    categoryName: 'Kids DJ & Dance',
+    category: 'kids',
+    categoryName: 'Kids & Youth',
     city: 'Pasadena, CA',
     venueType: 'Private Residence Lawn',
     equipment: ['Kids DJ & Music Host', 'Dynamic LED Stage Lighting', 'Interactive Dance Games'],
@@ -26,7 +27,7 @@ const DEFAULT_GALLERY_ITEMS = [
     id: 'gal-def-2',
     title: 'Outdoor Castle Play Festival',
     category: 'inflatables',
-    categoryName: 'Bounce Castles & Rentals',
+    categoryName: 'Bounce Castles',
     city: 'Irvine, CA',
     venueType: 'Backyard Celebration',
     equipment: ['Pastel Castle Bounce House', '6ft Folding Tables', 'White Resin Chairs'],
@@ -39,17 +40,47 @@ const DEFAULT_GALLERY_ITEMS = [
   },
   {
     id: 'gal-def-3',
-    title: 'Pre-Teen Karaoke Jam & Glow Party',
-    category: 'karaoke',
-    categoryName: 'Karaoke Jam & Audio',
-    city: 'Carlsbad, CA',
-    venueType: 'Community Center Hall',
-    equipment: ['Karaoke Jam Station', 'Pro PA Sound System & Mic', 'Stage Laser Lighting'],
-    description: 'Twin wireless microphones, live lyric display monitor, and full vocal stage lighting experience.',
+    title: '40th Milestone Birthday & Karaoke Lounge',
+    category: 'adult-social',
+    categoryName: 'Adult Social & Milestones',
+    city: 'Newport Beach, CA',
+    venueType: 'Private Residence Patio',
+    equipment: ['VIP Karaoke Jam Station', 'Pro PA Sound System & Subwoofer', 'Laser & Mood Lighting'],
+    description: 'Twin wireless microphones, live lyric display, and subwoofer dance audio under the stars for an unforgettable 40th birthday.',
     imageUrl: 'assets/images/sound-lighting.jpg',
     featured: true,
     verifiedRelease: true,
-    dateAdded: '2026-10-20',
+    dateAdded: '2026-10-21',
+    isCustom: false
+  },
+  {
+    id: 'gal-def-4',
+    title: 'Annual Tech Summit Picnic & Sound Stage',
+    category: 'corporate',
+    categoryName: 'Corporate & Brand Galas',
+    city: 'Irvine Spectrum, CA',
+    venueType: 'Corporate Campus Lawn',
+    equipment: ['Keynote PA Audio Array', 'Dual Wireless Lapel & Handheld Mics', 'Quiet Inverter Generator'],
+    description: 'Crisp outdoor CEO keynote amplification, team field games, and background music distribution with full $2M COI insurance.',
+    imageUrl: 'assets/images/hero-celebration.jpg',
+    featured: true,
+    verifiedRelease: true,
+    dateAdded: '2026-10-22',
+    isCustom: false
+  },
+  {
+    id: 'gal-def-5',
+    title: 'Sunset Elementary Carnival & Games',
+    category: 'community',
+    categoryName: 'Community & Festivals',
+    city: 'Pasadena, CA',
+    venueType: 'Elementary School Field',
+    equipment: ['Pastel Bounce Castle', 'Field Games Host & PA', '10 Tables & 40 Chairs'],
+    description: 'Continuous throughput student carnival with obstacle games, musical trivia, and crowd safety announcements.',
+    imageUrl: 'assets/images/bounce-rentals.jpg',
+    featured: false,
+    verifiedRelease: true,
+    dateAdded: '2026-10-22',
     isCustom: false
   }
 ];
@@ -84,7 +115,7 @@ class GalleryManager {
     const newItem = {
       id: 'gal-custom-' + Date.now(),
       title: item.title.trim(),
-      category: item.category || 'dj-dance',
+      category: item.category || 'kids',
       categoryName: this.getCategoryLabel(item.category),
       city: item.city.trim() || 'Southern California',
       venueType: item.venueType || 'Private Residence',
@@ -125,8 +156,12 @@ class GalleryManager {
 
   static getCategoryLabel(slug) {
     const map = {
+      'kids': 'Kids & Youth',
       'dj-dance': 'Kids DJ & Dance',
-      'inflatables': 'Bounce Castles & Rentals',
+      'inflatables': 'Bounce Castles',
+      'adult-social': 'Adult Social & Milestones',
+      'corporate': 'Corporate & Brand Galas',
+      'community': 'Community & Festivals',
       'karaoke': 'Karaoke Jam & Audio',
       'games': 'Organized Party Games',
       'combo': 'Full Party Experience'
@@ -166,7 +201,6 @@ class GalleryManager {
           ctx.imageSmoothingQuality = 'high';
           ctx.drawImage(img, 0, 0, width, height);
 
-          // Attempt modern WebP export, falling back to JPEG if unsupported
           let dataUrl = '';
           try {
             dataUrl = canvas.toDataURL('image/webp', quality);

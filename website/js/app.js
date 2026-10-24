@@ -27,6 +27,7 @@ const DEFAULT_DEPOSIT_PCT = 25; // PRD specified 25% deposit
 // State container
 let partyState = {
   step: 1,
+  eventVibe: 'kids',
   eventType: 'birthday',
   eventDate: '',
   startTime: '13:00',
@@ -61,8 +62,53 @@ document.addEventListener('DOMContentLoaded', () => {
   initFaqAccordion();
   initCookieConsent();
   initPartyBuilder();
+  checkUrlVibeParams();
   updateSummarySidebar();
 });
+
+// Vibe Branch Selector
+function selectEventVibe(vibe, btn) {
+  partyState.eventVibe = vibe;
+  document.querySelectorAll('#vibe-branch-buttons .vibe-branch-btn').forEach(b => {
+    b.classList.remove('active');
+    b.style.borderColor = 'var(--border-subtle)';
+    b.style.background = 'var(--bg-surface)';
+    b.style.color = 'var(--text-secondary)';
+  });
+  if (btn) {
+    btn.classList.add('active');
+    btn.style.borderColor = 'var(--primary)';
+    btn.style.background = 'var(--primary-tint)';
+    btn.style.color = 'var(--primary)';
+  }
+
+  const typeSelect = document.getElementById('pb-event-type');
+  if (typeSelect) {
+    if (vibe === 'adult') {
+      typeSelect.value = 'milestone';
+      partyState.eventType = 'milestone';
+    } else if (vibe === 'corporate') {
+      typeSelect.value = 'corporate';
+      partyState.eventType = 'corporate';
+    } else if (vibe === 'community') {
+      typeSelect.value = 'community';
+      partyState.eventType = 'community';
+    } else {
+      typeSelect.value = 'birthday';
+      partyState.eventType = 'birthday';
+    }
+  }
+  saveState();
+}
+
+function checkUrlVibeParams() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const vibe = urlParams.get('vibe');
+  if (vibe && ['kids', 'adult', 'corporate', 'community'].includes(vibe)) {
+    const btn = document.querySelector(`.vibe-branch-btn[data-vibe="${vibe}"]`);
+    selectEventVibe(vibe, btn);
+  }
+}
 
 // Load state from sessionStorage if available
 function loadSavedState() {

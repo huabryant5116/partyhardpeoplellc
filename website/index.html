@@ -34,8 +34,40 @@
       <nav aria-label="Main Navigation">
         <ul class="nav-links">
           <li><a href="index.html" class="nav-link active">Home</a></li>
+          <li class="nav-dropdown">
+            <button class="nav-link nav-dropdown-trigger" aria-haspopup="true">Experiences</button>
+            <div class="nav-dropdown-menu">
+              <a href="experience-kids.html" class="nav-dropdown-item">
+                <div class="nav-dropdown-icon" style="background: #FFE4E6; color: #FF476F;">🎈</div>
+                <div>
+                  <div class="nav-dropdown-title">Kids & Youth Celebrations</div>
+                  <div class="nav-dropdown-desc">Bounce castles, DJ games & character fun</div>
+                </div>
+              </a>
+              <a href="experience-adults.html" class="nav-dropdown-item">
+                <div class="nav-dropdown-icon" style="background: #EDE9FE; color: #7C3AED;">🍸</div>
+                <div>
+                  <div class="nav-dropdown-title">Adult Social & Milestones</div>
+                  <div class="nav-dropdown-desc">Karaoke lounge, club lighting & pro audio</div>
+                </div>
+              </a>
+              <a href="experience-corporate.html" class="nav-dropdown-item">
+                <div class="nav-dropdown-icon" style="background: #E0F2FE; color: #0284C7;">🏢</div>
+                <div>
+                  <div class="nav-dropdown-title">Corporate & Brand Galas</div>
+                  <div class="nav-dropdown-desc">Company picnics, keynote AV & team events</div>
+                </div>
+              </a>
+              <a href="experience-community.html" class="nav-dropdown-item">
+                <div class="nav-dropdown-icon" style="background: #D1FAE5; color: #10B981;">🎪</div>
+                <div>
+                  <div class="nav-dropdown-title">Community & Festivals</div>
+                  <div class="nav-dropdown-desc">School carnivals, church & HOA bashes</div>
+                </div>
+              </a>
+            </div>
+          </li>
           <li><a href="services.html" class="nav-link">Services & Rentals</a></li>
-          <li><a href="about.html" class="nav-link">About</a></li>
           <li><a href="gallery.html" class="nav-link">Gallery</a></li>
           <li><a href="reviews.html" class="nav-link">Reviews</a></li>
           <li><a href="faq.html" class="nav-link">FAQs</a></li>
@@ -44,7 +76,7 @@
       </nav>
       <div class="nav-actions">
         <a href="admin.html" class="btn btn-secondary btn-sm" title="Owner Admin Portal">Owner Portal</a>
-        <a href="#party-builder" class="btn btn-primary btn-sm btn-glow" id="nav-cta-btn">Build Your Party Quote</a>
+        <a href="#party-builder" class="btn btn-primary btn-sm btn-glow" id="nav-cta-btn">Build Event Quote</a>
       </div>
     </div>
   </header>
@@ -56,17 +88,17 @@
         <div class="hero-grid">
           <div class="hero-text">
             <div class="badge badge-coral">
-              <span aria-hidden="true">✨</span> Southern California's Favorite Kids Celebrations
+              <span aria-hidden="true">✨</span> Southern California's Premier Event Entertainment
             </div>
             <h1 class="hero-title">
-              Unforgettable Kids Parties, <span class="gradient-text">Coordinated in One Place</span>
+              Unforgettable Celebrations, <span class="gradient-text">Coordinated in One Place</span>
             </h1>
             <p class="hero-desc">
-              Custom DJ entertainment, karaoke jam stations, interactive dancing games, bounce houses, and complete equipment rentals across Los Angeles, Orange County, and San Diego. Explore options, request a custom quote, and plan without pressure.
+              From sanitized kids' pastel bounce castles and high-energy music hosts to milestone adult karaoke lounges, corporate picnics, and community festivals. Fully licensed and insured with guaranteed early setup across Los Angeles, Orange County, and San Diego.
             </p>
             <div class="hero-cta-group">
               <a href="#party-builder" class="btn btn-primary btn-lg btn-glow" id="hero-quote-cta">
-                <span aria-hidden="true">🎉</span> Build Your Party Quote
+                <span aria-hidden="true">🎉</span> Build Your Event Quote
               </a>
               <a href="services.html" class="btn btn-secondary btn-lg" id="hero-services-cta">
                 Explore All Services
@@ -79,24 +111,81 @@
               </div>
               <div class="trust-item">
                 <span class="trust-icon" aria-hidden="true">✓</span>
-                <span><strong>25% Deposit</strong> — Locked with 7-day price guarantee on issued quotes</span>
+                <span><strong>25% Deposit</strong> — Locked with 7-day price guarantee</span>
               </div>
               <div class="trust-item">
                 <span class="trust-icon" aria-hidden="true">✓</span>
-                <span><strong>LA • OC • SD</strong> — Full service delivery, setup, and sanitization</span>
+                <span><strong>$2M COI Insured</strong> — Park & corporate campus approved</span>
               </div>
             </div>
           </div>
           <div class="hero-image-wrapper">
-            <img src="assets/images/hero-celebration.jpg" alt="Children dancing and celebrating at a high-energy DJ party hosted by Party Hard People" width="600" height="400" fetchpriority="high" decoding="async">
+            <img src="assets/images/hero-celebration.jpg" alt="Children and guests dancing and celebrating at a high-energy DJ party hosted by Party Hard People" width="600" height="400" fetchpriority="high" decoding="async">
             <div class="floating-badge">
               <div class="floating-badge-icon" aria-hidden="true">🎧</div>
               <div>
-                <div class="floating-badge-title">Interactive Entertainment</div>
-                <div class="floating-badge-desc">DJs, games, and hosted fun tailored to your child's age group</div>
+                <div class="floating-badge-title">All-Ages Entertainment</div>
+                <div class="floating-badge-desc">DJs, sound hosts, inflatables & gear for all generations</div>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4-Vibe All-Ages Interactive Segmenter -->
+    <section class="section" style="padding-top: 1.5rem; padding-bottom: 2rem;">
+      <div class="container">
+        <div class="section-title-wrap" style="margin-bottom: 2rem; text-align: center;">
+          <div class="badge badge-coral">Choose Your Event Experience</div>
+          <h2 style="font-size: 2.3rem;">What kind of celebration are you hosting?</h2>
+          <p>Explore curated entertainment packages tailored specifically for your audience.</p>
+        </div>
+        <div class="vibe-segmenter-grid">
+          <!-- Card 1: Kids -->
+          <a href="experience-kids.html" class="vibe-card" style="--vibe-accent: #FF476F; --vibe-bg: #FFE4E6; --vibe-glow: rgba(255, 71, 111, 0.25);">
+            <div class="vibe-card-icon">🎈</div>
+            <h3 class="vibe-card-title">Kids & Youth Parties</h3>
+            <p class="vibe-card-desc">Commercial pastel bounce castles, interactive kids DJs, musical games, and bubble blasts.</p>
+            <div class="vibe-card-tags">
+              <span class="vibe-tag">Ages 1–12</span>
+              <span class="vibe-tag">Sanitized Vinyl</span>
+              <span class="vibe-tag">Dance Games</span>
+            </div>
+          </a>
+          <!-- Card 2: Adult Social -->
+          <a href="experience-adults.html" class="vibe-card" style="--vibe-accent: #7C3AED; --vibe-bg: #EDE9FE; --vibe-glow: rgba(124, 58, 237, 0.25);">
+            <div class="vibe-card-icon">🍸</div>
+            <h3 class="vibe-card-title">Adult Social & Milestones</h3>
+            <p class="vibe-card-desc">Milestone 30th/40th/50th birthdays, private VIP karaoke lounges, club audio & lighting.</p>
+            <div class="vibe-card-tags">
+              <span class="vibe-tag">Milestones</span>
+              <span class="vibe-tag">Pro Audio</span>
+              <span class="vibe-tag">Karaoke Lounge</span>
+            </div>
+          </a>
+          <!-- Card 3: Corporate -->
+          <a href="experience-corporate.html" class="vibe-card" style="--vibe-accent: #0284C7; --vibe-bg: #E0F2FE; --vibe-glow: rgba(2, 132, 199, 0.25);">
+            <div class="vibe-card-icon">🏢</div>
+            <h3 class="vibe-card-title">Corporate & Brand Galas</h3>
+            <p class="vibe-card-desc">Company picnics, team appreciation galas, keynote PA audio, and full $2M COI insurance.</p>
+            <div class="vibe-card-tags">
+              <span class="vibe-tag">$2M COI Insured</span>
+              <span class="vibe-tag">W-9 Ready</span>
+              <span class="vibe-tag">Keynote AV</span>
+            </div>
+          </a>
+          <!-- Card 4: Community -->
+          <a href="experience-community.html" class="vibe-card" style="--vibe-accent: #10B981; --vibe-bg: #D1FAE5; --vibe-glow: rgba(16, 185, 129, 0.25);">
+            <div class="vibe-card-icon">🎪</div>
+            <h3 class="vibe-card-title">Community & Festivals</h3>
+            <p class="vibe-card-desc">Elementary carnivals, church festivals, HOA block parties, field games, and crowd sound.</p>
+            <div class="vibe-card-tags">
+              <span class="vibe-tag">School Carnivals</span>
+              <span class="vibe-tag">HOA Parties</span>
+              <span class="vibe-tag">Crowd PA</span>
+            </div>
+          </a>
         </div>
       </div>
     </section>
@@ -198,16 +287,28 @@
             <form id="party-builder-form" onsubmit="return false;">
               <!-- Step 1: Event Basics -->
               <div class="builder-step-content" id="step-content-1">
-                <h3 style="margin-bottom: 1.5rem;">Step 1: Event Details & Location</h3>
+                <h3 style="margin-bottom: 1.25rem;">Step 1: Event Details & Location</h3>
+                
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                  <label class="form-label">Select Event Experience Vibe</label>
+                  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.65rem;" id="vibe-branch-buttons">
+                    <button type="button" class="btn btn-sm vibe-branch-btn active" data-vibe="kids" onclick="selectEventVibe('kids', this)" style="border-radius: var(--radius-sm); padding: 0.65rem 0.5rem; text-align: center; border: 2px solid var(--primary); background: var(--primary-tint); font-weight: 700; color: var(--primary);">🎈 Kids Party</button>
+                    <button type="button" class="btn btn-sm vibe-branch-btn" data-vibe="adult" onclick="selectEventVibe('adult', this)" style="border-radius: var(--radius-sm); padding: 0.65rem 0.5rem; text-align: center; border: 1px solid var(--border-subtle); background: var(--bg-surface); font-weight: 700; color: var(--text-secondary);">🍸 Adult Social</button>
+                    <button type="button" class="btn btn-sm vibe-branch-btn" data-vibe="corporate" onclick="selectEventVibe('corporate', this)" style="border-radius: var(--radius-sm); padding: 0.65rem 0.5rem; text-align: center; border: 1px solid var(--border-subtle); background: var(--bg-surface); font-weight: 700; color: var(--text-secondary);">🏢 Corporate</button>
+                    <button type="button" class="btn btn-sm vibe-branch-btn" data-vibe="community" onclick="selectEventVibe('community', this)" style="border-radius: var(--radius-sm); padding: 0.65rem 0.5rem; text-align: center; border: 1px solid var(--border-subtle); background: var(--bg-surface); font-weight: 700; color: var(--text-secondary);">🎪 Community</button>
+                  </div>
+                </div>
+
                 <div class="form-row-2">
                   <div class="form-group">
                     <label class="form-label" for="pb-event-type">Event Type <span class="req">*</span></label>
                     <select class="form-select" id="pb-event-type">
-                      <option value="birthday">Birthday Party</option>
-                      <option value="school">School or Daycare Event</option>
-                      <option value="community">Community / Block Party</option>
-                      <option value="family-reunion">Family Reunion</option>
-                      <option value="corporate">Corporate Family Day</option>
+                      <option value="birthday">Kids Birthday Celebration</option>
+                      <option value="milestone">Adult Milestone (30th, 40th, 50th) / Social</option>
+                      <option value="corporate">Corporate Picnic / Brand Gala</option>
+                      <option value="school">School Carnival or Daycare Event</option>
+                      <option value="community">Community / HOA Block Party</option>
+                      <option value="family-reunion">Family Reunion / Gathering</option>
                       <option value="holiday">Holiday Celebration</option>
                     </select>
                   </div>
