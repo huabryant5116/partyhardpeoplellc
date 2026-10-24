@@ -536,6 +536,45 @@ const WorkforceManager = (() => {
 
     // Employee Management
     getEmployees: () => loadData(STORAGE_KEYS.EMPLOYEES, DEFAULT_EMPLOYEES),
+    addEmployee: (empData) => {
+      const employees = loadData(STORAGE_KEYS.EMPLOYEES, DEFAULT_EMPLOYEES);
+      const randomSuffix = Math.floor(10 + Math.random() * 90);
+      const newEmp = {
+        id: 'emp_' + Date.now(),
+        employeeCode: `PHP-EMP-${randomSuffix}`,
+        fullName: empData.fullName,
+        email: empData.email,
+        phone: empData.phone,
+        classification: empData.classification || 'Part-Time W-2 (Non-Exempt)',
+        role: empData.role || 'Kids Party DJ & Music Host',
+        countyBase: empData.countyBase || 'Orange County',
+        serviceRadiusMiles: parseInt(empData.serviceRadiusMiles || 35, 10),
+        hourlyRate: parseFloat(empData.hourlyRate || 35.00),
+        ab506Certified: !!empData.ab506Certified,
+        ab506Expiry: empData.ab506Expiry || (empData.ab506Certified ? '2027-10-31' : null),
+        backgroundCleared: !!empData.ab506Certified,
+        skills: empData.skills || ['comp_child_engagement'],
+        status: 'Active',
+        hireDate: new Date().toISOString().split('T')[0],
+        assignedEventsCount: 0
+      };
+      employees.unshift(newEmp);
+      saveData(STORAGE_KEYS.EMPLOYEES, employees);
+      logAudit('ADD_EMPLOYEE', `Added employee ${newEmp.fullName} (${newEmp.role}, ${newEmp.classification})`, 'Executive Admin');
+      return newEmp;
+    },
+
+    updateEmployee: (empId, updates) => {
+      const employees = loadData(STORAGE_KEYS.EMPLOYEES, DEFAULT_EMPLOYEES);
+      const emp = employees.find(e => e.id === empId);
+      if (!emp) return false;
+
+      Object.assign(emp, updates);
+      saveData(STORAGE_KEYS.EMPLOYEES, employees);
+      logAudit('UPDATE_EMPLOYEE_ROSTER', `Updated details for ${emp.fullName}`, 'Executive Admin');
+      return emp;
+    },
+
     updateEmployeeSafeguarding: (empId, isCertified, expiryDate) => {
       const employees = loadData(STORAGE_KEYS.EMPLOYEES, DEFAULT_EMPLOYEES);
       const emp = employees.find(e => e.id === empId);
@@ -545,24 +584,39 @@ const WorkforceManager = (() => {
       emp.ab506Expiry = expiryDate;
       emp.backgroundCleared = isCertified;
       saveData(STORAGE_KEYS.EMPLOYEES, employees);
-      logAudit('UPDATE_SAFEGUARDING_CERT', `Updated AB 506 certification for ${emp.fullName}: Active until ${expiryDate}`);
+      logAudit('UPDATE_SAFEGUARDING_CERT', `Updated AB 506 certification for ${emp.fullName}: Active until ${expiryDate}`, 'Compliance Officer');
       return true;
     },
 
     // Event Staffing Matcher: Matches Confirmed Booking requirements with qualified, available staff
-    matchCrewForEvent: (eventDate, eventCounty, requiredRole, isYouthEvent = true) => {
+    matchCrewForEvent: (eventDate, eventCounty, requiredRole = 'Any', isYouthEvent = true) => {
       const employees = loadData(STORAGE_KEYS.EMPLOYEES, DEFAULT_EMPLOYEES);
       
       return employees.filter(emp => {
         // 1. Must be Active
         if (emp.status !== 'Active') return false;
 
-        // 2. If Youth Event (Kids Birthday, School), must be AB 506 certified per CA law
+        // 2. If Youth Event (Kids Birthday, School, Carnival), must be California AB 506 certified per law
         if (isYouthEvent && !emp.ab506Certified) return false;
 
-        // 3. County / Geo matching
-        const isNearby = emp.countyBase === eventCounty || emp.countyBase.includes('Orange');
-        
+        // 3. County / Regional matching
+        const countyLower = (eventCounty || '').toLowerCase();
+        const baseLower = (emp.countyBase || '').toLowerCase();
+
+        let isNearby = false;
+        if (baseLower.includes('regional') || baseLower.includes('socal') || baseLower.includes('all')) {
+          isNearby = true;
+        } else if (countyLower.includes('orange') && baseLower.includes('orange')) {
+          isNearby = true;
+        } else if (countyLower.includes('los angeles') && (baseLower.includes('los angeles') || baseLower.includes('la'))) {
+          isNearby = true;
+        } else if (countyLower.includes('san diego') && baseLower.includes('san diego')) {
+          isNearby = true;
+        } else if (baseLower.includes('orange') && (countyLower.includes('los angeles') || countyLower.includes('san diego'))) {
+          // Cross-county coverage within radius
+          isNearby = (emp.serviceRadiusMiles || 35) >= 30;
+        }
+
         return isNearby;
       });
     },

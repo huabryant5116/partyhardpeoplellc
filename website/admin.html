@@ -805,6 +805,9 @@
             California AB 5 compliant roster (W-2 Non-Exempt). Tracking active California AB 506 Live Scan child safeguarding certifications, service radius, and skill proficiencies.
           </p>
         </div>
+        <button class="btn btn-primary btn-sm btn-glow" onclick="openOnboardEmployeeModal()">
+          + Onboard Crew Member (W-2)
+        </button>
       </div>
 
       <div class="table-container">
@@ -1213,6 +1216,84 @@
         <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
           <button type="button" class="btn btn-secondary" onclick="document.getElementById('new-position-modal').style.display='none'">Cancel</button>
           <button type="submit" class="btn btn-primary btn-glow">Publish Opening</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Onboard Verified Employee Modal (California AB 5 Compliance) -->
+  <div id="onboard-employee-modal" style="display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 1.5rem; overflow-y: auto;">
+    <div style="background: var(--admin-surface); border: 1px solid var(--admin-border-hover); border-radius: var(--radius-lg); max-width: 580px; width: 100%; padding: 2rem; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
+      <h3 style="color: #FFFFFF; font-size: 1.4rem; margin-bottom: 0.35rem;">Onboard Verified Crew Member</h3>
+      <p style="font-size: 0.85rem; color: #94A3B8; margin-bottom: 1.25rem;">Compliant California AB 5 classification and AB 506 Live Scan safeguarding tracking.</p>
+
+      <form id="onboard-employee-form" onsubmit="handleOnboardEmployeeSubmit(event)">
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label" style="color: #CBD5E1;">Full Legal Name <span style="color: var(--accent-coral);">*</span></label>
+          <input type="text" class="executive-input" id="emp-name" placeholder="e.g. Marcus Vance" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          <div class="form-group">
+            <label class="form-label" style="color: #CBD5E1;">Email Address <span style="color: var(--accent-coral);">*</span></label>
+            <input type="email" class="executive-input" id="emp-email" placeholder="marcus@example.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="color: #CBD5E1;">Phone Number <span style="color: var(--accent-coral);">*</span></label>
+            <input type="tel" class="executive-input" id="emp-phone" placeholder="(949) 555-0199" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          <div class="form-group">
+            <label class="form-label" style="color: #CBD5E1;">Worker Classification (CA AB 5) <span style="color: var(--accent-coral);">*</span></label>
+            <select class="executive-input" id="emp-class" required>
+              <option value="Part-Time W-2 (Non-Exempt)">Part-Time W-2 (Non-Exempt)</option>
+              <option value="Full-Time W-2 (Non-Exempt)">Full-Time W-2 (Non-Exempt)</option>
+              <option value="Bona Fide 1099 Vendor (AB 5 Verified)">Bona Fide 1099 Vendor (AB 5 Verified)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="color: #CBD5E1;">Primary Role <span style="color: var(--accent-coral);">*</span></label>
+            <select class="executive-input" id="emp-role" required>
+              <option value="Lead Kids Party DJ & Music Host">Lead Kids Party DJ & Music Host</option>
+              <option value="Private VIP Karaoke Lounge Host">Private VIP Karaoke Lounge Host</option>
+              <option value="Commercial Inflatables Rigging Tech">Commercial Inflatables Rigging Tech</option>
+              <option value="Event Operations Supervisor">Event Operations Supervisor</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          <div class="form-group">
+            <label class="form-label" style="color: #CBD5E1;">Base County <span style="color: var(--accent-coral);">*</span></label>
+            <select class="executive-input" id="emp-county" required>
+              <option value="Orange County">Orange County</option>
+              <option value="Los Angeles County">Los Angeles County</option>
+              <option value="San Diego County">San Diego County</option>
+              <option value="Regional SoCal">Regional SoCal</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="color: #CBD5E1;">Radius (Miles)</label>
+            <input type="number" class="executive-input" id="emp-radius" value="35" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="color: #CBD5E1;">Hourly Pay ($) <span style="color: var(--accent-coral);">*</span></label>
+            <input type="number" step="0.50" class="executive-input" id="emp-rate" value="35.00" required>
+          </div>
+        </div>
+
+        <div class="form-group" style="background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.25); border-radius: var(--radius-sm); padding: 0.85rem; margin-bottom: 1.5rem;">
+          <label style="display: flex; align-items: center; gap: 0.5rem; color: #CBD5E1; font-size: 0.85rem; cursor: pointer;">
+            <input type="checkbox" id="emp-ab506" checked style="accent-color: #10B981; width: 16px; height: 16px;">
+            <span><strong>California AB 506 Live Scan Verified:</strong> Completed fingerprint background check and mandated youth reporter training.</span>
+          </label>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+          <button type="button" class="btn btn-secondary" onclick="document.getElementById('onboard-employee-modal').style.display='none'">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-glow">Confirm & Add to Roster</button>
         </div>
       </form>
     </div>
@@ -2158,7 +2239,71 @@ Los Angeles • Orange County • San Diego`;
         }
       ];
 
-      tbody.innerHTML = sampleEvents.map(evt => {
+    function renderEventStaffingTable() {
+      const tbody = document.getElementById('wf-staffing-table-body');
+      if (!tbody) return;
+
+      let allEvents = [];
+
+      // 1. Live customer inquiries submitted through Party Builder / Booking flow
+      const storedInquiries = localStorage.getItem('php_inquiries');
+      if (storedInquiries) {
+        try {
+          const inqList = JSON.parse(storedInquiries);
+          inqList.forEach(inq => {
+            const isYouth = (inq.details.eventType || '').toLowerCase().includes('kids') || (parseInt(inq.details.childrenCount || 0, 10) > 0);
+            const address = inq.details.address || 'Orange County, CA';
+            let eventCounty = 'Orange County';
+            if (address.toLowerCase().includes('los angeles') || address.toLowerCase().includes('la')) eventCounty = 'Los Angeles County';
+            else if (address.toLowerCase().includes('san diego') || address.toLowerCase().includes('sd')) eventCounty = 'San Diego County';
+
+            allEvents.push({
+              ref: inq.refCode,
+              title: `${inq.details.contactName || 'Customer'}'s Celebration (${inq.details.eventType || 'Party'})`,
+              date: inq.details.eventDate || 'Pending Schedule',
+              venue: inq.details.address || 'Client Venue, Southern California',
+              county: eventCounty,
+              isYouth,
+              roles: isYouth ? ['Lead Kids Party DJ', 'Commercial Inflatables Tech'] : ['Private VIP Karaoke Host']
+            });
+          });
+        } catch (e) {}
+      }
+
+      // 2. Production sample bookings across SoCal
+      const sampleEvents = [
+        {
+          ref: 'PHP-2026-8841',
+          title: "Maya's 6th Birthday Bash (Kids Party)",
+          date: 'Nov 14, 2026',
+          venue: 'Irvine Regional Park, Orange County',
+          county: 'Orange County',
+          isYouth: true,
+          roles: ['Lead Kids Party DJ', 'Commercial Inflatables Rigging Tech']
+        },
+        {
+          ref: 'PHP-2026-9022',
+          title: 'Newport Beach Glow Karaoke Lounge',
+          date: 'Nov 20, 2026',
+          venue: 'Backyard Pavilion, Newport Beach',
+          county: 'Orange County',
+          isYouth: false,
+          roles: ['Private VIP Karaoke Host']
+        },
+        {
+          ref: 'PHP-2026-9154',
+          title: 'San Diego Elementary School Festival',
+          date: 'Nov 28, 2026',
+          venue: 'Balboa Park Lawn, San Diego',
+          county: 'San Diego County',
+          isYouth: true,
+          roles: ['Lead Kids Party DJ', 'Commercial Inflatables Rigging Tech']
+        }
+      ];
+
+      allEvents = allEvents.concat(sampleEvents);
+
+      tbody.innerHTML = allEvents.map(evt => {
         const matchedCrew = WorkforceManager.matchCrewForEvent(evt.date, evt.county, 'Any', evt.isYouth);
         
         let crewDisplayHtml = '';
@@ -2208,11 +2353,55 @@ Los Angeles • Orange County • San Diego`;
 
     function approveStaffingAssignment(bookingRef, crewNames) {
       if (!crewNames) {
-        alert('Cannot dispatch: No AB 506 compliant crew assigned.');
+        alert('Cannot dispatch: No California AB 506 compliant crew assigned to this youth event.');
         return;
       }
+      WorkforceManager.recordAudit('APPROVE_STAFFING_DISPATCH', `Dispatched verified crew (${crewNames}) to booking ${bookingRef}`, 'Bryant Hua (Operations Lead)');
       alert(`Staffing Confirmed!\n\nBooking: ${bookingRef}\nDispatched Crew: ${crewNames}\n\nAutomated shift confirmations and venue safety protocols dispatched to crew mobile devices.`);
       showToast(`Roster officially dispatched for ${bookingRef}`);
+      renderAuditLogsTable();
+    }
+
+    function openOnboardEmployeeModal() {
+      document.getElementById('emp-name').value = '';
+      document.getElementById('emp-email').value = '';
+      document.getElementById('emp-phone').value = '';
+      document.getElementById('emp-rate').value = '35.00';
+      document.getElementById('emp-radius').value = '35';
+      document.getElementById('emp-ab506').checked = true;
+      document.getElementById('onboard-employee-modal').style.display = 'flex';
+    }
+
+    function handleOnboardEmployeeSubmit(e) {
+      e.preventDefault();
+      const fullName = document.getElementById('emp-name').value.trim();
+      const email = document.getElementById('emp-email').value.trim();
+      const phone = document.getElementById('emp-phone').value.trim();
+      const classification = document.getElementById('emp-class').value;
+      const role = document.getElementById('emp-role').value;
+      const countyBase = document.getElementById('emp-county').value;
+      const radius = document.getElementById('emp-radius').value;
+      const rate = document.getElementById('emp-rate').value;
+      const ab506 = document.getElementById('emp-ab506').checked;
+
+      const newEmp = WorkforceManager.addEmployee({
+        fullName,
+        email,
+        phone,
+        classification,
+        role,
+        countyBase,
+        serviceRadiusMiles: radius,
+        hourlyRate: rate,
+        ab506Certified: ab506
+      });
+
+      showToast(`🎉 Onboarded ${newEmp.fullName} (${newEmp.employeeCode})`);
+      document.getElementById('onboard-employee-modal').style.display = 'none';
+      renderEmployeeTable();
+      renderEventStaffingTable();
+      renderWorkforceAnalytics();
+      renderAuditLogsTable();
     }
 
     function renderAuditLogsTable() {

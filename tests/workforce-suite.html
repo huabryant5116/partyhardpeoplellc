@@ -543,6 +543,81 @@
         });
       });
 
+      // ----------------------------------------------------
+      // SUITE 9: CA AB 5 CLASSIFICATION & EVENT CREW MATCHER (MILESTONE 3)
+      // ----------------------------------------------------
+      describe("9. California AB 5 Onboarding & AB 506 Event Staffing Matcher", () => {
+        let testEmpId = null;
+
+        it("Onboards new employee with W-2 classification, service radius, and employee code", () => {
+          const newEmp = WorkforceManager.addEmployee({
+            fullName: 'Marcus Vance',
+            email: 'marcus.v@example.com',
+            phone: '(949) 555-0199',
+            classification: 'Part-Time W-2 (Non-Exempt)',
+            role: 'Lead Kids Party DJ',
+            countyBase: 'Orange County',
+            serviceRadiusMiles: 45,
+            hourlyRate: 38.50,
+            ab506Certified: true
+          });
+
+          expect(newEmp.id).toBeTruthy();
+          expect(newEmp.employeeCode).toInclude('PHP-EMP-');
+          expect(newEmp.classification).toBe('Part-Time W-2 (Non-Exempt)');
+          expect(newEmp.ab506Certified).toBe(true);
+          expect(newEmp.hourlyRate).toBe(38.50);
+          testEmpId = newEmp.id;
+        });
+
+        it("Updates employee profile and records compliance audit trail entry", () => {
+          const updated = WorkforceManager.updateEmployee(testEmpId, {
+            hourlyRate: 42.00,
+            serviceRadiusMiles: 50
+          });
+
+          expect(updated.hourlyRate).toBe(42.00);
+          expect(updated.serviceRadiusMiles).toBe(50);
+
+          const logs = WorkforceManager.getAuditLogs();
+          const empLog = logs.find(l => l.action === 'UPDATE_EMPLOYEE_ROSTER');
+          expect(empLog).toBeTruthy();
+          expect(empLog.details).toInclude('Marcus Vance');
+        });
+
+        it("Enforces California AB 506 child safeguarding: uncertified crew excluded from youth events", () => {
+          // Add uncertified crew member
+          const uncertified = WorkforceManager.addEmployee({
+            fullName: 'Danielle Cole',
+            email: 'danielle@example.com',
+            phone: '(858) 555-1234',
+            classification: 'Part-Time W-2 (Non-Exempt)',
+            role: 'Private VIP Karaoke Host',
+            countyBase: 'San Diego County',
+            serviceRadiusMiles: 30,
+            hourlyRate: 40.00,
+            ab506Certified: false
+          });
+
+          // Query youth event in San Diego
+          const youthCrew = WorkforceManager.matchCrewForEvent('2026-11-28', 'San Diego County', 'Any', true);
+          const hasUncertified = youthCrew.some(c => c.id === uncertified.id);
+          expect(hasUncertified).toBe(false);
+
+          // Query adult event in San Diego
+          const adultCrew = WorkforceManager.matchCrewForEvent('2026-11-28', 'San Diego County', 'Any', false);
+          const hasInAdult = adultCrew.some(c => c.id === uncertified.id);
+          expect(hasInAdult).toBe(true);
+        });
+
+        it("Supports cross-county dispatch within operational service radius across SoCal", () => {
+          // Orange County crew with >= 30 mile radius matching Los Angeles County
+          const laMatched = WorkforceManager.matchCrewForEvent('2026-11-20', 'Los Angeles County', 'Any', true);
+          expect(laMatched.length).toBeGreaterThan(0);
+          expect(laMatched.every(c => c.ab506Certified)).toBe(true);
+        });
+      });
+
       // Render Test UI
       const result = TestRunner.execute();
       renderUI(result);
