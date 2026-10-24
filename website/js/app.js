@@ -66,47 +66,112 @@ document.addEventListener('DOMContentLoaded', () => {
   updateSummarySidebar();
 });
 
-// Vibe Branch Selector
-function selectEventVibe(vibe, btn) {
-  partyState.eventVibe = vibe;
-  document.querySelectorAll('#vibe-branch-buttons .vibe-branch-btn').forEach(b => {
-    b.classList.remove('active');
-    b.style.borderColor = 'var(--border-subtle)';
-    b.style.background = 'var(--bg-surface)';
-    b.style.color = 'var(--text-secondary)';
-  });
-  if (btn) {
-    btn.classList.add('active');
-    btn.style.borderColor = 'var(--primary)';
-    btn.style.background = 'var(--primary-tint)';
-    btn.style.color = 'var(--primary)';
-  }
+// Vibe & Event Experience Master Catalog
+const PARTY_EXPERIENCES = {
+  // Kids & Youth
+  'birthday': { vibe: 'kids', label: '🎈 Kids Birthday Party (Ages 1–12)', page: 'experience-kids.html', desc: 'DJ dance games, musical statues, bubble blasts, and sanitized pastel bounce castles.' },
+  'school': { vibe: 'kids', label: '🎈 School Carnival or Daycare Field Day', page: 'experience-kids.html', desc: 'High-throughput obstacle fun, child-safe inflatables, and interactive youth music hosts.' },
+  'toddler': { vibe: 'kids', label: '🎈 Toddler & Soft Play Castle Celebration', page: 'experience-kids.html', desc: 'Gentle sensory songs, safe low-height bounce castles, and padded seating.' },
+  'preteen': { vibe: 'kids', label: '🎈 Pre-Teen Dance Party & Glow Disco', page: 'experience-kids.html', desc: 'Karaoke jams, dance battles, dynamic laser lighting, and radio-clean hits.' },
+  
+  // Adult Social & Milestones
+  'milestone': { vibe: 'adult', label: '🍸 Milestone Birthday (21st, 30th, 40th, 50th)', page: 'experience-adults.html', desc: 'Pro club audio tops, subwoofers, moving head lighting, and curated multi-decade playlists.' },
+  'karaoke-lounge': { vibe: 'adult', label: '🍸 Private VIP Karaoke Lounge Experience', page: 'experience-adults.html', desc: '32" HD lyric monitor, twin studio wireless microphones, sound-reactive lighting, and 50k songs.' },
+  'cocktail': { vibe: 'adult', label: '🍸 Backyard Cocktail Mixer & Patio Sound', page: 'experience-adults.html', desc: 'Crystal-clear acoustic sound tuned specifically for open-air patio conversation and evening toasts.' },
+  'nightclub': { vibe: 'adult', label: '🍸 Milestone Dance Floor & Nightclub Audio', page: 'experience-adults.html', desc: 'High-energy open-format club DJ, laser truss array, and deep bass sound system.' },
 
-  const typeSelect = document.getElementById('pb-event-type');
-  if (typeSelect) {
-    if (vibe === 'adult') {
-      typeSelect.value = 'milestone';
-      partyState.eventType = 'milestone';
-    } else if (vibe === 'corporate') {
-      typeSelect.value = 'corporate';
-      partyState.eventType = 'corporate';
-    } else if (vibe === 'community') {
-      typeSelect.value = 'community';
-      partyState.eventType = 'community';
+  // Corporate & Brand Events
+  'corporate-picnic': { vibe: 'corporate', label: '🏢 Annual Company Picnic (Family Day)', page: 'experience-corporate.html', desc: 'Dual inflatables, field games MC, quiet generator, tables/chairs, and full $2M COI insurance.' },
+  'corporate-keynote': { vibe: 'corporate', label: '🏢 Corporate Keynote & Outdoor PA Audio', page: 'experience-corporate.html', desc: 'Multi-speaker wide distribution PA array, wireless lapel mics, and sound engineer setup.' },
+  'holiday-gala': { vibe: 'corporate', label: '🏢 Corporate Holiday Gala & Staging', page: 'experience-corporate.html', desc: 'Ambient wireless uplighting, pro sound array, live DJ coordinator, and dance lighting.' },
+  'team-building': { vibe: 'corporate', label: '🏢 Team Appreciation & Field Games', page: 'experience-corporate.html', desc: 'Organized corporate competitions, sound stage, and turnkey equipment setup.' },
+
+  // Community & Festivals
+  'community': { vibe: 'community', label: '🎪 Community / HOA Block Party', page: 'experience-community.html', desc: 'Commercial bounce castle, Bluetooth PA sound system, tables & chairs with asphalt anchoring.' },
+  'school-festival': { vibe: 'community', label: '🎪 School PTA Carnival & Fundraiser', page: 'experience-community.html', desc: 'Multi-station obstacle inflatables, live games host, and volunteer-friendly coordination.' },
+  'church-festival': { vibe: 'community', label: '🎪 Church & Religious Family Festival', page: 'experience-community.html', desc: 'Family-friendly crowd DJ, lawn games, sound distribution, and heavy-duty seating.' },
+  'family-reunion': { vibe: 'community', label: '🎪 Large Family Reunion & Gathering', page: 'experience-community.html', desc: 'Wholesome multi-generational music host, shaded tables/chairs, and inflatable fun.' }
+};
+
+// Dropdown handler for Party Builder
+function handlePartyExperienceDropdown(eventType) {
+  partyState.eventType = eventType;
+  const exp = PARTY_EXPERIENCES[eventType] || { vibe: 'kids', label: 'Custom Celebration', page: 'experience-kids.html', desc: '' };
+  partyState.eventVibe = exp.vibe;
+  
+  const badgeLabel = document.getElementById('vibe-badge-label');
+  if (badgeLabel) {
+    badgeLabel.textContent = exp.label;
+    if (exp.vibe === 'adult') {
+      badgeLabel.className = 'badge';
+      badgeLabel.style.background = '#EDE9FE';
+      badgeLabel.style.color = '#7C3AED';
+    } else if (exp.vibe === 'corporate') {
+      badgeLabel.className = 'badge';
+      badgeLabel.style.background = '#E0F2FE';
+      badgeLabel.style.color = '#0284C7';
+    } else if (exp.vibe === 'community') {
+      badgeLabel.className = 'badge';
+      badgeLabel.style.background = '#D1FAE5';
+      badgeLabel.style.color = '#10B981';
     } else {
-      typeSelect.value = 'birthday';
-      partyState.eventType = 'birthday';
+      badgeLabel.className = 'badge badge-coral';
+      badgeLabel.style.background = '';
+      badgeLabel.style.color = '';
     }
   }
   saveState();
 }
 
+// Dropdown handler for Landing Page
+function handleLandingDropdownChange(val) {
+  const exp = PARTY_EXPERIENCES[val];
+  if (!exp) return;
+
+  const descElem = document.getElementById('landing-dropdown-desc');
+  if (descElem) descElem.textContent = exp.desc;
+
+  const btnDetails = document.getElementById('landing-dropdown-btn-details');
+  if (btnDetails) btnDetails.href = exp.page;
+
+  const btnQuote = document.getElementById('landing-dropdown-btn-quote');
+  if (btnQuote) {
+    btnQuote.onclick = () => {
+      const typeSelect = document.getElementById('pb-event-type');
+      if (typeSelect) {
+        typeSelect.value = val;
+        handlePartyExperienceDropdown(val);
+      }
+      const builderSection = document.getElementById('party-builder');
+      if (builderSection) builderSection.scrollIntoView({ behavior: 'smooth' });
+    };
+  }
+}
+
+// URL query parameter loader
 function checkUrlVibeParams() {
   const urlParams = new URLSearchParams(window.location.search);
   const vibe = urlParams.get('vibe');
-  if (vibe && ['kids', 'adult', 'corporate', 'community'].includes(vibe)) {
-    const btn = document.querySelector(`.vibe-branch-btn[data-vibe="${vibe}"]`);
-    selectEventVibe(vibe, btn);
+  const typeSelect = document.getElementById('pb-event-type');
+
+  if (vibe) {
+    // Map vibe to default type
+    const vibeDefaults = {
+      'kids': 'birthday',
+      'adult': 'milestone',
+      'corporate': 'corporate-picnic',
+      'community': 'community'
+    };
+    const defaultType = vibeDefaults[vibe] || 'birthday';
+    if (typeSelect) {
+      typeSelect.value = defaultType;
+      handlePartyExperienceDropdown(defaultType);
+    }
+    const landingSelect = document.getElementById('landing-party-experience-dropdown');
+    if (landingSelect) {
+      landingSelect.value = defaultType;
+      handleLandingDropdownChange(defaultType);
+    }
   }
 }
 

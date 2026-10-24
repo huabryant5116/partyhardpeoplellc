@@ -133,59 +133,64 @@
       </div>
     </section>
 
-    <!-- 4-Vibe All-Ages Interactive Segmenter -->
-    <section class="section" style="padding-top: 1.5rem; padding-bottom: 2rem;">
-      <div class="container">
-        <div class="section-title-wrap" style="margin-bottom: 2rem; text-align: center;">
-          <div class="badge badge-coral">Choose Your Event Experience</div>
-          <h2 style="font-size: 2.3rem;">What kind of celebration are you hosting?</h2>
-          <p>Explore curated entertainment packages tailored specifically for your audience.</p>
+    <!-- All Party Options Interactive Dropdown Hub -->
+    <section class="section" style="padding-top: 1.5rem; padding-bottom: 2.5rem; background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);">
+      <div class="container" style="max-width: 860px;">
+        <div class="section-title-wrap" style="text-align: center; margin-bottom: 2rem;">
+          <div class="badge badge-coral">All-Ages Celebrations</div>
+          <h2 style="font-size: 2.3rem;">Explore All Party & Event Options</h2>
+          <p>Select any event experience below to view tailored packages or begin your custom quote.</p>
         </div>
-        <div class="vibe-segmenter-grid">
-          <!-- Card 1: Kids -->
-          <a href="experience-kids.html" class="vibe-card" style="--vibe-accent: #FF476F; --vibe-bg: #FFE4E6; --vibe-glow: rgba(255, 71, 111, 0.25);">
-            <div class="vibe-card-icon">🎈</div>
-            <h3 class="vibe-card-title">Kids & Youth Parties</h3>
-            <p class="vibe-card-desc">Commercial pastel bounce castles, interactive kids DJs, musical games, and bubble blasts.</p>
-            <div class="vibe-card-tags">
-              <span class="vibe-tag">Ages 1–12</span>
-              <span class="vibe-tag">Sanitized Vinyl</span>
-              <span class="vibe-tag">Dance Games</span>
-            </div>
-          </a>
-          <!-- Card 2: Adult Social -->
-          <a href="experience-adults.html" class="vibe-card" style="--vibe-accent: #7C3AED; --vibe-bg: #EDE9FE; --vibe-glow: rgba(124, 58, 237, 0.25);">
-            <div class="vibe-card-icon">🍸</div>
-            <h3 class="vibe-card-title">Adult Social & Milestones</h3>
-            <p class="vibe-card-desc">Milestone 30th/40th/50th birthdays, private VIP karaoke lounges, club audio & lighting.</p>
-            <div class="vibe-card-tags">
-              <span class="vibe-tag">Milestones</span>
-              <span class="vibe-tag">Pro Audio</span>
-              <span class="vibe-tag">Karaoke Lounge</span>
-            </div>
-          </a>
-          <!-- Card 3: Corporate -->
-          <a href="experience-corporate.html" class="vibe-card" style="--vibe-accent: #0284C7; --vibe-bg: #E0F2FE; --vibe-glow: rgba(2, 132, 199, 0.25);">
-            <div class="vibe-card-icon">🏢</div>
-            <h3 class="vibe-card-title">Corporate & Brand Galas</h3>
-            <p class="vibe-card-desc">Company picnics, team appreciation galas, keynote PA audio, and full $2M COI insurance.</p>
-            <div class="vibe-card-tags">
-              <span class="vibe-tag">$2M COI Insured</span>
-              <span class="vibe-tag">W-9 Ready</span>
-              <span class="vibe-tag">Keynote AV</span>
-            </div>
-          </a>
-          <!-- Card 4: Community -->
-          <a href="experience-community.html" class="vibe-card" style="--vibe-accent: #10B981; --vibe-bg: #D1FAE5; --vibe-glow: rgba(16, 185, 129, 0.25);">
-            <div class="vibe-card-icon">🎪</div>
-            <h3 class="vibe-card-title">Community & Festivals</h3>
-            <p class="vibe-card-desc">Elementary carnivals, church festivals, HOA block parties, field games, and crowd sound.</p>
-            <div class="vibe-card-tags">
-              <span class="vibe-tag">School Carnivals</span>
-              <span class="vibe-tag">HOA Parties</span>
-              <span class="vibe-tag">Crowd PA</span>
-            </div>
-          </a>
+
+        <div class="card" style="padding: 2.5rem; box-shadow: var(--shadow-lg); border: 2px solid var(--border-active); border-radius: var(--radius-lg); background: #FFFFFF;">
+          <label for="landing-party-experience-dropdown" style="display: block; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.75rem;">
+            Select Your Party Experience:
+          </label>
+          
+          <select id="landing-party-experience-dropdown" class="form-select" style="font-size: 1.05rem; padding: 1rem 1.25rem; font-weight: 600; border: 2px solid var(--primary); border-radius: var(--radius-md); width: 100%; margin-bottom: 1.5rem; background-color: #FFFFFF; color: var(--text-primary); cursor: pointer;" onchange="handleLandingDropdownChange(this.value)">
+            <optgroup label="🎈 Kids & Youth Celebrations">
+              <option value="birthday" selected>Kids Birthday Party (Ages 1–12) — DJ, Games & Bounce</option>
+              <option value="school">School Carnival or Daycare Field Day</option>
+              <option value="toddler">Toddler & Soft Play Castle Celebration</option>
+              <option value="preteen">Pre-Teen Dance Party & Glow Disco</option>
+            </optgroup>
+            <optgroup label="🍸 Adult Social & Milestone Celebrations">
+              <option value="milestone">Milestone Birthday (21st, 30th, 40th, 50th)</option>
+              <option value="karaoke-lounge">Private VIP Karaoke Lounge Experience</option>
+              <option value="cocktail">Backyard Cocktail Mixer & Patio Sound</option>
+              <option value="nightclub">Milestone Dance Floor & Nightclub Audio</option>
+            </optgroup>
+            <optgroup label="🏢 Corporate & Brand Events">
+              <option value="corporate-picnic">Annual Company Picnic (Family Day)</option>
+              <option value="corporate-keynote">Corporate Keynote & Outdoor PA Audio</option>
+              <option value="holiday-gala">Corporate Holiday Gala & Staging</option>
+              <option value="team-building">Team Appreciation & Field Games</option>
+            </optgroup>
+            <optgroup label="🎪 Community, Schools & Festivals">
+              <option value="community">Community / HOA Block Party</option>
+              <option value="school-festival">School PTA Carnival & Fundraiser</option>
+              <option value="church-festival">Church & Religious Family Festival</option>
+              <option value="family-reunion">Large Family Reunion & Gathering</option>
+            </optgroup>
+          </select>
+
+          <!-- Dynamic Preview & Description -->
+          <div style="background: var(--bg-surface-alt); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; margin-bottom: 1.75rem; border-left: 4px solid var(--primary);">
+            <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--primary); letter-spacing: 0.05em; margin-bottom: 0.35rem;">Experience Details</div>
+            <p id="landing-dropdown-desc" style="font-size: 1rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+              DJ dance games, musical statues, bubble blasts, and sanitized pastel bounce castles.
+            </p>
+          </div>
+
+          <!-- Dual Action Buttons -->
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <button type="button" class="btn btn-primary btn-glow" id="landing-dropdown-btn-quote" style="flex: 1; min-width: 200px; justify-content: center; padding: 0.95rem 1.5rem; font-size: 1.05rem;" onclick="handleLandingDropdownChange(document.getElementById('landing-party-experience-dropdown').value); document.getElementById('party-builder').scrollIntoView({behavior:'smooth'});">
+              🎉 Build Quote For This Party &rarr;
+            </button>
+            <a href="experience-kids.html" class="btn btn-secondary" id="landing-dropdown-btn-details" style="flex: 1; min-width: 180px; justify-content: center; padding: 0.95rem 1.5rem; font-size: 1.05rem;">
+              View Full Experience Page
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -290,31 +295,51 @@
                 <h3 style="margin-bottom: 1.25rem;">Step 1: Event Details & Location</h3>
                 
                 <div class="form-group" style="margin-bottom: 1.5rem;">
-                  <label class="form-label">Select Event Experience Vibe</label>
-                  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.65rem;" id="vibe-branch-buttons">
-                    <button type="button" class="btn btn-sm vibe-branch-btn active" data-vibe="kids" onclick="selectEventVibe('kids', this)" style="border-radius: var(--radius-sm); padding: 0.65rem 0.5rem; text-align: center; border: 2px solid var(--primary); background: var(--primary-tint); font-weight: 700; color: var(--primary);">🎈 Kids Party</button>
-                    <button type="button" class="btn btn-sm vibe-branch-btn" data-vibe="adult" onclick="selectEventVibe('adult', this)" style="border-radius: var(--radius-sm); padding: 0.65rem 0.5rem; text-align: center; border: 1px solid var(--border-subtle); background: var(--bg-surface); font-weight: 700; color: var(--text-secondary);">🍸 Adult Social</button>
-                    <button type="button" class="btn btn-sm vibe-branch-btn" data-vibe="corporate" onclick="selectEventVibe('corporate', this)" style="border-radius: var(--radius-sm); padding: 0.65rem 0.5rem; text-align: center; border: 1px solid var(--border-subtle); background: var(--bg-surface); font-weight: 700; color: var(--text-secondary);">🏢 Corporate</button>
-                    <button type="button" class="btn btn-sm vibe-branch-btn" data-vibe="community" onclick="selectEventVibe('community', this)" style="border-radius: var(--radius-sm); padding: 0.65rem 0.5rem; text-align: center; border: 1px solid var(--border-subtle); background: var(--bg-surface); font-weight: 700; color: var(--text-secondary);">🎪 Community</button>
+                  <label class="form-label" for="pb-event-type" style="font-weight: 700; font-size: 1rem;">Select Event Experience & Party Type <span class="req">*</span></label>
+                  <select class="form-select" id="pb-event-type" style="font-size: 1.05rem; padding: 0.85rem 1rem; border: 2px solid var(--primary); border-radius: var(--radius-sm); background-color: #FFFFFF; font-weight: 600;" onchange="handlePartyExperienceDropdown(this.value)">
+                    <optgroup label="🎈 Kids & Youth Celebrations">
+                      <option value="birthday" selected>Kids Birthday Party (Ages 1–12) — DJ, Games & Bounce</option>
+                      <option value="school">School Carnival or Daycare Field Day</option>
+                      <option value="toddler">Toddler & Soft Play Castle Celebration</option>
+                      <option value="preteen">Pre-Teen Dance Party & Glow Disco</option>
+                    </optgroup>
+                    <optgroup label="🍸 Adult Social & Milestone Celebrations">
+                      <option value="milestone">Milestone Birthday (21st, 30th, 40th, 50th)</option>
+                      <option value="karaoke-lounge">Private VIP Karaoke Lounge Experience</option>
+                      <option value="cocktail">Backyard Cocktail Mixer & Patio Sound</option>
+                      <option value="nightclub">Milestone Dance Floor & Nightclub Audio</option>
+                    </optgroup>
+                    <optgroup label="🏢 Corporate & Brand Events">
+                      <option value="corporate-picnic">Annual Company Picnic (Family Day)</option>
+                      <option value="corporate-keynote">Corporate Keynote & Outdoor PA Audio</option>
+                      <option value="holiday-gala">Corporate Holiday Gala & Staging</option>
+                      <option value="team-building">Team Appreciation & Field Games</option>
+                    </optgroup>
+                    <optgroup label="🎪 Community, Schools & Festivals">
+                      <option value="community">Community / HOA Block Party</option>
+                      <option value="school-festival">School PTA Carnival & Fundraiser</option>
+                      <option value="church-festival">Church & Religious Family Festival</option>
+                      <option value="family-reunion">Large Family Reunion & Gathering</option>
+                    </optgroup>
+                  </select>
+                  <div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem;">
+                    <span class="badge badge-coral" id="vibe-badge-label">🎈 Kids & Youth Experience</span>
+                    <span style="color: var(--text-muted);">Package suggestions and options automatically updated.</span>
                   </div>
                 </div>
 
                 <div class="form-row-2">
                   <div class="form-group">
-                    <label class="form-label" for="pb-event-type">Event Type <span class="req">*</span></label>
-                    <select class="form-select" id="pb-event-type">
-                      <option value="birthday">Kids Birthday Celebration</option>
-                      <option value="milestone">Adult Milestone (30th, 40th, 50th) / Social</option>
-                      <option value="corporate">Corporate Picnic / Brand Gala</option>
-                      <option value="school">School Carnival or Daycare Event</option>
-                      <option value="community">Community / HOA Block Party</option>
-                      <option value="family-reunion">Family Reunion / Gathering</option>
-                      <option value="holiday">Holiday Celebration</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
                     <label class="form-label" for="pb-event-date">Event Date <span class="req">*</span></label>
                     <input type="date" class="form-input" id="pb-event-date" required>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="pb-venue-type">Venue Type <span class="req">*</span></label>
+                    <select class="form-select" id="pb-venue-type">
+                      <option value="outdoor">Outdoor (Backyard, Park, Lawn)</option>
+                      <option value="indoor">Indoor (Home, Community Hall, Gym)</option>
+                      <option value="mixed">Mixed (Indoor & Outdoor)</option>
+                    </select>
                   </div>
                 </div>
 
@@ -329,19 +354,9 @@
                   </div>
                 </div>
 
-                <div class="form-row-2">
-                  <div class="form-group">
-                    <label class="form-label" for="pb-address">Event City or Address in SoCal <span class="req">*</span></label>
-                    <input type="text" class="form-input" id="pb-address" placeholder="e.g. Irvine, CA or Pasadena, CA" required>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label" for="pb-venue-type">Venue Type <span class="req">*</span></label>
-                    <select class="form-select" id="pb-venue-type">
-                      <option value="outdoor">Outdoor (Backyard, Park, Lawn)</option>
-                      <option value="indoor">Indoor (Home, Community Hall, Gym)</option>
-                      <option value="mixed">Mixed (Indoor & Outdoor)</option>
-                    </select>
-                  </div>
+                <div class="form-group">
+                  <label class="form-label" for="pb-address">Event City or Address in SoCal <span class="req">*</span></label>
+                  <input type="text" class="form-input" id="pb-address" placeholder="e.g. Irvine, CA or Pasadena, CA" required>
                 </div>
 
                 <div style="display: flex; justify-content: flex-end; margin-top: 1.5rem;">
