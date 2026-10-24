@@ -3,20 +3,236 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Event Gallery | Party Hard People LLC</title>
-  <meta name="description" content="View real photos of kids birthday celebrations, DJ dance parties, bounce castle setups, and karaoke events coordinated by Party Hard People LLC across Southern California.">
+  <title>Event Gallery & Party Highlights | Party Hard People LLC</title>
+  <meta name="description" content="Explore real photos of children's birthday celebrations, kids DJ dance parties, pastel bounce castle setups, and karaoke jam stations across Southern California.">
   <meta property="og:title" content="Event Gallery | Party Hard People LLC">
-  <meta property="og:description" content="View real photos of kids birthday celebrations, DJ dance parties, and bounce castle setups across Southern California.">
+  <meta property="og:description" content="Real client celebrations across Los Angeles, Orange County, and San Diego. Coordinated seamlessly for busy parents.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://partyhardpeoplellc.com/gallery.html">
   <meta property="og:image" content="https://partyhardpeoplellc.com/assets/images/hero-celebration.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/main.css?v=2.0">
+  <link rel="stylesheet" href="css/main.css?v=2.1">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎉</text></svg>">
+  <style>
+    /* Executive Gallery Showcase Styles */
+    .gallery-filter-bar {
+      display: flex;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 3rem;
+    }
+    .gallery-pill {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      font-family: var(--font-heading);
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0.6rem 1.35rem;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: all var(--transition-normal);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .gallery-pill:hover {
+      border-color: var(--border-active);
+      color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .gallery-pill.active {
+      background: var(--primary);
+      color: #FFFFFF;
+      border-color: var(--primary);
+      box-shadow: 0 6px 20px var(--primary-glow);
+    }
+
+    /* Showcase Cards */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+    .gallery-item-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      transition: all var(--transition-normal);
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      position: relative;
+    }
+    .gallery-item-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg), 0 15px 35px rgba(124, 58, 237, 0.12);
+      border-color: rgba(139, 92, 246, 0.4);
+    }
+    .gallery-img-container {
+      height: 270px;
+      position: relative;
+      overflow: hidden;
+      background: #F1F5F9;
+    }
+    .gallery-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      display: block;
+    }
+    .gallery-item-card:hover .gallery-img {
+      transform: scale(1.06);
+    }
+    .gallery-overlay-badge {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: var(--radius-full);
+      padding: 0.35rem 0.85rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--primary);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      z-index: 2;
+    }
+    .gallery-star-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: #F59E0B;
+      color: #000000;
+      border-radius: var(--radius-full);
+      padding: 0.35rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+      z-index: 2;
+    }
+    .gallery-info-pane {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .gallery-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 0.65rem;
+      font-weight: 600;
+    }
+    .gallery-tags-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin: 0.85rem 0 1rem 0;
+    }
+    .gallery-tag-chip {
+      background: var(--bg-surface-alt);
+      color: var(--text-secondary);
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      padding: 0.25rem 0.6rem;
+      font-weight: 600;
+    }
+
+    /* Executive Lightbox Modal */
+    .lightbox-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 7, 13, 0.92);
+      backdrop-filter: blur(16px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      animation: fadeIn 0.25s ease forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .lightbox-content {
+      background: #FFFFFF;
+      border-radius: var(--radius-lg);
+      max-width: 960px;
+      width: 100%;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+      position: relative;
+      max-height: 90vh;
+    }
+    @media (max-width: 768px) {
+      .lightbox-content {
+        grid-template-columns: 1fr;
+        max-height: 85vh;
+        overflow-y: auto;
+      }
+    }
+    .lightbox-img-side {
+      background: #000000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .lightbox-img-side img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      max-height: 540px;
+    }
+    .lightbox-info-side {
+      padding: 2.25rem;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    .lightbox-close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(15, 23, 42, 0.75);
+      color: #FFFFFF;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: all 0.2s;
+      z-index: 10;
+    }
+    .lightbox-close-btn:hover {
+      background: var(--accent-coral);
+      transform: scale(1.1);
+    }
+  </style>
 </head>
 <body>
+  <!-- Header -->
   <header class="header">
     <div class="container nav-wrapper">
       <a href="index.html" class="brand-logo">
@@ -33,56 +249,113 @@
         <li><a href="contact.html" class="nav-link">Contact</a></li>
       </ul>
       <div class="nav-actions">
-        <a href="admin.html" class="btn btn-secondary btn-sm">Owner Portal</a>
+        <a href="admin.html?tab=gallery" class="btn btn-secondary btn-sm" title="Upload and manage party photography">
+          📸 Owner Studio
+        </a>
         <a href="index.html#party-builder" class="btn btn-primary btn-sm btn-glow">Build Your Party Quote</a>
       </div>
     </div>
   </header>
 
   <main>
-    <section class="section" style="padding-top: 4rem;">
+    <section class="section" style="padding-top: 4.5rem; padding-bottom: 5rem;">
       <div class="container">
-        <div class="section-title-wrap">
-          <div class="badge badge-coral">Real Celebrations</div>
-          <h1>Event Gallery & Highlights</h1>
-          <p>Every photograph is from real client celebrations across Los Angeles, Orange County, and San Diego with client permission.</p>
+        <!-- Section Title -->
+        <div class="section-title-wrap" style="max-width: 720px; margin-left: auto; margin-right: auto; text-align: center;">
+          <div class="badge badge-coral">Live Celebrations</div>
+          <h1 style="font-size: 2.75rem; letter-spacing: -0.02em; margin: 0.5rem 0 1rem 0;">
+            Event Gallery & Party Highlights
+          </h1>
+          <p style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+            Every photograph is from real client celebrations across Los Angeles, Orange County, and San Diego with client privacy permission.
+          </p>
         </div>
 
-        <div class="grid-3" style="margin-bottom: 4rem;">
-          <div class="card" style="padding: 1rem;">
-            <div style="height: 260px; overflow: hidden; border-radius: var(--radius-md); margin-bottom: 1rem;">
-              <img src="assets/images/hero-celebration.jpg" alt="Children dancing with DJ Leo" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
-            </div>
-            <h4>Maya's 6th Birthday Bash</h4>
-            <p style="font-size: 0.88rem;">Pasadena, CA · Kids DJ, Balloon Garland & Dance Contests</p>
-          </div>
-
-          <div class="card" style="padding: 1rem;">
-            <div style="height: 260px; overflow: hidden; border-radius: var(--radius-md); margin-bottom: 1rem;">
-              <img src="assets/images/bounce-rentals.jpg" alt="Pastel Bounce Castle on green lawn" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
-            </div>
-            <h4>Outdoor Castle Play Day</h4>
-            <p style="font-size: 0.88rem;">Irvine, CA · Pastel Bounce Castle, Tables & White Resin Chairs</p>
-          </div>
-
-          <div class="card" style="padding: 1rem;">
-            <div style="height: 260px; overflow: hidden; border-radius: var(--radius-md); margin-bottom: 1rem;">
-              <img src="assets/images/sound-lighting.jpg" alt="Karaoke jam party with lights" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
-            </div>
-            <h4>Pre-Teen Karaoke Jam</h4>
-            <p style="font-size: 0.88rem;">Carlsbad, CA · Pro Sound System, Laser Lighting & Karaoke Screen</p>
-          </div>
+        <!-- Filter Pills Bar -->
+        <div class="gallery-filter-bar" id="gallery-filter-pills">
+          <button class="gallery-pill active" onclick="filterGallery('all', this)">✨ All Celebrations</button>
+          <button class="gallery-pill" onclick="filterGallery('dj-dance', this)">🎵 Kids DJ & Dance</button>
+          <button class="gallery-pill" onclick="filterGallery('inflatables', this)">🏰 Bounce Castles & Rentals</button>
+          <button class="gallery-pill" onclick="filterGallery('karaoke', this)">🎤 Karaoke Jam & Audio</button>
+          <button class="gallery-pill" onclick="filterGallery('featured', this)">⭐ Featured Spotlights</button>
         </div>
 
-        <div class="card" style="text-align: center; padding: 3rem; background: var(--bg-surface);">
-          <h3>Want your celebration featured in our gallery?</h3>
-          <p style="margin: 0.75rem auto 1.5rem auto; max-width: 500px;">We strictly respect family privacy and only publish photos with signed parental authorization.</p>
-          <a href="index.html#party-builder" class="btn btn-primary btn-glow">Build Your Party Quote</a>
+        <!-- Dynamic Gallery Grid Container -->
+        <div class="gallery-grid" id="public-gallery-grid">
+          <!-- Dynamically populated from GalleryManager -->
+        </div>
+
+        <!-- Owner Studio Banner -->
+        <div class="card" style="padding: 2.5rem 3rem; background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(255, 71, 111, 0.05)); border: 1px solid var(--border-active); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between; flex-wrap: gap; gap: 1.5rem; margin-top: 3rem;">
+          <div>
+            <span class="badge badge-amber" style="margin-bottom: 0.5rem;">Ownership Operations</span>
+            <h3 style="margin-bottom: 0.35rem;">Manage Event Photography & Portfolio</h3>
+            <p style="font-size: 0.95rem; color: var(--text-secondary); margin: 0;">
+              Upload fresh party photos, tag equipment setups, and spotlight new client events in real time.
+            </p>
+          </div>
+          <a href="admin.html?tab=gallery" class="btn btn-primary btn-glow" style="white-space: nowrap;">
+            📸 Open Owner Studio
+          </a>
+        </div>
+
+        <!-- Trust & Booking CTA -->
+        <div class="card" style="text-align: center; padding: 3.5rem 2rem; background: var(--bg-surface); margin-top: 3rem; border-radius: var(--radius-lg);">
+          <div class="badge badge-coral">Custom Celebration Packages</div>
+          <h2 style="margin: 0.75rem 0 1rem 0;">Ready to create unforgettable memories for your child?</h2>
+          <p style="margin: 0 auto 2rem auto; max-width: 580px; color: var(--text-secondary); font-size: 1.05rem;">
+            Select your favorite DJ hosts, sanitized commercial bounce castles, and party gear with locked 7-day pricing and zero double-booking guarantee.
+          </p>
+          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="index.html#party-builder" class="btn btn-primary btn-glow" style="padding: 0.9rem 2rem;">Build Your Party Quote</a>
+            <a href="services.html" class="btn btn-secondary" style="padding: 0.9rem 1.75rem;">Explore All Packages</a>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
+  <!-- Executive Lightbox Modal -->
+  <div id="gallery-lightbox" class="lightbox-modal" onclick="closeLightboxOnBackdrop(event)">
+    <div class="lightbox-content" onclick="event.stopPropagation()">
+      <button class="lightbox-close-btn" onclick="closeLightbox()" aria-label="Close modal">&times;</button>
+      <div class="lightbox-img-side">
+        <img id="lightbox-img" src="" alt="Event Detail">
+      </div>
+      <div class="lightbox-info-side">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+          <span class="badge badge-coral" id="lightbox-category">Kids DJ & Dance</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;" id="lightbox-city">Irvine, CA</span>
+        </div>
+        <h2 id="lightbox-title" style="font-size: 1.6rem; margin-bottom: 0.75rem; color: var(--text-primary); line-height: 1.25;">
+          Celebration Title
+        </h2>
+        <p id="lightbox-desc" style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.25rem;">
+          Event description details.
+        </p>
+
+        <div style="margin-bottom: 1.5rem;">
+          <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.5rem;">
+            Equipment & Packages Featured
+          </div>
+          <div id="lightbox-equipment" class="gallery-tags-wrap">
+            <!-- Dynamic tags -->
+          </div>
+        </div>
+
+        <div style="margin-top: auto; padding-top: 1.5rem; border-top: 1px solid var(--border-subtle);">
+          <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: var(--accent-emerald); font-weight: 600; margin-bottom: 1.25rem;">
+            <span>🛡️</span> <span>Parental Photographic Consent Verified & On File</span>
+          </div>
+          <a href="index.html#party-builder" class="btn btn-primary btn-glow" style="width: 100%; justify-content: center; padding: 0.85rem;">
+            🎉 Book Similar Party Setup
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
   <footer class="footer">
     <div class="container footer-bottom">
       <p>© 2026 Party Hard People LLC. All rights reserved. Southern California Kids Party Entertainment & Equipment Rentals.</p>
@@ -94,5 +367,114 @@
       </div>
     </div>
   </footer>
+
+  <!-- Scripts -->
+  <script src="js/gallery-manager.js?v=2.1"></script>
+  <script>
+    let activeFilter = 'all';
+    let currentGalleryData = [];
+
+    function renderPublicGallery() {
+      currentGalleryData = GalleryManager.getItems();
+      const grid = document.getElementById('public-gallery-grid');
+
+      let filtered = currentGalleryData;
+      if (activeFilter === 'featured') {
+        filtered = currentGalleryData.filter(i => i.featured);
+      } else if (activeFilter !== 'all') {
+        filtered = currentGalleryData.filter(i => i.category === activeFilter);
+      }
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem; color: var(--text-muted);">
+            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🎉</div>
+            <h3 style="color: var(--text-primary); margin-bottom: 0.35rem;">No celebrations in this category yet</h3>
+            <p>Check back soon or explore our other party categories!</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(item => `
+        <article class="gallery-item-card" onclick="openLightbox('${item.id}')">
+          <div class="gallery-img-container">
+            <span class="gallery-overlay-badge">${item.categoryName}</span>
+            ${item.featured ? '<span class="gallery-star-badge">⭐ Spotlight</span>' : ''}
+            <img src="${item.imageUrl}" alt="${item.title}" class="gallery-img" loading="lazy" decoding="async">
+          </div>
+          <div class="gallery-info-pane">
+            <div class="gallery-meta">
+              <span>📍 ${item.city}</span>
+              <span>${item.dateAdded || '2026'}</span>
+            </div>
+            <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--text-primary);">${item.title}</h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.75rem;">
+              ${item.description}
+            </p>
+            <div class="gallery-tags-wrap">
+              ${(item.equipment || []).map(eq => `<span class="gallery-tag-chip">${eq}</span>`).join('')}
+            </div>
+            <div style="margin-top: auto; padding-top: 0.75rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;">
+              <span style="color: #059669; font-weight: 600;">✓ Release Verified</span>
+              <span style="color: var(--primary); font-weight: 700;">View Details &rarr;</span>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function filterGallery(category, btn) {
+      activeFilter = category;
+      document.querySelectorAll('#gallery-filter-pills .gallery-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      renderPublicGallery();
+    }
+
+    // Lightbox Controls
+    function openLightbox(id) {
+      const item = currentGalleryData.find(i => i.id === id);
+      if (!item) return;
+
+      document.getElementById('lightbox-img').src = item.imageUrl;
+      document.getElementById('lightbox-img').alt = item.title;
+      document.getElementById('lightbox-category').textContent = item.categoryName;
+      document.getElementById('lightbox-city').textContent = '📍 ' + item.city;
+      document.getElementById('lightbox-title').textContent = item.title;
+      document.getElementById('lightbox-desc').textContent = item.description;
+
+      const equipWrap = document.getElementById('lightbox-equipment');
+      equipWrap.innerHTML = (item.equipment || []).map(eq => `<span class="gallery-tag-chip" style="background: var(--primary-tint); color: var(--primary);">${eq}</span>`).join('');
+
+      const modal = document.getElementById('gallery-lightbox');
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden'; // prevent background scrolling
+    }
+
+    function closeLightbox() {
+      const modal = document.getElementById('gallery-lightbox');
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    function closeLightboxOnBackdrop(e) {
+      if (e.target.id === 'gallery-lightbox') {
+        closeLightbox();
+      }
+    }
+
+    // Keyboard support
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    // Listen for storage events (if owner uploads in another tab)
+    window.addEventListener('php_gallery_updated', renderPublicGallery);
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'php_gallery_items') renderPublicGallery();
+    });
+
+    document.addEventListener('DOMContentLoaded', renderPublicGallery);
+  </script>
 </body>
 </html>

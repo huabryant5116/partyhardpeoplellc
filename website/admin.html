@@ -3,59 +3,112 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Owner Operations Dashboard | Party Hard People LLC</title>
-  <link rel="stylesheet" href="css/main.css?v=2.0">
+  <title>Executive Operations Dashboard | Party Hard People LLC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css?v=2.1">
   <style>
+    :root {
+      --admin-bg-base: #060913;
+      --admin-surface: #0C1222;
+      --admin-surface-card: #111A30;
+      --admin-surface-elevated: #16223F;
+      --admin-border: rgba(139, 92, 246, 0.18);
+      --admin-border-hover: rgba(139, 92, 246, 0.45);
+      --admin-glow: rgba(124, 58, 237, 0.25);
+    }
+    body {
+      background: var(--admin-bg-base);
+      color: #E2E8F0;
+      font-family: var(--font-body);
+      min-height: 100vh;
+    }
     .admin-nav {
-      background: #04070D;
-      border-bottom: 1px solid var(--border-subtle);
-      padding: 0.75rem 2rem;
+      background: rgba(6, 9, 19, 0.95);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--admin-border);
+      padding: 0.85rem 2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .admin-pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: #10B981;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #10B981;
+      display: inline-block;
+      animation: pulseGreen 2s infinite;
+    }
+    @keyframes pulseGreen {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
     }
     .admin-tabs {
       display: flex;
-      gap: 1rem;
+      gap: 0.75rem;
       margin-bottom: 2rem;
-      border-bottom: 1px solid var(--border-subtle);
-      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--admin-border);
+      padding-bottom: 0.75rem;
+      overflow-x: auto;
     }
     .admin-tab-btn {
       background: transparent;
-      border: none;
-      color: var(--text-secondary);
+      border: 1px solid transparent;
+      color: #94A3B8;
       font-family: var(--font-heading);
-      font-size: 1.05rem;
+      font-size: 0.98rem;
       font-weight: 600;
-      padding: 0.6rem 1.25rem;
+      padding: 0.65rem 1.3rem;
       cursor: pointer;
       border-radius: var(--radius-sm);
       transition: all var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+    }
+    .admin-tab-btn:hover {
+      color: #F8FAFC;
+      background: rgba(255, 255, 255, 0.04);
     }
     .admin-tab-btn.active {
-      color: var(--text-primary);
-      background: rgba(139, 92, 246, 0.15);
-      border: 1px solid var(--border-active);
+      color: #FFFFFF;
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.25), rgba(255, 71, 111, 0.15));
+      border: 1px solid var(--admin-border-hover);
+      box-shadow: 0 4px 16px var(--admin-glow);
     }
     .stat-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
+      background: var(--admin-surface);
+      border: 1px solid var(--admin-border);
       border-radius: var(--radius-md);
       padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--transition-fast), border-color var(--transition-fast);
+    }
+    .stat-card:hover {
+      border-color: var(--admin-border-hover);
+      transform: translateY(-2px);
     }
     .stat-val {
       font-size: 2.2rem;
       font-weight: 800;
       font-family: var(--font-heading);
-      color: var(--text-primary);
+      color: #F8FAFC;
       margin: 0.5rem 0;
+      letter-spacing: -0.02em;
     }
     .table-container {
       overflow-x: auto;
-      background: var(--bg-surface);
+      background: var(--admin-surface);
       border-radius: var(--radius-md);
-      border: 1px solid var(--border-subtle);
+      border: 1px solid var(--admin-border);
     }
     table {
       width: 100%;
@@ -66,78 +119,437 @@
     th {
       background: rgba(255, 255, 255, 0.03);
       padding: 1rem 1.25rem;
-      color: var(--text-muted);
+      color: #94A3B8;
       font-weight: 600;
-      border-bottom: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--admin-border);
       text-transform: uppercase;
       font-size: 0.78rem;
       letter-spacing: 0.05em;
     }
     td {
       padding: 1.1rem 1.25rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      color: var(--text-secondary);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: #CBD5E1;
     }
     tr:hover td {
       background: rgba(255, 255, 255, 0.02);
-      color: var(--text-primary);
+      color: #FFFFFF;
+    }
+
+    /* Executive Studio Elements */
+    .studio-panel {
+      background: var(--admin-surface);
+      border: 1px solid var(--admin-border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+    }
+    .dropzone {
+      border: 2px dashed rgba(139, 92, 246, 0.4);
+      background: rgba(17, 26, 48, 0.5);
+      border-radius: var(--radius-md);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+    .dropzone:hover, .dropzone.dragover {
+      border-color: #8B5CF6;
+      background: rgba(124, 58, 237, 0.12);
+      box-shadow: 0 0 25px rgba(124, 58, 237, 0.25);
+    }
+    .dropzone-preview {
+      max-height: 240px;
+      width: 100%;
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+      margin-top: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+    .executive-input {
+      background: #090E1A !important;
+      border: 1px solid rgba(139, 92, 246, 0.25) !important;
+      color: #F8FAFC !important;
+      border-radius: var(--radius-sm) !important;
+      padding: 0.8rem 1rem !important;
+      width: 100%;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+    .executive-input:focus {
+      outline: none;
+      border-color: #8B5CF6 !important;
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25) !important;
+    }
+    .switch-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 1.1rem;
+      background: rgba(9, 14, 26, 0.7);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.85rem;
+    }
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #334155;
+      transition: .3s;
+      border-radius: 34px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #8B5CF6;
+      box-shadow: 0 0 12px rgba(139, 92, 246, 0.5);
+    }
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+
+    /* Live Preview Card */
+    .preview-card-wrap {
+      background: #FFFFFF;
+      color: #0F172A;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      padding: 1rem;
+      border: 1px solid #E2E8F0;
+    }
+    .preview-card-img {
+      height: 190px;
+      width: 100%;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      background: #F1F5F9;
+      display: block;
+    }
+
+    /* Gallery Studio Grid Cards */
+    .admin-media-card {
+      background: var(--admin-surface-card);
+      border: 1px solid var(--admin-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .admin-media-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--admin-border-hover);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .admin-media-thumb {
+      height: 160px;
+      width: 100%;
+      object-fit: cover;
+      display: block;
+      background: #090E1A;
+    }
+
+    /* Toast Notification */
+    #admin-toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #0F172A;
+      color: #FFFFFF;
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid #10B981;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(16, 185, 129, 0.2);
+      display: none;
+      align-items: center;
+      gap: 0.75rem;
+      z-index: 9999;
+      font-weight: 600;
+      font-size: 0.95rem;
     }
   </style>
 </head>
-<body style="background: #070B14;">
+<body>
 
+  <!-- Top Navigation -->
   <div class="admin-nav">
-    <div style="display: flex; align-items: center; gap: 1rem;">
-      <a href="index.html" class="brand-logo" style="font-size: 1.2rem;">
+    <div style="display: flex; align-items: center; gap: 1.25rem;">
+      <a href="index.html" class="brand-logo" style="font-size: 1.2rem; text-decoration: none;">
         <div class="brand-icon" style="width: 32px; height: 32px; font-size: 1.1rem;">🎉</div>
-        <span>Party Hard People</span>
+        <span style="color: #FFFFFF;">Party Hard People</span>
       </a>
-      <span class="badge badge-amber" style="font-size: 0.75rem;">Owner Control Center</span>
+      <span class="badge badge-amber" style="font-size: 0.75rem; letter-spacing: 0.03em;">Owner Control Center</span>
+      <div style="display: flex; align-items: center; gap: 0.45rem; font-size: 0.8rem; color: #94A3B8;">
+        <span class="admin-pulse-dot"></span>
+        <span>Storage & DNS Synced</span>
+      </div>
     </div>
     <div style="display: flex; align-items: center; gap: 1rem;">
-      <span style="font-size: 0.88rem; color: var(--text-muted);">Logged in as: <strong>Owner Admin</strong></span>
-      <a href="index.html" class="btn btn-secondary btn-sm">Exit to Public Site</a>
+      <span style="font-size: 0.88rem; color: #94A3B8;">Executive: <strong style="color: #F8FAFC;">Bryant Hua (Super Admin)</strong></span>
+      <a href="gallery.html" target="_blank" class="btn btn-secondary btn-sm" style="border-color: rgba(255,255,255,0.2);">View Public Gallery ↗</a>
+      <a href="index.html" class="btn btn-primary btn-sm btn-glow">Exit to Public Site</a>
     </div>
   </div>
 
-  <div class="container" style="padding-top: 2.5rem; padding-bottom: 4rem;">
+  <div class="container" style="padding-top: 2.5rem; padding-bottom: 5rem;">
     <!-- Stat Highlights -->
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
       <div class="stat-card">
         <div class="badge badge-coral">Pending Action</div>
         <div class="stat-val" id="stat-pending-inquiries">3</div>
-        <div style="font-size: 0.85rem; color: var(--text-muted);">Inquiries awaiting owner quote</div>
+        <div style="font-size: 0.85rem; color: #94A3B8;">Inquiries awaiting custom quote</div>
       </div>
       <div class="stat-card">
-        <div class="badge">Pipeline</div>
+        <div class="badge" style="background: rgba(139,92,246,0.18); color: #C4B5FD;">Pipeline</div>
         <div class="stat-val" id="stat-active-quotes">$2,840</div>
-        <div style="font-size: 0.85rem; color: var(--text-muted);">Active 7-day quotes issued</div>
+        <div style="font-size: 0.85rem; color: #94A3B8;">Active 7-day quotes issued</div>
       </div>
       <div class="stat-card">
         <div class="badge badge-amber">Deposits Collected</div>
         <div class="stat-val" id="stat-deposits-collected">$1,150</div>
-        <div style="font-size: 0.85rem; color: var(--text-muted);">25% initial deposits paid</div>
+        <div style="font-size: 0.85rem; color: #94A3B8;">25% initial deposits paid</div>
       </div>
       <div class="stat-card">
-        <div class="badge">Inventory Health</div>
-        <div class="stat-val">100%</div>
-        <div style="font-size: 0.85rem; color: var(--text-muted);">Zero double bookings recorded</div>
+        <div class="badge" style="background: rgba(16,185,129,0.18); color: #6EE7B7;">Gallery Assets</div>
+        <div class="stat-val" id="stat-total-photos">3</div>
+        <div style="font-size: 0.85rem; color: #94A3B8;">Live photos with verified releases</div>
       </div>
     </div>
 
     <!-- Navigation Tabs -->
     <div class="admin-tabs">
-      <button class="admin-tab-btn active" onclick="switchAdminTab('inquiries')">📋 Inquiries & Quotes</button>
-      <button class="admin-tab-btn" onclick="switchAdminTab('inventory')">🏰 Rental Inventory</button>
-      <button class="admin-tab-btn" onclick="switchAdminTab('settings')">⚙️ Business Settings</button>
+      <button class="admin-tab-btn" id="btn-tab-inquiries" onclick="switchAdminTab('inquiries')">📋 Inquiries & Quotes</button>
+      <button class="admin-tab-btn" id="btn-tab-inventory" onclick="switchAdminTab('inventory')">🏰 Rental Inventory</button>
+      <button class="admin-tab-btn active" id="btn-tab-gallery" onclick="switchAdminTab('gallery')">
+        🖼️ Gallery & Media Studio
+        <span class="badge badge-coral" id="admin-gallery-count-badge" style="font-size: 0.72rem; padding: 0.15rem 0.5rem;">3 Live</span>
+      </button>
+      <button class="admin-tab-btn" id="btn-tab-settings" onclick="switchAdminTab('settings')">⚙️ Business Settings</button>
     </div>
 
-    <!-- Tab 1: Inquiries & Quotes -->
-    <div id="tab-inquiries">
+    <!-- ========================================================
+         TAB 1: GALLERY & MEDIA STUDIO (SENIOR DIRECTOR CRAFTED)
+         ======================================================== -->
+    <div id="tab-gallery">
+      <!-- Section Banner -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-family: var(--font-heading); color: #FFFFFF; font-size: 1.8rem; margin-bottom: 0.35rem;">
+            Event Showcase & Media Management Studio
+          </h2>
+          <p style="font-size: 0.95rem; color: #94A3B8; max-width: 720px;">
+            Curate, spotlight, and publish real client event photography. Uploads are client-side optimized for zero-lag delivery and automatically sync live to the public gallery with atomic parental consent verification.
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.75rem;">
+          <button class="btn btn-secondary btn-sm" onclick="exportGalleryBackup()">📥 Export JSON</button>
+          <a href="gallery.html" target="_blank" class="btn btn-primary btn-sm btn-glow">Preview Live Gallery ↗</a>
+        </div>
+      </div>
+
+      <!-- Studio Two-Column Workstation -->
+      <div style="display: grid; grid-template-columns: 1.1fr 1.3fr; gap: 2rem; align-items: start;">
+        
+        <!-- Left Column: Executive Upload Suite -->
+        <div class="studio-panel">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; border-bottom: 1px solid var(--admin-border); padding-bottom: 1rem;">
+            <div>
+              <h3 style="font-size: 1.2rem; color: #FFFFFF; font-family: var(--font-heading);">Upload Event Photography</h3>
+              <p style="font-size: 0.82rem; color: #94A3B8;">Publish directly to <code style="color: #A78BFA;">partyhardpeoplellc.com/gallery.html</code></p>
+            </div>
+            <span class="badge" style="background: rgba(124,58,237,0.2); color: #C4B5FD;">Live Studio</span>
+          </div>
+
+          <form id="gallery-upload-form" onsubmit="handleGallerySubmit(event)">
+            
+            <!-- Source Selector: Device Upload vs URL -->
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem;">
+              <button type="button" class="btn btn-sm" id="btn-mode-file" onclick="setMediaUploadMode('file')" style="flex: 1; background: rgba(139,92,246,0.25); border: 1px solid var(--admin-border-hover); color: #FFFFFF;">
+                📁 Upload From Computer/Phone
+              </button>
+              <button type="button" class="btn btn-sm" id="btn-mode-url" onclick="setMediaUploadMode('url')" style="flex: 1; background: transparent; border: 1px solid var(--admin-border); color: #94A3B8;">
+                🔗 Paste Image URL
+              </button>
+            </div>
+
+            <!-- Mode 1: File Dropzone with Auto-Compression -->
+            <div id="upload-mode-file-wrap">
+              <div class="dropzone" id="media-dropzone" onclick="document.getElementById('gallery-file-input').click()">
+                <input type="file" id="gallery-file-input" accept="image/*" style="display: none;" onchange="handleFileSelected(event)">
+                <div id="dropzone-empty-state">
+                  <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">📸</div>
+                  <strong style="color: #F8FAFC; display: block; font-size: 1.05rem; margin-bottom: 0.35rem;">Drag & drop photo or click to browse</strong>
+                  <p style="font-size: 0.82rem; color: #94A3B8; margin: 0;">Supports high-res PNG, JPG, WebP. Automatically optimized for web.</p>
+                </div>
+                <div id="dropzone-loaded-state" style="display: none;">
+                  <img id="dropzone-preview-img" class="dropzone-preview" alt="Preview">
+                  <div style="margin-top: 0.75rem; display: flex; justify-content: center; gap: 0.75rem;">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); clearSelectedFile();">Remove & Choose Another</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mode 2: Direct Image URL -->
+            <div id="upload-mode-url-wrap" style="display: none;">
+              <div class="form-group" style="margin-bottom: 1.25rem;">
+                <label class="form-label" style="color: #CBD5E1;">Public Image URL</label>
+                <input type="url" class="executive-input" id="gallery-input-url" placeholder="https://images.unsplash.com/... or cloud image URL" oninput="handleUrlInput(this.value)">
+                <div style="font-size: 0.8rem; color: #94A3B8; margin-top: 0.35rem;">Direct HTTPS image link.</div>
+              </div>
+            </div>
+
+            <!-- Form Metadata Fields -->
+            <div style="margin-top: 1.5rem;">
+              <div class="form-group" style="margin-bottom: 1rem;">
+                <label class="form-label" style="color: #CBD5E1;">Event Title / Family Highlight <span style="color: var(--accent-coral);">*</span></label>
+                <input type="text" class="executive-input" id="gallery-input-title" placeholder="e.g., Liam's 7th Superhero Dance Party" required oninput="updateLivePreview()">
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div class="form-group">
+                  <label class="form-label" style="color: #CBD5E1;">Service Category <span style="color: var(--accent-coral);">*</span></label>
+                  <select class="executive-input" id="gallery-input-category" required onchange="updateLivePreview()">
+                    <option value="dj-dance">Kids DJ & Dance</option>
+                    <option value="inflatables">Bounce Castles & Rentals</option>
+                    <option value="karaoke">Karaoke Jam & Audio</option>
+                    <option value="games">Organized Party Games</option>
+                    <option value="combo">Full Party Experience</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" style="color: #CBD5E1;">City & Setting <span style="color: var(--accent-coral);">*</span></label>
+                  <input type="text" class="executive-input" id="gallery-input-city" placeholder="e.g., Irvine, CA (Backyard)" required oninput="updateLivePreview()">
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 1rem;">
+                <label class="form-label" style="color: #CBD5E1;">Equipment & Add-ons Featured</label>
+                <input type="text" class="executive-input" id="gallery-input-equipment" placeholder="e.g. Pastel Bounce Castle, DJ Leo, Bubble Machine" oninput="updateLivePreview()">
+                <div style="font-size: 0.78rem; color: #94A3B8; margin-top: 0.3rem;">Separate items with commas.</div>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 1.25rem;">
+                <label class="form-label" style="color: #CBD5E1;">Short Celebration Caption / Highlight</label>
+                <textarea class="executive-input" id="gallery-input-desc" rows="2" placeholder="Brief description of the celebration highlights..." oninput="updateLivePreview()"></textarea>
+              </div>
+
+              <!-- Compliance & Privacy Toggle -->
+              <div class="switch-wrap">
+                <div>
+                  <div style="font-weight: 600; font-size: 0.9rem; color: #FFFFFF;">Parental Photo Release Verified</div>
+                  <div style="font-size: 0.78rem; color: #94A3B8;">Required by PHP client privacy policy before public display.</div>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="gallery-input-release" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <!-- Feature on Public Gallery Header -->
+              <div class="switch-wrap">
+                <div>
+                  <div style="font-weight: 600; font-size: 0.9rem; color: #FFFFFF;">Feature in Gallery Spotlight</div>
+                  <div style="font-size: 0.78rem; color: #94A3B8;">Places photo at the top of the public showcase with a gold star badge.</div>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="gallery-input-featured">
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <!-- Real-Time Public Card Preview -->
+              <div style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+                <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: #94A3B8; margin-bottom: 0.5rem; font-weight: 700;">
+                  Live Visitor Card Preview
+                </div>
+                <div class="preview-card-wrap">
+                  <img id="preview-card-img" class="preview-card-img" src="assets/images/hero-celebration.jpg" alt="Preview">
+                  <div style="margin-top: 0.75rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                      <span class="badge badge-coral" id="preview-card-cat" style="font-size: 0.7rem;">Kids DJ & Dance</span>
+                      <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;" id="preview-card-city">Irvine, CA</span>
+                    </div>
+                    <h4 id="preview-card-title" style="font-size: 1.05rem; color: var(--text-primary); margin-bottom: 0.35rem;">Maya's 6th Birthday Bash</h4>
+                    <p id="preview-card-desc" style="font-size: 0.82rem; color: var(--text-secondary); margin: 0;">High-energy musical statues, bubble blast dance-offs, and custom playlist.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="btn btn-primary btn-glow" id="btn-publish-gallery" style="width: 100%; justify-content: center; padding: 0.9rem; font-size: 1.05rem;">
+                🚀 Publish Photo to Public Gallery
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Right Column: Media Asset Library -->
+        <div>
+          <div class="studio-panel" style="margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+              <div>
+                <h3 style="font-size: 1.2rem; color: #FFFFFF; font-family: var(--font-heading);">Published Showcase Assets</h3>
+                <p style="font-size: 0.82rem; color: #94A3B8;">Manage live photos, feature best setups, or unpublish anytime.</p>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="renderAdminGalleryList()">↻ Refresh List</button>
+            </div>
+
+            <!-- Filter Pills -->
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;" id="admin-gallery-filters">
+              <button type="button" class="btn btn-sm btn-primary" onclick="filterAdminMedia('all', this)" style="padding: 0.35rem 0.85rem; font-size: 0.82rem;">All Assets (<span id="count-all">0</span>)</button>
+              <button type="button" class="btn btn-sm btn-secondary" onclick="filterAdminMedia('custom', this)" style="padding: 0.35rem 0.85rem; font-size: 0.82rem;">Custom Uploads (<span id="count-custom">0</span>)</button>
+              <button type="button" class="btn btn-sm btn-secondary" onclick="filterAdminMedia('featured', this)" style="padding: 0.35rem 0.85rem; font-size: 0.82rem;">Featured (⭐)</button>
+            </div>
+
+            <!-- Media Grid -->
+            <div id="admin-media-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1.25rem;">
+              <!-- Dynamic Cards Inserted Here -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="admin-media-empty" style="display: none; text-align: center; padding: 3rem 1rem; color: #94A3B8;">
+              <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🖼️</div>
+              <h4 style="color: #FFFFFF; margin-bottom: 0.35rem;">No photos match the selected filter</h4>
+              <p style="font-size: 0.85rem;">Upload new event photos using the studio form on the left.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================
+         TAB 2: INQUIRIES & QUOTES
+         ======================================================== -->
+    <div id="tab-inquiries" style="display: none;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
         <div>
-          <h3>Incoming Quote Requests</h3>
-          <p style="font-size: 0.9rem;">Review party requests, customize travel fees, and issue locked 7-day quotes.</p>
+          <h3 style="color: #FFFFFF;">Incoming Quote Requests</h3>
+          <p style="font-size: 0.9rem; color: #94A3B8;">Review party requests, customize travel fees, and issue locked 7-day quotes.</p>
         </div>
         <button class="btn btn-secondary btn-sm" onclick="loadInquiriesTable()">↻ Refresh Inquiries</button>
       </div>
@@ -157,11 +569,10 @@
             </tr>
           </thead>
           <tbody id="inquiries-table-body">
-            <!-- Sample Inquiries for Immediate Testing -->
             <tr>
               <td><strong style="color: var(--accent-coral); font-family: monospace;">PHP-2026-1048</strong></td>
-              <td>Sarah Jenkins<br><span style="font-size: 0.8rem; color: var(--text-muted);">sarah@example.com</span></td>
-              <td>Oct 24, 2026<br><span style="font-size: 0.8rem; color: var(--text-muted);">Irvine, CA (Backyard)</span></td>
+              <td>Sarah Jenkins<br><span style="font-size: 0.8rem; color: #94A3B8;">sarah@example.com</span></td>
+              <td>Oct 24, 2026<br><span style="font-size: 0.8rem; color: #94A3B8;">Irvine, CA (Backyard)</span></td>
               <td>Birthday (15 kids)</td>
               <td><strong>$678.00</strong></td>
               <td style="color: var(--primary-light);">$169.50</td>
@@ -170,8 +581,8 @@
             </tr>
             <tr>
               <td><strong style="color: var(--accent-coral); font-family: monospace;">PHP-2026-1032</strong></td>
-              <td>David Robinson<br><span style="font-size: 0.8rem; color: var(--text-muted);">drobinson@gmail.com</span></td>
-              <td>Nov 07, 2026<br><span style="font-size: 0.8rem; color: var(--text-muted);">Pasadena, CA (Park)</span></td>
+              <td>David Robinson<br><span style="font-size: 0.8rem; color: #94A3B8;">drobinson@gmail.com</span></td>
+              <td>Nov 07, 2026<br><span style="font-size: 0.8rem; color: #94A3B8;">Pasadena, CA (Park)</span></td>
               <td>School Event (35 kids)</td>
               <td><strong>$940.00</strong></td>
               <td style="color: var(--primary-light);">$235.00</td>
@@ -183,11 +594,13 @@
       </div>
     </div>
 
-    <!-- Tab 2: Inventory Management -->
+    <!-- ========================================================
+         TAB 3: RENTAL INVENTORY
+         ======================================================== -->
     <div id="tab-inventory" style="display: none;">
       <div style="margin-bottom: 1.5rem;">
-        <h3>Equipment & Inflatable Units</h3>
-        <p style="font-size: 0.9rem;">Atomic quantity tracking to ensure zero double bookings across Los Angeles, OC & San Diego.</p>
+        <h3 style="color: #FFFFFF;">Equipment & Inflatable Units</h3>
+        <p style="font-size: 0.9rem; color: #94A3B8;">Atomic quantity tracking to ensure zero double bookings across Los Angeles, OC & San Diego.</p>
       </div>
 
       <div class="table-container">
@@ -197,7 +610,7 @@
               <th>Equipment Name</th>
               <th>Category</th>
               <th>Units Owned</th>
-              <th>Reserved (Active Bookings)</th>
+              <th>Reserved</th>
               <th>Available Units</th>
               <th>Buffer Time</th>
               <th>Status</th>
@@ -211,7 +624,7 @@
               <td style="color: var(--accent-coral); font-weight: 700;">1</td>
               <td><span class="badge">2 Available</span></td>
               <td>45 min setup / 45 min teardown</td>
-              <td><span class="badge badge-emerald" style="background: rgba(16,185,129,0.15); color: #34D399;">Active</span></td>
+              <td><span class="badge" style="background: rgba(16,185,129,0.15); color: #34D399;">Active</span></td>
             </tr>
             <tr>
               <td><strong>6ft Heavy-Duty Tables</strong></td>
@@ -220,7 +633,7 @@
               <td style="color: var(--accent-coral); font-weight: 700;">8</td>
               <td><span class="badge">22 Available</span></td>
               <td>30 min setup</td>
-              <td><span class="badge badge-emerald" style="background: rgba(16,185,129,0.15); color: #34D399;">Active</span></td>
+              <td><span class="badge" style="background: rgba(16,185,129,0.15); color: #34D399;">Active</span></td>
             </tr>
             <tr>
               <td><strong>White Resin Padded Chairs</strong></td>
@@ -229,7 +642,7 @@
               <td style="color: var(--accent-coral); font-weight: 700;">32</td>
               <td><span class="badge">88 Available</span></td>
               <td>30 min setup</td>
-              <td><span class="badge badge-emerald" style="background: rgba(16,185,129,0.15); color: #34D399;">Active</span></td>
+              <td><span class="badge" style="background: rgba(16,185,129,0.15); color: #34D399;">Active</span></td>
             </tr>
             <tr>
               <td><strong>Pro Sound PA & Mic Setup</strong></td>
@@ -238,7 +651,7 @@
               <td style="color: var(--accent-coral); font-weight: 700;">1</td>
               <td><span class="badge">3 Available</span></td>
               <td>45 min setup</td>
-              <td><span class="badge badge-emerald" style="background: rgba(16,185,129,0.15); color: #34D399;">Active</span></td>
+              <td><span class="badge" style="background: rgba(16,185,129,0.15); color: #34D399;">Active</span></td>
             </tr>
             <tr>
               <td><strong>Quiet Inverter Generator</strong></td>
@@ -247,91 +660,377 @@
               <td style="color: var(--accent-coral); font-weight: 700;">0</td>
               <td><span class="badge">3 Available</span></td>
               <td>15 min check</td>
-              <td><span class="badge badge-emerald" style="background: rgba(16,185,129,0.15); color: #34D399;">Active</span></td>
+              <td><span class="badge" style="background: rgba(16,185,129,0.15); color: #34D399;">Active</span></td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- Tab 3: Business Settings -->
+    <!-- ========================================================
+         TAB 4: BUSINESS SETTINGS
+         ======================================================== -->
     <div id="tab-settings" style="display: none;">
-      <div class="card" style="max-width: 640px;">
-        <h3 style="margin-bottom: 1.5rem;">Core Policy & Financial Settings</h3>
-        <div class="form-group">
-          <label class="form-label">Initial Booking Deposit Percentage (%)</label>
-          <input type="number" class="form-input" value="25" min="10" max="100" id="setting-deposit-pct">
-          <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.35rem;">Default policy is 25% of accepted quote total.</div>
+      <div class="studio-panel" style="max-width: 640px;">
+        <h3 style="margin-bottom: 1.5rem; color: #FFFFFF;">Core Policy & Financial Settings</h3>
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <label class="form-label" style="color: #CBD5E1;">Initial Booking Deposit Percentage (%)</label>
+          <input type="number" class="executive-input" value="25" min="10" max="100" id="setting-deposit-pct">
+          <div style="font-size: 0.82rem; color: #94A3B8; margin-top: 0.35rem;">Default policy is 25% of accepted quote total.</div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label">Quote Validity Period (Days)</label>
-          <input type="number" class="form-input" value="7" readonly>
-          <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.35rem;">Quotes expire automatically after 7 calendar days per PRD rules.</div>
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <label class="form-label" style="color: #CBD5E1;">Quote Validity Period (Days)</label>
+          <input type="number" class="executive-input" value="7" readonly style="opacity: 0.7;">
+          <div style="font-size: 0.82rem; color: #94A3B8; margin-top: 0.35rem;">Quotes expire automatically after 7 calendar days.</div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label">Weather Rescheduling Window (Months)</label>
-          <input type="number" class="form-input" value="12" readonly>
-          <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.35rem;">Permitted rescheduling transfer duration per policy.</div>
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <label class="form-label" style="color: #CBD5E1;">Weather Rescheduling Window (Months)</label>
+          <input type="number" class="executive-input" value="12" readonly style="opacity: 0.7;">
+          <div style="font-size: 0.82rem; color: #94A3B8; margin-top: 0.35rem;">Permitted rescheduling transfer duration per policy.</div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label">Base Travel Fee Radius (Miles)</label>
-          <input type="number" class="form-input" value="15">
-          <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.35rem;">Miles included before distance-based surcharge applies.</div>
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label class="form-label" style="color: #CBD5E1;">Base Travel Fee Radius (Miles)</label>
+          <input type="number" class="executive-input" value="15">
+          <div style="font-size: 0.82rem; color: #94A3B8; margin-top: 0.35rem;">Miles included before distance-based surcharge applies.</div>
         </div>
 
-        <button class="btn btn-primary" onclick="alert('Business policy settings saved successfully!')">Save Settings</button>
+        <button class="btn btn-primary btn-glow" onclick="alert('Business policy settings saved successfully!')">Save Settings</button>
       </div>
     </div>
   </div>
 
   <!-- Review Quote Modal -->
   <div id="quote-review-modal" style="display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 1.5rem;">
-    <div style="background: var(--bg-surface); border: 1px solid var(--border-active); border-radius: var(--radius-lg); max-width: 540px; width: 100%; padding: 2rem; box-shadow: var(--shadow-lg);">
-      <h3 style="margin-bottom: 0.5rem;" id="qmodal-title">Review Inquiry & Issue Quote</h3>
-      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Ref: <strong id="qmodal-ref">PHP-2026-XXXX</strong></p>
+    <div style="background: var(--admin-surface); border: 1px solid var(--admin-border-hover); border-radius: var(--radius-lg); max-width: 540px; width: 100%; padding: 2rem; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
+      <h3 style="margin-bottom: 0.5rem; color: #FFFFFF;" id="qmodal-title">Review Inquiry & Issue Quote</h3>
+      <p style="font-size: 0.88rem; color: #94A3B8; margin-bottom: 1.5rem;">Ref: <strong id="qmodal-ref" style="color: var(--accent-coral);">PHP-2026-XXXX</strong></p>
 
-      <div class="form-group">
-        <label class="form-label">Package & Equipment Subtotal</label>
-        <input type="text" class="form-input" id="qmodal-subtotal" readonly>
+      <div class="form-group" style="margin-bottom: 1rem;">
+        <label class="form-label" style="color: #CBD5E1;">Package & Equipment Subtotal</label>
+        <input type="text" class="executive-input" id="qmodal-subtotal" readonly>
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Travel Surcharge / Fee (USD)</label>
-        <input type="number" class="form-input" id="qmodal-travel" value="40" oninput="recalcModalQuote()">
+      <div class="form-group" style="margin-bottom: 1rem;">
+        <label class="form-label" style="color: #CBD5E1;">Travel Surcharge / Fee (USD)</label>
+        <input type="number" class="executive-input" id="qmodal-travel" value="40" oninput="recalcModalQuote()">
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Quote Total</label>
-        <input type="text" class="form-input" id="qmodal-total" readonly style="font-weight: 700; color: var(--accent-coral);">
+      <div class="form-group" style="margin-bottom: 1rem;">
+        <label class="form-label" style="color: #CBD5E1;">Quote Total</label>
+        <input type="text" class="executive-input" id="qmodal-total" readonly style="font-weight: 700; color: var(--accent-coral);">
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Required 25% Deposit</label>
-        <input type="text" class="form-input" id="qmodal-deposit" readonly style="font-weight: 700; color: var(--primary-light);">
+      <div class="form-group" style="margin-bottom: 1.5rem;">
+        <label class="form-label" style="color: #CBD5E1;">Required 25% Deposit</label>
+        <input type="text" class="executive-input" id="qmodal-deposit" readonly style="font-weight: 700; color: #A78BFA;">
       </div>
 
-      <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
+      <div style="display: flex; gap: 1rem; justify-content: flex-end;">
         <button class="btn btn-secondary" onclick="document.getElementById('quote-review-modal').style.display='none'">Cancel</button>
-        <button class="btn btn-primary" onclick="approveAndSendQuote()">Approve & Email 7-Day Quote</button>
+        <button class="btn btn-primary btn-glow" onclick="approveAndSendQuote()">Approve & Email 7-Day Quote</button>
       </div>
     </div>
   </div>
 
+  <!-- Toast Feedback Component -->
+  <div id="admin-toast">
+    <span style="font-size: 1.25rem;">✨</span>
+    <span id="admin-toast-text">Success!</span>
+  </div>
+
+  <!-- Script Libraries -->
+  <script src="js/gallery-manager.js?v=2.1"></script>
   <script>
     let activeSubtotalCents = 0;
+    let currentSelectedImageDataUrl = '';
+    let currentUploadMode = 'file'; // 'file' or 'url'
+    let currentMediaFilter = 'all';
 
+    // Tab Switching
     function switchAdminTab(tabName) {
       document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('#tab-inquiries, #tab-inventory, #tab-settings').forEach(d => d.style.display = 'none');
+      document.querySelectorAll('#tab-inquiries, #tab-inventory, #tab-gallery, #tab-settings').forEach(d => d.style.display = 'none');
       
       const targetDiv = document.getElementById('tab-' + tabName);
+      const targetBtn = document.getElementById('btn-tab-' + tabName);
       if (targetDiv) targetDiv.style.display = 'block';
-      event.currentTarget.classList.add('active');
+      if (targetBtn) targetBtn.classList.add('active');
+
+      // Update URL param without page reload
+      const url = new URL(window.location);
+      url.searchParams.set('tab', tabName);
+      window.history.replaceState({}, '', url);
+
+      if (tabName === 'gallery') {
+        renderAdminGalleryList();
+      }
     }
 
+    // Media Upload Mode Toggle
+    function setMediaUploadMode(mode) {
+      currentUploadMode = mode;
+      const fileBtn = document.getElementById('btn-mode-file');
+      const urlBtn = document.getElementById('btn-mode-url');
+      const fileWrap = document.getElementById('upload-mode-file-wrap');
+      const urlWrap = document.getElementById('upload-mode-url-wrap');
+
+      if (mode === 'file') {
+        fileBtn.style.background = 'rgba(139,92,246,0.25)';
+        fileBtn.style.borderColor = 'var(--admin-border-hover)';
+        fileBtn.style.color = '#FFFFFF';
+        urlBtn.style.background = 'transparent';
+        urlBtn.style.borderColor = 'var(--admin-border)';
+        urlBtn.style.color = '#94A3B8';
+        fileWrap.style.display = 'block';
+        urlWrap.style.display = 'none';
+      } else {
+        urlBtn.style.background = 'rgba(139,92,246,0.25)';
+        urlBtn.style.borderColor = 'var(--admin-border-hover)';
+        urlBtn.style.color = '#FFFFFF';
+        fileBtn.style.background = 'transparent';
+        fileBtn.style.borderColor = 'var(--admin-border)';
+        fileBtn.style.color = '#94A3B8';
+        fileWrap.style.display = 'none';
+        urlWrap.style.display = 'block';
+      }
+      updateLivePreview();
+    }
+
+    // Drag and Drop listeners
+    const dropzone = document.getElementById('media-dropzone');
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropzone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+      }, false);
+    });
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropzone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+      }, false);
+    });
+    dropzone.addEventListener('drop', (e) => {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      if (files.length > 0) {
+        processSelectedImage(files[0]);
+      }
+    });
+
+    async function handleFileSelected(event) {
+      const file = event.target.files[0];
+      if (file) {
+        await processSelectedImage(file);
+      }
+    }
+
+    async function processSelectedImage(file) {
+      try {
+        showToast('Optimizing image for high-speed delivery...');
+        const compressedDataUrl = await GalleryManager.compressImage(file, 1200, 900, 0.85);
+        currentSelectedImageDataUrl = compressedDataUrl;
+        
+        document.getElementById('dropzone-empty-state').style.display = 'none';
+        document.getElementById('dropzone-loaded-state').style.display = 'block';
+        document.getElementById('dropzone-preview-img').src = compressedDataUrl;
+        updateLivePreview();
+        showToast('Image successfully processed and ready!');
+      } catch (err) {
+        alert('Could not process image: ' + err.message);
+      }
+    }
+
+    function clearSelectedFile() {
+      currentSelectedImageDataUrl = '';
+      document.getElementById('gallery-file-input').value = '';
+      document.getElementById('dropzone-empty-state').style.display = 'block';
+      document.getElementById('dropzone-loaded-state').style.display = 'none';
+      document.getElementById('dropzone-preview-img').src = '';
+      updateLivePreview();
+    }
+
+    function handleUrlInput(val) {
+      currentSelectedImageDataUrl = val.trim();
+      updateLivePreview();
+    }
+
+    // Real-Time Live Preview Synchronization
+    function updateLivePreview() {
+      const title = document.getElementById('gallery-input-title').value || "Maya's 6th Birthday Bash";
+      const city = document.getElementById('gallery-input-city').value || 'Irvine, CA';
+      const cat = document.getElementById('gallery-input-category');
+      const catLabel = cat.options[cat.selectedIndex].text;
+      const desc = document.getElementById('gallery-input-desc').value || 'High-energy musical statues, bubble blast dance-offs, and custom playlist.';
+      
+      const imgElem = document.getElementById('preview-card-img');
+      imgElem.src = currentSelectedImageDataUrl || 'assets/images/hero-celebration.jpg';
+      document.getElementById('preview-card-title').textContent = title;
+      document.getElementById('preview-card-city').textContent = city;
+      document.getElementById('preview-card-cat').textContent = catLabel;
+      document.getElementById('preview-card-desc').textContent = desc;
+    }
+
+    // Publish New Photo
+    function handleGallerySubmit(e) {
+      e.preventDefault();
+      const title = document.getElementById('gallery-input-title').value.trim();
+      const city = document.getElementById('gallery-input-city').value.trim();
+      const category = document.getElementById('gallery-input-category').value;
+      const equipment = document.getElementById('gallery-input-equipment').value.trim();
+      const description = document.getElementById('gallery-input-desc').value.trim();
+      const verifiedRelease = document.getElementById('gallery-input-release').checked;
+      const featured = document.getElementById('gallery-input-featured').checked;
+
+      const finalImgUrl = currentSelectedImageDataUrl;
+      if (!finalImgUrl) {
+        alert('Please choose or drag a photo, or enter an image URL.');
+        return;
+      }
+
+      if (!verifiedRelease) {
+        if (!confirm('Warning: Photographic release is not marked as verified. Do you still wish to publish?')) {
+          return;
+        }
+      }
+
+      const created = GalleryManager.addItem({
+        title,
+        city,
+        category,
+        equipment,
+        description,
+        imageUrl: finalImgUrl,
+        verifiedRelease,
+        featured
+      });
+
+      // Reset form
+      document.getElementById('gallery-upload-form').reset();
+      clearSelectedFile();
+      document.getElementById('gallery-input-url').value = '';
+      updateLivePreview();
+
+      showToast('🎉 Photo published successfully to live gallery!');
+      renderAdminGalleryList();
+    }
+
+    // Render Media Asset Grid in Admin
+    function renderAdminGalleryList() {
+      const items = GalleryManager.getItems();
+      const grid = document.getElementById('admin-media-grid');
+      const empty = document.getElementById('admin-media-empty');
+
+      const customItems = items.filter(i => i.isCustom);
+      document.getElementById('count-all').textContent = items.length;
+      document.getElementById('count-custom').textContent = customItems.length;
+      document.getElementById('stat-total-photos').textContent = items.length;
+      document.getElementById('admin-gallery-count-badge').textContent = items.length + ' Live';
+
+      let filtered = items;
+      if (currentMediaFilter === 'custom') {
+        filtered = items.filter(i => i.isCustom);
+      } else if (currentMediaFilter === 'featured') {
+        filtered = items.filter(i => i.featured);
+      }
+
+      if (filtered.length === 0) {
+        grid.style.display = 'none';
+        empty.style.display = 'block';
+        return;
+      }
+
+      grid.style.display = 'grid';
+      empty.style.display = 'none';
+
+      grid.innerHTML = filtered.map(item => `
+        <div class="admin-media-card">
+          <div style="position: relative;">
+            <img src="${item.imageUrl}" alt="${item.title}" class="admin-media-thumb">
+            <span class="badge badge-coral" style="position: absolute; top: 8px; left: 8px; font-size: 0.7rem; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+              ${item.categoryName}
+            </span>
+            ${item.featured ? `
+              <span class="badge" style="position: absolute; top: 8px; right: 8px; font-size: 0.7rem; background: rgba(245,158,11,0.9); color: #000; font-weight: 700;">
+                ⭐ Featured
+              </span>
+            ` : ''}
+          </div>
+          <div style="padding: 1rem; display: flex; flex-direction: column; flex: 1;">
+            <div style="font-size: 0.75rem; color: #94A3B8; margin-bottom: 0.25rem;">
+              📍 ${item.city} · ${item.dateAdded || 'Active'}
+            </div>
+            <strong style="color: #FFFFFF; font-size: 0.95rem; margin-bottom: 0.5rem; line-height: 1.3;">
+              ${item.title}
+            </strong>
+            <p style="font-size: 0.8rem; color: #94A3B8; margin-bottom: 0.85rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+              ${item.description}
+            </p>
+            <div style="margin-top: auto; display: flex; gap: 0.45rem;">
+              ${item.isCustom ? `
+                <button class="btn btn-secondary btn-sm" onclick="toggleFeaturedItem('${item.id}')" style="flex: 1; padding: 0.35rem 0.5rem; font-size: 0.78rem;" title="Toggle Featured Spotlight">
+                  ${item.featured ? 'Unfeature' : '⭐ Spotlight'}
+                </button>
+                <button class="btn btn-sm" onclick="deleteGalleryPhoto('${item.id}')" style="background: rgba(255,71,111,0.18); border: 1px solid rgba(255,71,111,0.4); color: #FF476F; padding: 0.35rem 0.65rem; font-size: 0.78rem;" title="Remove from live website">
+                  🗑️
+                </button>
+              ` : `
+                <span class="badge" style="background: rgba(255,255,255,0.06); color: #94A3B8; font-size: 0.72rem; padding: 0.35rem 0.65rem; flex: 1; text-align: center;">
+                  Core Showcase Item
+                </span>
+              `}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterAdminMedia(type, btn) {
+      currentMediaFilter = type;
+      document.querySelectorAll('#admin-gallery-filters button').forEach(b => {
+        b.className = 'btn btn-sm btn-secondary';
+      });
+      btn.className = 'btn btn-sm btn-primary';
+      renderAdminGalleryList();
+    }
+
+    function toggleFeaturedItem(id) {
+      const isFeat = GalleryManager.toggleFeatured(id);
+      showToast(isFeat ? '⭐ Added to Featured Spotlight!' : 'Removed from Featured Spotlight.');
+      renderAdminGalleryList();
+    }
+
+    function deleteGalleryPhoto(id) {
+      if (confirm('Are you sure you want to remove this photo from the public gallery?')) {
+        GalleryManager.deleteItem(id);
+        showToast('Photo removed from live gallery.');
+        renderAdminGalleryList();
+      }
+    }
+
+    function exportGalleryBackup() {
+      const items = GalleryManager.getItems();
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(items, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "party-hard-people-gallery-backup.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showToast('Gallery backup downloaded.');
+    }
+
+    function showToast(text) {
+      const toast = document.getElementById('admin-toast');
+      document.getElementById('admin-toast-text').textContent = text;
+      toast.style.display = 'flex';
+      setTimeout(() => { toast.style.display = 'none'; }, 3500);
+    }
+
+    // Quote and Inquiries Handlers
     function openQuoteModal(ref, customer, subtotalCents) {
       activeSubtotalCents = subtotalCents;
       document.getElementById('qmodal-title').textContent = 'Quote Review: ' + customer;
@@ -362,16 +1061,15 @@
           const list = JSON.parse(stored);
           const tbody = document.getElementById('inquiries-table-body');
           if (list.length > 0 && tbody) {
-            // Prepend new submissions
             list.forEach(inq => {
               const tr = document.createElement('tr');
               tr.innerHTML = `
                 <td><strong style="color: var(--accent-coral); font-family: monospace;">${inq.refCode}</strong></td>
-                <td>${inq.details.contactName || 'Parent'}<br><span style="font-size: 0.8rem; color: var(--text-muted);">${inq.details.contactEmail || ''}</span></td>
-                <td>${inq.details.eventDate || 'Pending'}<br><span style="font-size: 0.8rem; color: var(--text-muted);">${inq.details.address || ''}</span></td>
+                <td>${inq.details.contactName || 'Parent'}<br><span style="font-size: 0.8rem; color: #94A3B8;">${inq.details.contactEmail || ''}</span></td>
+                <td>${inq.details.eventDate || 'Pending'}<br><span style="font-size: 0.8rem; color: #94A3B8;">${inq.details.address || ''}</span></td>
                 <td>${inq.details.eventType} (${inq.details.childrenCount} kids)</td>
                 <td><strong>${inq.estimate.subtotalFormatted}</strong></td>
-                <td style="color: var(--primary-light);">${inq.estimate.depositFormatted}</td>
+                <td style="color: #A78BFA;">${inq.estimate.depositFormatted}</td>
                 <td><span class="badge badge-coral">New Submission</span></td>
                 <td><button class="btn btn-primary btn-sm" onclick="openQuoteModal('${inq.refCode}', '${inq.details.contactName}', ${inq.estimate.subtotalCents})">Review & Quote</button></td>
               `;
@@ -383,7 +1081,18 @@
       }
     }
 
-    document.addEventListener('DOMContentLoaded', loadInquiriesTable);
+    // Initialization on Page Load
+    document.addEventListener('DOMContentLoaded', () => {
+      loadInquiriesTable();
+      renderAdminGalleryList();
+
+      // Check query parameter for direct tab access (e.g. admin.html?tab=gallery)
+      const urlParams = new URLSearchParams(window.location.search);
+      const tabParam = urlParams.get('tab');
+      if (tabParam && ['inquiries', 'inventory', 'gallery', 'settings'].includes(tabParam)) {
+        switchAdminTab(tabParam);
+      }
+    });
   </script>
 </body>
 </html>
