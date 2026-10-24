@@ -19,9 +19,179 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,500;1,600&family=Montserrat:wght@500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/main.css?v=5.0">
+  <link rel="stylesheet" href="css/main.css?v=5.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎉</text></svg>">
   <style>
+    /* Critical Celebration Quote Carousel Styles */
+    .community-quote-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: stretch;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 991px) {
+      .community-quote-container {
+        grid-template-columns: 1fr !important;
+      }
+    }
+    .celebration-quote-card {
+      background: #FAF8F5;
+      border: 1px solid #E8E3DC;
+      border-top: 5px solid #C5A880;
+      border-radius: var(--radius-lg, 16px);
+      padding: 2.25rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(74, 60, 49, 0.05), 0 2px 6px rgba(74, 60, 49, 0.03);
+      height: 100%;
+      box-sizing: border-box;
+    }
+    .quote-watermark {
+      position: absolute;
+      right: 1.5rem;
+      bottom: 0.5rem;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 14rem;
+      line-height: 0.7;
+      color: rgba(197, 168, 128, 0.07);
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+      font-weight: 700;
+    }
+    .quote-slides-wrapper {
+      position: relative;
+      flex: 1;
+      min-height: 195px;
+      display: flex;
+      align-items: center;
+      z-index: 1;
+      margin: 0.5rem 0 1.25rem 0;
+      overflow: hidden;
+    }
+    .quote-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(12px) scale(0.99);
+      transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .quote-slide.active {
+      display: flex !important;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+      z-index: 2;
+    }
+    .quote-text {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.45rem;
+      line-height: 1.6;
+      font-style: italic;
+      color: #2B2625;
+      margin: 0 0 1.15rem 0;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+    @media (max-width: 640px) {
+      .quote-text {
+        font-size: 1.22rem;
+        line-height: 1.5;
+      }
+    }
+    .quote-author {
+      font-family: 'Cinzel', 'Montserrat', serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #7A7269;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+    .quote-carousel-controls {
+      margin-top: auto;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(232, 227, 220, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      z-index: 1;
+    }
+    .quote-dots-container {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .quote-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #E2DBD0;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .quote-dot:hover {
+      background: #C5A880;
+    }
+    .quote-dot.active {
+      width: 24px;
+      height: 7px;
+      border-radius: 4px;
+      background: #C5A880;
+      box-shadow: 0 1px 3px rgba(197, 168, 128, 0.4);
+    }
+    .quote-nav-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      border: 1px solid #E2DBD0;
+      background: #FFFFFF;
+      color: #7A7269;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      padding: 0;
+    }
+    .quote-nav-btn:hover {
+      background: #FAF8F5;
+      border-color: #C5A880;
+      color: #2B2625;
+      transform: translateY(-1px);
+    }
+    .quote-progress-bar-wrap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: rgba(197, 168, 128, 0.12);
+      overflow: hidden;
+      z-index: 5;
+    }
+    .quote-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #C5A880, #D4C7B5);
+      transition: width 0.08s linear;
+    }
     /* Absolute Fail-Safe Header Dropdown Isolation */
     .nav-dropdown {
       position: relative;
@@ -418,6 +588,11 @@
           <!-- Card 5: Automatic Celebration Quote Carousel (Warm Neutral Editorial Aesthetic) -->
           <div class="card celebration-quote-card" id="celebration-quote-card" style="background: #FAF8F5; border: 1px solid #E8E3DC; border-top: 5px solid #C5A880; border-radius: var(--radius-lg); padding: 2.25rem; display: flex; flex-direction: column; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(74, 60, 49, 0.05), 0 2px 6px rgba(74, 60, 49, 0.03); height: 100%;">
             
+            <!-- Animated 10s Progress Bar -->
+            <div class="quote-progress-bar-wrap">
+              <div class="quote-progress-bar" id="quote-progress-bar"></div>
+            </div>
+
             <!-- Watermark Icon: Oversized, low-opacity (5–8%) decorative quote glyph in warm champagne -->
             <div class="quote-watermark" aria-hidden="true">“</div>
 
@@ -439,61 +614,61 @@
             <div class="quote-slides-wrapper" style="position: relative; flex: 1; min-height: 195px; display: flex; align-items: center; z-index: 1;">
               
               <!-- Slide 1 -->
-              <div class="quote-slide active" data-index="0">
+              <div class="quote-slide active" data-index="0" style="display: flex; opacity: 1;">
                 <blockquote class="quote-text">“The more you praise and celebrate your life, the more there is in life to celebrate.”</blockquote>
                 <div class="quote-author">&mdash; Oprah Winfrey</div>
               </div>
 
               <!-- Slide 2 -->
-              <div class="quote-slide" data-index="1">
+              <div class="quote-slide" data-index="1" style="display: none; opacity: 0;">
                 <blockquote class="quote-text">“Celebrate what you want to see more of.”</blockquote>
                 <div class="quote-author">&mdash; Tom Peters</div>
               </div>
 
               <!-- Slide 3 -->
-              <div class="quote-slide" data-index="2">
+              <div class="quote-slide" data-index="2" style="display: none; opacity: 0;">
                 <blockquote class="quote-text">“Life is what you celebrate. All of it. Even its end.”</blockquote>
                 <div class="quote-author">&mdash; Audre Lorde</div>
               </div>
 
               <!-- Slide 4 -->
-              <div class="quote-slide" data-index="3">
+              <div class="quote-slide" data-index="3" style="display: none; opacity: 0;">
                 <blockquote class="quote-text">“There are always flowers for those who want to see them.”</blockquote>
                 <div class="quote-author">&mdash; Henri Matisse</div>
               </div>
 
               <!-- Slide 5 -->
-              <div class="quote-slide" data-index="4">
+              <div class="quote-slide" data-index="4" style="display: none; opacity: 0;">
                 <blockquote class="quote-text">“Life is a party. Dress like it.”</blockquote>
                 <div class="quote-author">&mdash; Audrey Hepburn</div>
               </div>
 
               <!-- Slide 6 -->
-              <div class="quote-slide" data-index="5">
+              <div class="quote-slide" data-index="5" style="display: none; opacity: 0;">
                 <blockquote class="quote-text">“It is not that we have so little time to celebrate, but that we celebrate so little.”</blockquote>
                 <div class="quote-author">&mdash; Seneca</div>
               </div>
 
               <!-- Slide 7 -->
-              <div class="quote-slide" data-index="6">
+              <div class="quote-slide" data-index="6" style="display: none; opacity: 0;">
                 <blockquote class="quote-text">“A little nonsense now and then is relished by the wisest men.”</blockquote>
                 <div class="quote-author">&mdash; Roald Dahl</div>
               </div>
 
               <!-- Slide 8 -->
-              <div class="quote-slide" data-index="7">
+              <div class="quote-slide" data-index="7" style="display: none; opacity: 0;">
                 <blockquote class="quote-text">“A party without cake is just a meeting.”</blockquote>
                 <div class="quote-author">&mdash; Julia Child</div>
               </div>
 
               <!-- Slide 9 -->
-              <div class="quote-slide" data-index="8">
+              <div class="quote-slide" data-index="8" style="display: none; opacity: 0;">
                 <blockquote class="quote-text">“Sometimes you will never know the value of a moment until it becomes a memory.”</blockquote>
                 <div class="quote-author">&mdash; Dr. Seuss</div>
               </div>
 
               <!-- Slide 10 -->
-              <div class="quote-slide" data-index="9">
+              <div class="quote-slide" data-index="9" style="display: none; opacity: 0;">
                 <blockquote class="quote-text">“Let us celebrate the occasion with wine and sweet words.”</blockquote>
                 <div class="quote-author">&mdash; Plautus</div>
               </div>
@@ -512,7 +687,7 @@
                   &#8250;
                 </button>
                 <span class="quote-pause-indicator" id="quote-pause-indicator" style="font-size: 0.72rem; color: #A8A095; font-family: 'Montserrat', sans-serif; letter-spacing: 0.04em; margin-left: 0.35rem;">
-                  Auto-playing (5s)
+                  Rotating (10s)
                 </span>
               </div>
 
@@ -1502,6 +1677,6 @@
     </div>
   </div>
 
-  <script src="js/app.js?v=5.0"></script>
+  <script src="js/app.js?v=5.2"></script>
 </body>
 </html>

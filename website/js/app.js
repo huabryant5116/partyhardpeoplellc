@@ -999,13 +999,17 @@ function initCelebrationQuoteCarousel() {
   const prevBtn = document.getElementById('quote-prev-btn');
   const nextBtn = document.getElementById('quote-next-btn');
   const pauseIndicator = document.getElementById('quote-pause-indicator');
+  const progressBar = document.getElementById('quote-progress-bar');
 
   if (!slides.length || !dotsContainer) return;
 
   let currentIndex = 0;
   let timer = null;
+  let progressInterval = null;
+  let progressElapsed = 0;
   let isPaused = false;
-  const intervalTime = 5000;
+  const intervalTime = 10000; // 10 seconds per rotation
+  const progressStep = 50;
 
   // Build dot indicators dynamically
   dotsContainer.innerHTML = '';
@@ -1023,14 +1027,27 @@ function initCelebrationQuoteCarousel() {
 
   const dots = dotsContainer.querySelectorAll('.quote-dot');
 
-  function updateSlideDisplay() {
+  function updateSlideDisplay(prevIndex) {
     slides.forEach((slide, idx) => {
       if (idx === currentIndex) {
-        slide.classList.add('active');
+        slide.style.display = 'flex';
         slide.setAttribute('aria-hidden', 'false');
+        // Force reflow for smooth animation
+        void slide.offsetWidth;
+        slide.classList.add('active');
+        slide.style.opacity = '1';
+        slide.style.transform = 'translateY(0) scale(1)';
       } else {
         slide.classList.remove('active');
         slide.setAttribute('aria-hidden', 'true');
+        slide.style.opacity = '0';
+        slide.style.transform = 'translateY(12px) scale(0.98)';
+        // Only hide display once transition finishes
+        setTimeout(() => {
+          if (!slide.classList.contains('active')) {
+            slide.style.display = 'none';
+          }
+        }, 650);
       }
     });
 
@@ -1043,11 +1060,14 @@ function initCelebrationQuoteCarousel() {
         dot.setAttribute('aria-selected', 'false');
       }
     });
+
+    resetProgress();
   }
 
   function goToSlide(index) {
+    const prev = currentIndex;
     currentIndex = (index + slides.length) % slides.length;
-    updateSlideDisplay();
+    updateSlideDisplay(prev);
     resetTimer();
   }
 
@@ -1059,13 +1079,37 @@ function initCelebrationQuoteCarousel() {
     goToSlide(currentIndex - 1);
   }
 
+  function resetProgress() {
+    progressElapsed = 0;
+    if (progressBar) progressBar.style.width = '0%';
+  }
+
   function startTimer() {
-    if (timer) clearInterval(timer);
-    timer = setInterval(() => {
+    stopTimer();
+    resetProgress();
+
+    // Progress bar runner
+    progressInterval = setInterval(() => {
       if (!isPaused) {
-        nextSlide();
+        progressElapsed += progressStep;
+        const pct = Math.min(100, (progressElapsed / intervalTime) * 100);
+        if (progressBar) progressBar.style.width = pct.toFixed(1) + '%';
+        if (progressElapsed >= intervalTime) {
+          nextSlide();
+        }
       }
-    }, intervalTime);
+    }, progressStep);
+  }
+
+  function stopTimer() {
+    if (progressInterval) {
+      clearInterval(progressInterval);
+      progressInterval = null;
+    }
+    if (timer) {
+      clearTimeout(timer);
+      timer = null;
+    }
   }
 
   function resetTimer() {
@@ -1079,7 +1123,7 @@ function initCelebrationQuoteCarousel() {
 
   function resume() {
     isPaused = false;
-    if (pauseIndicator) pauseIndicator.textContent = 'Auto-playing (5s)';
+    if (pauseIndicator) pauseIndicator.textContent = 'Rotating (10s)';
   }
 
   // Prev / Next button listeners
@@ -1119,7 +1163,7 @@ function initCelebrationQuoteCarousel() {
   });
 
   // Start active presentation
-  updateSlideDisplay();
+  updateSlideDisplay(0);
   startTimer();
 }
 
