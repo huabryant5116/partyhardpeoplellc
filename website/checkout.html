@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Option A: Instant Date Reservation & Deposit | Party Hard People LLC</title>
+  <meta name="description" content="Securely lock in your Party Hard People LLC celebration date with an instant 25% deposit and digital service agreement.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css?v=5.0">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <style>
+    .checkout-container {
+      max-width: 780px;
+      margin: 3rem auto 5rem;
+      padding: 0 1.25rem;
+    }
+    .checkout-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-xl);
+    }
+    .step-pill {
+      flex: 1;
+      text-align: center;
+      padding: 0.6rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.04);
+      transition: all 0.2s ease;
+    }
+    .step-pill.active {
+      color: #FFFFFF;
+      background: var(--primary);
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35);
+    }
+    .step-pill.completed {
+      color: var(--accent-emerald);
+      background: rgba(16, 185, 129, 0.12);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="header">
+    <div class="container nav-wrapper">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon">🎉</div>
+        <span>Party Hard People</span>
+      </a>
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <span class="badge badge-coral" style="font-weight: 700;">⚡ Instant 25% Deposit Checkout</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="checkout-container">
+    <div class="checkout-card">
+      
+      <!-- Checkout Header -->
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <span class="badge badge-coral" style="text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.78rem;">
+          Option A: Guaranteed Date Reservation
+        </span>
+        <h1 style="font-size: 2.2rem; font-family: var(--font-heading); color: var(--text-primary); margin-top: 0.5rem; margin-bottom: 0.5rem;">
+          Lock In Your Party Reservation
+        </h1>
+        <p style="font-size: 0.95rem; color: var(--text-secondary); max-width: 580px; margin: 0 auto;">
+          Authorizing your 25% deposit immediately reserves your entertainer, sound gear, and sanitization window. Protected by our 12-month Weather-Flex guarantee.
+        </p>
+      </div>
+
+      <!-- Step Navigation Indicators -->
+      <div style="display: flex; gap: 0.75rem; margin-bottom: 2.25rem;">
+        <div id="co-ind-1" class="step-pill active">1. Summary</div>
+        <div id="co-ind-2" class="step-pill">2. E-Sign</div>
+        <div id="co-ind-3" class="step-pill">3. 25% Deposit</div>
+        <div id="co-ind-4" class="step-pill">4. Confirmed</div>
+      </div>
+
+      <!-- ==============================================
+           STEP 1: RESERVATION & PACKAGE SUMMARY
+           ============================================== -->
+      <div id="co-step-1">
+        <div style="background: #F8FAFC; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.75rem;">
+            <div>
+              <span class="badge badge-coral" id="co-event-vibe">Kids Birthday Celebration</span>
+              <h3 id="co-client-name" style="font-size: 1.25rem; margin-top: 0.35rem; margin-bottom: 0.2rem; color: var(--text-primary);">
+                Client: Sarah Jenkins
+              </h3>
+              <div id="co-client-contact" style="font-size: 0.88rem; color: var(--text-secondary);">(555) 012-3456 • sarah@example.com</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Event Date</div>
+              <div id="co-event-date" style="font-weight: 700; font-size: 1.05rem; color: var(--primary);">Saturday, Nov 14, 2026</div>
+              <div id="co-event-time" style="font-size: 0.85rem; color: var(--text-secondary);">1:00 PM – 4:00 PM</div>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 1rem; font-size: 0.92rem; color: var(--text-secondary);">
+            <strong>Location:</strong> <span id="co-event-venue">Newport Beach, CA (Outdoor Lawn)</span>
+          </div>
+
+          <div>
+            <div style="font-size: 0.82rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">
+              Reserved Entertainment & Rental Inclusions
+            </div>
+            <ul id="co-items-list" style="list-style: none; padding: 0; margin: 0; font-size: 0.92rem;">
+              <li style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px dashed var(--border-subtle);">
+                <span>🎭 Kids DJ & Music Host (Interactive Dance Games)</span>
+                <strong>$350.00</strong>
+              </li>
+              <li style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px dashed var(--border-subtle);">
+                <span>📦 Commercial Pastel Castle Bounce House (Hospital-Sanitized)</span>
+                <strong>$220.00</strong>
+              </li>
+              <li style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px dashed var(--border-subtle);">
+                <span>📦 6ft Heavy-Duty Tables (x4) & White Resin Chairs (x16)</span>
+                <strong>$96.00</strong>
+              </li>
+              <li style="display: flex; justify-content: space-between; padding: 0.4rem 0;">
+                <span>🚚 Standard SoCal Local Travel & Staging</span>
+                <strong>$40.00</strong>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Financial Breakdown Box -->
+        <div style="background: rgba(124, 58, 237, 0.06); border: 2px solid var(--primary-light); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 1rem;">
+            <span style="color: var(--text-secondary);">Total Event Package:</span>
+            <strong id="co-subtotal" style="font-size: 1.15rem; color: var(--text-primary);">$706.00</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 1.25rem; color: var(--accent-emerald); font-weight: 800;">
+            <span>Initial 25% Deposit Due Today:</span>
+            <span id="co-deposit">$176.50</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-muted); border-top: 1px dashed var(--border-subtle); padding-top: 0.5rem;">
+            <span>Remaining 75% Balance (Due Event Day):</span>
+            <span id="co-balance">$529.50</span>
+          </div>
+        </div>
+
+        <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 1rem; margin-bottom: 1.75rem; font-size: 0.88rem; color: #065F46; line-height: 1.45;">
+          ✓ <strong>100% Weather-Flex Guarantee:</strong> If rain threatens your party date, transfer your deposit to any reschedule date within 12 months with no penalty.
+        </div>
+
+        <div style="display: flex; justify-content: space-between; gap: 1rem;">
+          <a href="index.html#party-builder" class="btn btn-secondary" style="flex: 1; justify-content: center;">Edit Preferences</a>
+          <button type="button" class="btn btn-primary btn-glow btn-lg" onclick="coGoToStep(2)" style="flex: 2; justify-content: center;">
+            Next: Review Agreement & E-Sign &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- ==============================================
+           STEP 2: SERVICE AGREEMENT & DIGITAL E-SIGNATURE
+           ============================================== -->
+      <div id="co-step-2" style="display: none;">
+        <div style="background: #F8FAFC; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; max-height: 200px; overflow-y: auto; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.5rem;">
+          <strong style="color: var(--text-primary); display: block; margin-bottom: 0.5rem; font-size: 0.95rem;">Party Hard People LLC — Event Service Terms & Policies:</strong>
+          <p style="margin-bottom: 0.5rem;"><strong>1. Setup & Venue Access:</strong> Party Hard People setup technicians will arrive 60 to 90 minutes prior to scheduled start time. Client guarantees flat surface access (grass, turf, or indoor) and standard electrical power within 75 feet.</p>
+          <p style="margin-bottom: 0.5rem;"><strong>2. Child Safeguarding & Safety:</strong> Inflatables require adult supervision at all times. All company entertainers dispatched to children's parties have cleared California AB 506 Live Scan fingerprint background checks.</p>
+          <p style="margin-bottom: 0.5rem;"><strong>3. Deposit & Balance Due:</strong> The 25% initial deposit is applied toward your event total and officially locks your performers and rental gear. The remaining 75% balance is due on event day prior to entertainment start time.</p>
+          <p><strong>4. Rescheduling Policy:</strong> You may reschedule your event up to 24 hours prior to scheduled start time and apply 100% of your deposit toward any new date within 12 months.</p>
+        </div>
+
+        <!-- HTML5 Signature Pad -->
+        <div style="margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+            <label class="form-label" style="font-weight: 700; margin: 0; font-size: 0.9rem;">
+              Digital Signature of Contracting Client <span class="req">*</span>
+            </label>
+            <button type="button" onclick="coClearSignaturePad()" style="background: none; border: none; color: #EF4444; font-size: 0.85rem; cursor: pointer; text-decoration: underline;">
+              Clear Signature ↺
+            </button>
+          </div>
+          <div style="border: 2px dashed var(--primary-light); border-radius: 8px; background: #FFFFFF; overflow: hidden; position: relative;">
+            <canvas id="co-signature-canvas" height="140" style="display: block; width: 100%; cursor: crosshair; touch-action: none;"></canvas>
+            <div style="position: absolute; bottom: 8px; right: 12px; font-size: 0.75rem; color: var(--text-muted); pointer-events: none;">
+              ✍️ Draw signature with mouse or finger
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1.75rem;">
+          <label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer; font-size: 0.88rem; color: var(--text-primary); font-weight: 600;">
+            <input type="checkbox" id="co-agreement-check" checked style="margin-top: 3px;">
+            <span>I acknowledge that I am an authorized adult, accept the Event Service Agreement & Liability Terms, and authorize the 25% deposit charge.</span>
+          </label>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; gap: 1rem;">
+          <button type="button" class="btn btn-secondary" onclick="coGoToStep(1)" style="flex: 1; justify-content: center;">&larr; Back</button>
+          <button type="button" class="btn btn-primary btn-glow" onclick="coGoToStep(3)" style="flex: 2; justify-content: center;">
+            Next: Pay 25% Deposit &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- ==============================================
+           STEP 3: SECURE 25% DEPOSIT PAYMENT
+           ============================================== -->
+      <div id="co-step-3" style="display: none;">
+        <div style="background: #F8FAFC; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.75rem; margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
+            <div>
+              <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em;">Authorized Charge Today</span>
+              <div style="font-size: 1.5rem; font-weight: 800; color: var(--accent-emerald);" id="co-pay-display-amt">$176.50</div>
+            </div>
+            <div style="text-align: right;">
+              <span class="badge" style="background: rgba(16, 185, 129, 0.12); color: #059669; font-size: 0.8rem;">🔒 256-Bit SSL Encrypted</span>
+              <div id="co-card-brand-display" style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem; font-weight: 600;">💳 Card</div>
+            </div>
+          </div>
+
+          <form id="co-card-form" onsubmit="coProcessPayment(event)">
+            <div class="form-group" style="margin-bottom: 1rem;">
+              <label class="form-label" for="co-card-name" style="font-size: 0.88rem;">Cardholder Name <span class="req">*</span></label>
+              <input type="text" class="form-input" id="co-card-name" placeholder="Name as shown on card" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1rem;">
+              <label class="form-label" for="co-card-number" style="font-size: 0.88rem;">Card Number <span class="req">*</span></label>
+              <input type="text" class="form-input" id="co-card-number" placeholder="4242 •••• •••• 4242" maxlength="19" oninput="coFormatCard(this)" required style="letter-spacing: 0.1em; font-family: monospace;">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+              <div class="form-group">
+                <label class="form-label" for="co-card-exp" style="font-size: 0.88rem;">Exp (MM/YY) <span class="req">*</span></label>
+                <input type="text" class="form-input" id="co-card-exp" placeholder="12/28" maxlength="5" oninput="coFormatExp(this)" required style="text-align: center;">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="co-card-cvc" style="font-size: 0.88rem;">CVC <span class="req">*</span></label>
+                <input type="password" class="form-input" id="co-card-cvc" placeholder="123" maxlength="4" required style="text-align: center;">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="co-card-zip" style="font-size: 0.88rem;">Billing Zip <span class="req">*</span></label>
+                <input type="text" class="form-input" id="co-card-zip" placeholder="92618" maxlength="5" required style="text-align: center;">
+              </div>
+            </div>
+
+            <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1.5rem; text-align: center;">
+              Sandbox Test Mode active. Enter any valid test card (e.g. <code>4242 4242 4242 4242</code>). No real funds will be charged without live gateway keys.
+            </div>
+
+            <div style="display: flex; justify-content: space-between; gap: 1rem;">
+              <button type="button" class="btn btn-secondary" onclick="coGoToStep(2)" style="flex: 1; justify-content: center;">&larr; Back</button>
+              <button type="submit" class="btn btn-primary btn-glow btn-lg" id="co-pay-btn" style="flex: 2; justify-content: center;">
+                <span id="co-pay-btn-label">Authorize 25% Deposit ($176.50)</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- ==============================================
+           STEP 4: CONFIRMED RESERVATION RECEIPT
+           ============================================== -->
+      <div id="co-step-4" style="display: none; text-align: center;">
+        <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">🎉</div>
+        <div class="badge badge-pass" style="font-size: 0.85rem; margin-bottom: 0.75rem;">Booking Officially Confirmed</div>
+        
+        <h2 style="font-size: 1.85rem; font-family: var(--font-heading); color: var(--text-primary); margin-bottom: 0.35rem;">
+          Your Party Date is Locked In!
+        </h2>
+        <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1.75rem;">
+          Your 25% deposit has been authorized and your reservation is logged in our operations dispatch system.
+        </p>
+
+        <!-- Receipt Card -->
+        <div style="background: #FFFFFF; border: 2px solid var(--accent-emerald); border-radius: var(--radius-md); padding: 1.75rem; text-align: left; margin-bottom: 1.75rem; box-shadow: var(--shadow-md);">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.75rem; margin-bottom: 0.75rem;">
+            <div>
+              <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em;">Confirmed Booking Code</div>
+              <div id="co-receipt-ref" style="font-family: monospace; font-size: 1.4rem; font-weight: 800; color: var(--accent-emerald);">PHP-BOOK-1001</div>
+            </div>
+            <div style="text-align: right;">
+              <span class="badge" style="background: rgba(16,185,129,0.15); color: #059669; font-weight: 700;">PAID: 25% DEPOSIT</span>
+            </div>
+          </div>
+
+          <div style="font-size: 0.92rem; line-height: 1.6; color: var(--text-primary);">
+            <div><strong>Client Name:</strong> <span id="co-receipt-client">Sarah Jenkins</span></div>
+            <div><strong>Event Date & Venue:</strong> <span id="co-receipt-event">Nov 14, 2026 • Newport Beach, CA</span></div>
+            <div><strong>Deposit Authorized:</strong> <span id="co-receipt-deposit" style="color: var(--accent-emerald); font-weight: 700;">$176.50</span> via <span id="co-receipt-card">Visa •••• 4242</span></div>
+            <div><strong>Remaining 75% Balance:</strong> <span id="co-receipt-balance" style="color: var(--text-primary); font-weight: 700;">$529.50</span> (Due day of event prior to entertainer setup)</div>
+            <div style="margin-top: 0.75rem; font-size: 0.85rem; color: #059669; font-weight: 600;">
+              ✓ Dispatched to Party Hard People California AB 506 Certified Staffing Dispatcher
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; justify-content: center;">
+          <button type="button" class="btn btn-secondary btn-lg" onclick="window.print()" style="flex: 1; justify-content: center;">
+            🖨️ Print / Save Receipt
+          </button>
+          <a href="index.html" class="btn btn-primary btn-glow btn-lg" style="flex: 1; justify-content: center;">
+            Return to Homepage
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>© 2026 Party Hard People LLC. All rights reserved. Southern California Kids Party Entertainment & Equipment Rentals.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/workforce-manager.js?v=checkout"></script>
+  <script>
+    let coState = {
+      step: 1,
+      sigDrawn: false,
+      sigDataUrl: null,
+      subtotalCents: 70600,
+      depositCents: 17650,
+      balanceCents: 52950
+    };
+
+    let coSigCtx = null;
+    let coIsDrawing = false;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check query params
+      const params = new URLSearchParams(window.location.search);
+      const ref = params.get('ref');
+      if (ref) {
+        const inquiries = JSON.parse(localStorage.getItem('php_inquiries') || '[]');
+        const inq = inquiries.find(i => i.refCode === ref);
+        if (inq) {
+          if (inq.details) {
+            document.getElementById('co-client-name').textContent = inq.details.contactName || 'Client';
+            document.getElementById('co-client-contact').textContent = `${inq.details.contactPhone || ''} • ${inq.details.contactEmail || ''}`;
+            document.getElementById('co-event-date').textContent = inq.details.eventDate || 'Date Selected';
+            document.getElementById('co-event-venue').textContent = `${inq.details.address || ''} (${inq.details.venueType || 'Outdoor'})`;
+          }
+          if (inq.estimate) {
+            coState.subtotalCents = inq.estimate.subtotalCents || 70600;
+            coState.depositCents = inq.estimate.depositCents || 17650;
+            coState.balanceCents = inq.estimate.balanceCents || 52950;
+            document.getElementById('co-subtotal').textContent = inq.estimate.subtotalFormatted || '$706.00';
+            document.getElementById('co-deposit').textContent = inq.estimate.depositFormatted || '$176.50';
+            document.getElementById('co-balance').textContent = inq.estimate.balanceFormatted || '$529.50';
+            document.getElementById('co-pay-display-amt').textContent = inq.estimate.depositFormatted || '$176.50';
+            document.getElementById('co-pay-btn-label').textContent = `Authorize 25% Deposit (${inq.estimate.depositFormatted || '$176.50'})`;
+          }
+        }
+      }
+      initCoSigPad();
+    });
+
+    function coGoToStep(step) {
+      if (step === 3) {
+        const chk = document.getElementById('co-agreement-check');
+        if (chk && !chk.checked) {
+          alert('Please accept the event service agreement.');
+          chk.focus();
+          return;
+        }
+        if (!coState.sigDrawn) {
+          alert('Please sign your digital signature before proceeding to payment.');
+          return;
+        }
+      }
+
+      coState.step = step;
+      for (let i = 1; i <= 4; i++) {
+        const pane = document.getElementById(`co-step-${i}`);
+        const ind = document.getElementById(`co-ind-${i}`);
+        if (pane) pane.style.display = (i === step) ? 'block' : 'none';
+        if (ind) {
+          ind.classList.remove('active', 'completed');
+          if (i === step) ind.classList.add('active');
+          else if (i < step) ind.classList.add('completed');
+        }
+      }
+    }
+
+    function initCoSigPad() {
+      const canvas = document.getElementById('co-signature-canvas');
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width > 0) {
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+      }
+      coSigCtx = canvas.getContext('2d');
+      coSigCtx.strokeStyle = '#7C3AED';
+      coSigCtx.lineWidth = 2.5;
+      coSigCtx.lineCap = 'round';
+
+      function getPos(e) {
+        const r = canvas.getBoundingClientRect();
+        return {
+          x: (e.touches ? e.touches[0].clientX : e.clientX) - r.left,
+          y: (e.touches ? e.touches[0].clientY : e.clientY) - r.top
+        };
+      }
+
+      canvas.onmousedown = (e) => {
+        coIsDrawing = true;
+        coState.sigDrawn = true;
+        const p = getPos(e);
+        coSigCtx.beginPath();
+        coSigCtx.moveTo(p.x, p.y);
+      };
+      canvas.onmousemove = (e) => {
+        if (!coIsDrawing) return;
+        const p = getPos(e);
+        coSigCtx.lineTo(p.x, p.y);
+        coSigCtx.stroke();
+      };
+      window.onmouseup = () => { coIsDrawing = false; };
+
+      canvas.ontouchstart = (e) => {
+        e.preventDefault();
+        coIsDrawing = true;
+        coState.sigDrawn = true;
+        const p = getPos(e);
+        coSigCtx.beginPath();
+        coSigCtx.moveTo(p.x, p.y);
+      };
+      canvas.ontouchmove = (e) => {
+        e.preventDefault();
+        if (!coIsDrawing) return;
+        const p = getPos(e);
+        coSigCtx.lineTo(p.x, p.y);
+        coSigCtx.stroke();
+      };
+      canvas.ontouchend = () => { coIsDrawing = false; };
+    }
+
+    function coClearSignaturePad() {
+      const canvas = document.getElementById('co-signature-canvas');
+      if (!canvas || !coSigCtx) return;
+      coSigCtx.clearRect(0, 0, canvas.width, canvas.height);
+      coState.sigDrawn = false;
+    }
+
+    function coFormatCard(input) {
+      let val = input.value.replace(/\D/g, '');
+      if (val.length > 16) val = val.substring(0, 16);
+      input.value = val.replace(/(\d{4})/g, '$1 ').trim();
+      const brand = document.getElementById('co-card-brand-display');
+      if (brand) {
+        if (val.startsWith('4')) brand.textContent = '💳 Visa';
+        else if (/^5[1-5]/.test(val)) brand.textContent = '💳 Mastercard';
+        else if (/^3[47]/.test(val)) brand.textContent = '💳 Amex';
+        else brand.textContent = '💳 Card';
+      }
+    }
+
+    function coFormatExp(input) {
+      let val = input.value.replace(/\D/g, '');
+      if (val.length > 4) val = val.substring(0, 4);
+      input.value = (val.length >= 2) ? val.substring(0, 2) + '/' + val.substring(2) : val;
+    }
+
+    function coProcessPayment(e) {
+      e.preventDefault();
+      const num = document.getElementById('co-card-number').value.replace(/\s/g, '');
+      const btn = document.getElementById('co-pay-btn');
+      btn.disabled = true;
+      btn.innerHTML = '⚡ Authorizing 25% Deposit with Gateway...';
+
+      const bookingRef = 'PHP-BOOK-' + Math.floor(1000 + Math.random() * 9000);
+
+      setTimeout(() => {
+        document.getElementById('co-receipt-ref').textContent = bookingRef;
+        document.getElementById('co-receipt-deposit').textContent = (coState.depositCents / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+        document.getElementById('co-receipt-balance').textContent = (coState.balanceCents / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+        document.getElementById('co-receipt-card').textContent = `Card ending in ${num.slice(-4) || '4242'}`;
+
+        // Save confirmed record to inquiries
+        const bookingRecord = {
+          id: 'book_' + Date.now(),
+          refCode: bookingRef,
+          status: 'confirmed_paid',
+          depositPaidCents: coState.depositCents,
+          balanceDueCents: coState.balanceCents,
+          submittedAt: new Date().toISOString()
+        };
+        const inquiries = JSON.parse(localStorage.getItem('php_inquiries') || '[]');
+        inquiries.unshift(bookingRecord);
+        localStorage.setItem('php_inquiries', JSON.stringify(inquiries));
+
+        coGoToStep(4);
+      }, 1200);
+    }
+  </script>
+</body>
+</html>

@@ -540,7 +540,7 @@ const WorkforceManager = (() => {
       const employees = loadData(STORAGE_KEYS.EMPLOYEES, DEFAULT_EMPLOYEES);
       const randomSuffix = Math.floor(10 + Math.random() * 90);
       const newEmp = {
-        id: 'emp_' + Date.now(),
+        id: 'emp_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7),
         employeeCode: `PHP-EMP-${randomSuffix}`,
         fullName: empData.fullName,
         email: empData.email,

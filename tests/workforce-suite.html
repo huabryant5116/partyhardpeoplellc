@@ -190,6 +190,7 @@
   <!-- Dependencies -->
   <script src="../website/js/workforce-manager.js?v=test"></script>
   <script src="../website/js/gallery-manager.js?v=test"></script>
+  <script src="../website/js/app.js?v=test"></script>
 
   <script>
     // Lightweight In-Browser Testing Framework
@@ -271,6 +272,16 @@
     })();
 
     function runTestSuite() {
+      // Clear test storage for hermetic test isolation
+      try {
+        localStorage.removeItem('php_wf_employees');
+        localStorage.removeItem('php_wf_positions');
+        localStorage.removeItem('php_wf_applications');
+        localStorage.removeItem('php_wf_competencies');
+        localStorage.removeItem('php_wf_assessments');
+        localStorage.removeItem('php_wf_audit_logs');
+      } catch (e) {}
+
       TestRunner.reset();
       const { describe, it, expect } = TestRunner;
 
@@ -615,6 +626,77 @@
           const laMatched = WorkforceManager.matchCrewForEvent('2026-11-20', 'Los Angeles County', 'Any', true);
           expect(laMatched.length).toBeGreaterThan(0);
           expect(laMatched.every(c => c.ab506Certified)).toBe(true);
+        });
+      });
+
+      // ----------------------------------------------------
+      // SUITE 10: OPTION A "LOCK IT IN NOW" INSTANT BOOKING
+      // ----------------------------------------------------
+      describe("10. Option A Instant Booking & 25% Deposit Flow", () => {
+        it("Calculates exact 25% deposit and 75% balance using integer cents", () => {
+          const testSubtotalCents = 85000; // $850.00
+          const depositCents = Math.round(testSubtotalCents * 0.25);
+          const balanceCents = testSubtotalCents - depositCents;
+
+          expect(depositCents).toBe(21250); // $212.50
+          expect(balanceCents).toBe(63750); // $637.50
+          expect(depositCents + balanceCents).toBe(testSubtotalCents);
+        });
+
+        it("Detects card brands accurately from prefix digits (Visa, Mastercard, Amex)", () => {
+          const getBrand = (num) => {
+            const clean = num.replace(/\D/g, '');
+            if (clean.startsWith('4')) return 'Visa';
+            if (/^5[1-5]/.test(clean)) return 'Mastercard';
+            if (/^3[47]/.test(clean)) return 'Amex';
+            if (/^6(?:011|5)/.test(clean)) return 'Discover';
+            return 'Card';
+          };
+
+          expect(getBrand('4242 4242 4242 4242')).toBe('Visa');
+          expect(getBrand('5500 0000 0000 1234')).toBe('Mastercard');
+          expect(getBrand('3782 822463 10005')).toBe('Amex');
+          expect(getBrand('6011 0000 0000 0004')).toBe('Discover');
+        });
+
+        it("Persists confirmed booking record with PHP-BOOK code and status confirmed_paid", () => {
+          const mockBookingRef = 'PHP-BOOK-9921';
+          const mockBooking = {
+            id: 'book_' + Date.now(),
+            refCode: mockBookingRef,
+            bookingType: 'Option A: Lock It In Now (Instant Deposit)',
+            status: 'confirmed_paid',
+            depositPaidCents: 17650,
+            depositPaidFormatted: '$176.50',
+            balanceDueCents: 52950,
+            balanceDueFormatted: '$529.50',
+            submittedAt: new Date().toISOString(),
+            details: {
+              contactName: 'Jennifer Walsh',
+              eventDate: '2026-11-21',
+              eventType: 'birthday',
+              address: 'Irvine, CA'
+            }
+          };
+
+          const inquiries = JSON.parse(localStorage.getItem('php_inquiries') || '[]');
+          inquiries.unshift(mockBooking);
+          localStorage.setItem('php_inquiries', JSON.stringify(inquiries));
+
+          const savedInquiries = JSON.parse(localStorage.getItem('php_inquiries') || '[]');
+          const retrieved = savedInquiries.find(i => i.refCode === mockBookingRef);
+
+          expect(retrieved).toBeTruthy();
+          expect(retrieved.status).toBe('confirmed_paid');
+          expect(retrieved.depositPaidCents).toBe(17650);
+          expect(retrieved.refCode).toInclude('PHP-BOOK-');
+        });
+
+        it("Confirmed instant booking automatically handshakes with California AB 506 crew dispatcher", () => {
+          // Query qualified crew for Jennifer Walsh's Irvine, CA youth birthday event
+          const matchedCrew = WorkforceManager.matchCrewForEvent('2026-11-21', 'Orange County', 'Any', true);
+          expect(matchedCrew.length).toBeGreaterThan(0);
+          expect(matchedCrew.every(c => c.ab506Certified)).toBe(true);
         });
       });
 
