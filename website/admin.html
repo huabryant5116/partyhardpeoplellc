@@ -591,7 +591,10 @@
           <h3 style="color: #FFFFFF;">Incoming Quote Requests</h3>
           <p style="font-size: 0.9rem; color: #94A3B8;">Review party requests, customize travel fees, and issue locked 7-day quotes.</p>
         </div>
-        <button class="btn btn-secondary btn-sm" onclick="loadInquiriesTable()">↻ Refresh Inquiries</button>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-secondary btn-sm" onclick="loadInquiriesTable()">↻ Refresh Inquiries</button>
+          <button class="btn btn-secondary btn-sm" onclick="clearTestInquiries()" style="border-color: rgba(239, 68, 68, 0.4); color: #FCA5A5;">🗑️ Clean Up Inquiries</button>
+        </div>
       </div>
 
       <div class="table-container">
@@ -754,10 +757,16 @@
             Human-reviewed 10-stage audition pipeline. Review performer reels, audition submissions, and schedule California-compliant interviews across Los Angeles, Orange County, and San Diego.
           </p>
         </div>
-        <div style="display: flex; gap: 0.75rem;">
+        <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
           <a href="careers.html" target="_blank" class="btn btn-secondary btn-sm" style="border-color: rgba(255,255,255,0.2);">
             View Live Careers Page ↗
           </a>
+          <button type="button" class="btn btn-sm" onclick="clearAllHiringSubmissions()" style="background: rgba(239, 68, 68, 0.25); border: 1.5px solid #EF4444; color: #FFFFFF; font-weight: 700; padding: 0.45rem 1rem; cursor: pointer;">
+            🗑️ Delete All Hiring Submissions
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="resetDefaultHiringSubmissions()" style="border-color: rgba(255,255,255,0.25); color: #CBD5E1;">
+            🔄 Restore Demo Data
+          </button>
           <button class="btn btn-primary btn-sm btn-glow" onclick="openNewPositionModal()">
             + Create Job Opening
           </button>
@@ -765,7 +774,7 @@
       </div>
 
       <!-- Stage Filter Pills -->
-      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;" id="wf-stage-filters">
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; align-items: center;" id="wf-stage-filters">
         <button type="button" class="btn btn-sm btn-primary" onclick="filterRecruitment('all', this)">All Candidates (<span id="wf-count-all">0</span>)</button>
         <button type="button" class="btn btn-sm btn-secondary" onclick="filterRecruitment('app_received', this)">Received</button>
         <button type="button" class="btn btn-sm btn-secondary" onclick="filterRecruitment('awaiting_review', this)">Awaiting Human Review</button>
@@ -773,6 +782,11 @@
         <button type="button" class="btn btn-sm btn-secondary" onclick="filterRecruitment('skills_assessment', this)">Skills Assessment</button>
         <button type="button" class="btn btn-sm btn-secondary" onclick="filterRecruitment('final_review', this)">Final Review</button>
         <button type="button" class="btn btn-sm btn-secondary" onclick="filterRecruitment('hired', this)">Hired / Onboarded</button>
+        <div style="margin-left: auto;">
+          <button type="button" class="btn btn-sm" onclick="clearAllHiringSubmissions()" style="background: rgba(239,68,68,0.2); border: 1px solid #EF4444; color: #FCA5A5; font-weight: 600; padding: 0.35rem 0.85rem;">
+            🗑️ Clear Pipeline Data
+          </button>
+        </div>
       </div>
 
       <!-- Candidates Table -->
@@ -1073,6 +1087,9 @@
       <!-- Action Buttons -->
       <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
         <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <button type="button" class="btn btn-sm" onclick="deleteCurrentCandidateModal()" style="background: rgba(239,68,68,0.18); border: 1px solid rgba(239,68,68,0.4); color: #FF476F;" title="Delete this application">
+            🗑️ Delete Candidate
+          </button>
           <button type="button" class="btn btn-sm" onclick="triggerAISummary()" style="background: rgba(139,92,246,0.25); color: #C4B5FD; border: 1px solid var(--admin-border-hover);">
             🤖 AI Summary
           </button>
@@ -1327,6 +1344,185 @@
     </div>
   </div>
 
+  <!-- Interactive Owner Quote Review & Pricing Modal -->
+  <div id="quote-review-modal" style="display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); align-items: center; justify-content: center; padding: 1.5rem; overflow-y: auto;">
+    <div style="background: var(--admin-surface); border: 1px solid var(--admin-border-hover); border-radius: var(--radius-lg); max-width: 840px; width: 100%; padding: 2.25rem; box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 30px var(--admin-glow); margin: auto;">
+      
+      <!-- Modal Header -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; border-bottom: 1px solid var(--admin-border); padding-bottom: 1.25rem;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.35rem;">
+            <span class="badge badge-coral" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Owner Pricing Desk</span>
+            <span id="qmodal-ref" style="font-family: monospace; font-size: 1rem; color: #A78BFA; font-weight: 700;">PHP-2026-1048</span>
+          </div>
+          <h2 id="qmodal-title" style="color: #FFFFFF; font-size: 1.5rem; font-family: var(--font-heading); margin: 0;">Quote Review: Sarah Jenkins</h2>
+        </div>
+        <button type="button" onclick="closeQuoteModal()" style="background: none; border: none; color: #94A3B8; font-size: 1.75rem; cursor: pointer; padding: 0; line-height: 1;">&times;</button>
+      </div>
+
+      <!-- Quote State 1: Pricing Form -->
+      <div id="qmodal-body-form">
+        <!-- Event & Customer Dossier -->
+        <div style="background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: var(--radius-sm); padding: 1.25rem; margin-bottom: 1.5rem;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; font-size: 0.88rem;">
+            <div>
+              <div style="color: #94A3B8; font-size: 0.75rem; text-transform: uppercase;">Event Date & Time</div>
+              <strong id="qmodal-info-date" style="color: #FFFFFF;">Nov 14, 2026 (1:00 PM - 4:00 PM)</strong>
+            </div>
+            <div>
+              <div style="color: #94A3B8; font-size: 0.75rem; text-transform: uppercase;">City & Venue Type</div>
+              <strong id="qmodal-info-location" style="color: #FFFFFF;">Irvine, CA (Outdoor Lawn)</strong>
+            </div>
+            <div>
+              <div style="color: #94A3B8; font-size: 0.75rem; text-transform: uppercase;">Guests & Children</div>
+              <strong id="qmodal-info-guests" style="color: #FFFFFF;">15 kids (Ages 4-7)</strong>
+            </div>
+            <div>
+              <div style="color: #94A3B8; font-size: 0.75rem; text-transform: uppercase;">Theme / Special Notes</div>
+              <strong id="qmodal-info-theme" style="color: #A78BFA;">Pastel Rainbow / Music Dance Games</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 1: Itemized Package Line Items -->
+        <div style="margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <h4 style="color: #FFFFFF; font-size: 1rem; margin: 0;">1. Entertainment & Rental Line Items</h4>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="addCustomLineItem()">+ Add Custom Line Item</button>
+          </div>
+          <div class="table-container" style="background: rgba(9, 14, 26, 0.9);">
+            <table style="width: 100%; font-size: 0.88rem;">
+              <thead>
+                <tr>
+                  <th style="padding: 0.6rem 0.85rem;">Item Description</th>
+                  <th style="padding: 0.6rem 0.85rem; width: 80px;">Qty</th>
+                  <th style="padding: 0.6rem 0.85rem; width: 130px;">Unit Rate ($)</th>
+                  <th style="padding: 0.6rem 0.85rem; width: 110px;">Subtotal</th>
+                  <th style="padding: 0.6rem 0.5rem; width: 40px;"></th>
+                </tr>
+              </thead>
+              <tbody id="qmodal-line-items">
+                <!-- Dynamically populated line items -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Section 2: Distance Travel Fee & Zone Selection -->
+        <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem;">
+          <div>
+            <label class="form-label" style="color: #CBD5E1; font-size: 0.85rem; margin-bottom: 0.35rem; display: block;">
+              2. Distance-Based Travel & Staging (SoCal Zones)
+            </label>
+            <select id="qmodal-travel-zone" class="executive-input" onchange="applyTravelZonePreset()" style="font-size: 0.88rem;">
+              <option value="0">Central Orange County (Irvine, Newport Beach, Costa Mesa) — $0.00 (Included)</option>
+              <option value="35">North / South OC (Anaheim, Fullerton, Mission Viejo) — $35.00</option>
+              <option value="45">Los Angeles County (Long Beach, South Bay, Lakewood) — $45.00</option>
+              <option value="65">Los Angeles County (Central LA, Pasadena, Glendale) — $65.00</option>
+              <option value="75">Los Angeles County (Westside, Santa Monica, Valley) — $75.00</option>
+              <option value="60">San Diego County (Oceanside, Carlsbad, Encinitas) — $60.00</option>
+              <option value="85">San Diego County (Downtown San Diego, Chula Vista) — $85.00</option>
+              <option value="custom">Custom Regional Distance Rate</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label" style="color: #CBD5E1; font-size: 0.85rem; margin-bottom: 0.35rem; display: block;">Travel Charge ($)</label>
+            <input type="number" step="5" min="0" id="qmodal-travel" class="executive-input" value="0" oninput="recalcModalQuote()">
+          </div>
+        </div>
+
+        <!-- Section 3: Promotional Discount & Owner Notes -->
+        <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 1.25rem; margin-bottom: 1.5rem;">
+          <div>
+            <label class="form-label" style="color: #CBD5E1; font-size: 0.85rem; margin-bottom: 0.35rem; display: block;">
+              Promotional Discount / Courtesy Credit ($)
+            </label>
+            <input type="number" step="5" min="0" id="qmodal-discount" class="executive-input" value="0" placeholder="0.00" oninput="recalcModalQuote()">
+          </div>
+          <div>
+            <label class="form-label" style="color: #CBD5E1; font-size: 0.85rem; margin-bottom: 0.35rem; display: block;">
+              Quote Notes for Client (Included in Quote & Checkout)
+            </label>
+            <input type="text" id="qmodal-client-notes" class="executive-input" placeholder="e.g. Includes setup 45 mins prior; sanitized bounce house cert." value="Includes professional equipment setup 45 minutes prior to event start.">
+          </div>
+        </div>
+
+        <!-- Section 4: Live Financial Summary & Policy Enforcements -->
+        <div style="background: rgba(124, 58, 237, 0.1); border: 1px solid rgba(139, 92, 246, 0.35); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem;">
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; text-align: center;">
+            <div style="border-right: 1px solid rgba(255,255,255,0.1); padding-right: 0.5rem;">
+              <div style="font-size: 0.75rem; color: #94A3B8; text-transform: uppercase;">Services Subtotal</div>
+              <input type="text" id="qmodal-subtotal" readonly style="background: transparent; border: none; color: #FFFFFF; font-size: 1.25rem; font-weight: 700; width: 100%; text-align: center;" value="$0.00">
+            </div>
+            <div style="border-right: 1px solid rgba(255,255,255,0.1); padding-right: 0.5rem;">
+              <div style="font-size: 0.75rem; color: #94A3B8; text-transform: uppercase;">Total Approved Quote</div>
+              <input type="text" id="qmodal-total" readonly style="background: transparent; border: none; color: #38BDF8; font-size: 1.35rem; font-weight: 800; width: 100%; text-align: center;" value="$0.00">
+            </div>
+            <div style="border-right: 1px solid rgba(255,255,255,0.1); padding-right: 0.5rem;">
+              <div style="font-size: 0.75rem; color: #A78BFA; text-transform: uppercase; font-weight: 700;">25% Deposit (To Book)</div>
+              <input type="text" id="qmodal-deposit" readonly style="background: transparent; border: none; color: #A78BFA; font-size: 1.35rem; font-weight: 800; width: 100%; text-align: center;" value="$0.00">
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: #94A3B8; text-transform: uppercase;">75% Balance (Due 48h Prior)</div>
+              <input type="text" id="qmodal-balance" readonly style="background: transparent; border: none; color: #CBD5E1; font-size: 1.25rem; font-weight: 700; width: 100%; text-align: center;" value="$0.00">
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; padding-top: 0.75rem; border-top: 1px dashed rgba(255,255,255,0.1); font-size: 0.8rem; color: #94A3B8;">
+            <span>⏱️ <strong>Strict 7-Day Guarantee:</strong> Quote expires exactly 7 days from generation.</span>
+            <span>🛡️ <strong>12-Month Weather-Flex:</strong> Free rescheduling for bad weather conditions.</span>
+          </div>
+        </div>
+
+        <!-- Modal Actions -->
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end; align-items: center;">
+          <button type="button" class="btn btn-secondary" onclick="closeQuoteModal()">Close Without Saving</button>
+          <button type="button" class="btn btn-primary btn-glow" onclick="approveAndSendQuote()" style="padding: 0.75rem 1.75rem; font-size: 1rem;">
+            ⚡ Approve Quote & Generate Customer Booking Link
+          </button>
+        </div>
+      </div>
+
+      <!-- Success State: Displayed After Quote Approval -->
+      <div id="qmodal-body-success" style="display: none; text-align: center; padding: 1.5rem 0;">
+        <div style="font-size: 3rem; margin-bottom: 0.75rem;">🎉</div>
+        <h3 style="color: #FFFFFF; font-size: 1.6rem; margin-bottom: 0.5rem; font-family: var(--font-heading);">
+          Quote Officially Approved & Issued!
+        </h3>
+        <p style="font-size: 0.92rem; color: #94A3B8; max-width: 580px; margin: 0 auto 1.5rem;">
+          The custom pricing has been locked for 7 days. Send the secure link below to the customer to review their itemized party plan and pay the 25% deposit to confirm their date.
+        </p>
+
+        <!-- Direct Link Box -->
+        <div style="background: #090E1A; border: 1px solid rgba(139, 92, 246, 0.4); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.5rem; text-align: left;">
+          <div style="font-size: 0.75rem; color: #94A3B8; text-transform: uppercase; margin-bottom: 0.35rem;">
+            Customer Quote & Deposit Checkout Link
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="text" id="qmodal-quote-link" readonly class="executive-input" style="font-family: monospace; font-size: 0.95rem; color: #38BDF8;" value="">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="copyQuoteLink()" style="white-space: nowrap;">📋 Copy Link</button>
+            <a id="qmodal-preview-btn" href="#" target="_blank" class="btn btn-primary btn-sm" style="white-space: nowrap;">Open Preview ↗</a>
+          </div>
+        </div>
+
+        <!-- SMS / Email Copy Paste Helper -->
+        <div style="background: rgba(15, 23, 42, 0.75); border: 1px solid var(--admin-border); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.5rem; text-align: left;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <div style="font-size: 0.78rem; color: #94A3B8; text-transform: uppercase; font-weight: 700;">
+              📱 Pre-Written Client Message (SMS / Email)
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="copyClientMessage()" style="padding: 0.25rem 0.65rem; font-size: 0.75rem;">Copy Message Text</button>
+          </div>
+          <textarea id="qmodal-client-message" rows="4" readonly class="executive-input" style="font-size: 0.85rem; line-height: 1.45; resize: none;"></textarea>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; justify-content: center;">
+          <button type="button" class="btn btn-secondary" onclick="closeQuoteModal()">Done / Return to Inquiries</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- Toast Feedback Component -->
   <div id="admin-toast">
     <span style="font-size: 1.25rem;">✨</span>
@@ -1361,7 +1557,9 @@
       url.searchParams.set('tab', tabName);
       window.history.replaceState({}, '', url);
 
-      if (tabName === 'gallery') {
+      if (tabName === 'inquiries') {
+        loadInquiriesTable();
+      } else if (tabName === 'gallery') {
         renderAdminGalleryList();
       } else if (tabName === 'recruitment') {
         renderRecruitmentTable();
@@ -1640,54 +1838,468 @@
       setTimeout(() => { toast.style.display = 'none'; }, 3500);
     }
 
-    // Quote and Inquiries Handlers
+    // ========================================================
+    // OWNER QUOTE ENGINE & INQUIRIES MANAGEMENT (MILESTONE 2)
+    // ========================================================
+    let currentQuoteRef = '';
+    let currentQuoteInquiry = null;
+
     function openQuoteModal(ref, customer, subtotalCents) {
-      activeSubtotalCents = subtotalCents;
-      document.getElementById('qmodal-title').textContent = 'Quote Review: ' + customer;
+      currentQuoteRef = ref;
+      const inquiries = JSON.parse(localStorage.getItem('php_inquiries') || '[]');
+      let inq = inquiries.find(i => i.refCode === ref);
+
+      // Fallback for hardcoded demonstration records
+      if (!inq) {
+        if (ref === 'PHP-2026-1048') {
+          inq = {
+            refCode: 'PHP-2026-1048',
+            details: {
+              contactName: 'Sarah Jenkins',
+              contactEmail: 'sarah@example.com',
+              contactPhone: '(949) 555-0144',
+              eventDate: 'Saturday, Nov 14, 2026',
+              startTime: '1:00 PM',
+              endTime: '4:00 PM',
+              address: 'Irvine, CA (Backyard Lawn)',
+              cityZip: 'Irvine, 92618',
+              eventType: 'Birthday Party',
+              childrenCount: 15,
+              childAgeGroup: '4-7 years',
+              theme: 'Pastel Rainbow / Music Games',
+              selectedServices: ['Kids DJ & Music Host (Dance Games)', 'Character Appearance (Unicorn Princess)'],
+              selectedRentals: ['Pastel Castle Bounce House', '6ft Heavy-Duty Tables (x4)', 'White Resin Padded Chairs (x16)']
+            },
+            estimate: {
+              subtotalCents: subtotalCents || 67800,
+              subtotalFormatted: '$678.00',
+              depositCents: 16950,
+              depositFormatted: '$169.50'
+            }
+          };
+        } else if (ref === 'PHP-2026-1032') {
+          inq = {
+            refCode: 'PHP-2026-1032',
+            details: {
+              contactName: 'David Robinson',
+              contactEmail: 'drobinson@gmail.com',
+              contactPhone: '(626) 555-0182',
+              eventDate: 'Saturday, Nov 07, 2026',
+              startTime: '11:00 AM',
+              endTime: '3:00 PM',
+              address: 'Pasadena, CA (Community Park)',
+              cityZip: 'Pasadena, 91101',
+              eventType: 'School Carnival / Community Event',
+              childrenCount: 35,
+              childAgeGroup: '5-11 years',
+              theme: 'Carnival Fiesta & High-Energy Games',
+              selectedServices: ['Kids DJ & Sound Rig', 'Karaoke Lounge Host', 'Balloon & Games Host'],
+              selectedRentals: ['Pastel Castle Bounce House', 'Quiet Inverter Generator (Park Compliant)', '6ft Tables (x6)', 'Chairs (x24)']
+            },
+            estimate: {
+              subtotalCents: subtotalCents || 94000,
+              subtotalFormatted: '$940.00',
+              depositCents: 23500,
+              depositFormatted: '$235.00'
+            }
+          };
+        }
+      }
+
+      currentQuoteInquiry = inq;
+      const details = inq ? (inq.details || {}) : {};
+
+      // Populate header details
+      const clientName = details.contactName || customer || 'Valued Client';
+      document.getElementById('qmodal-title').textContent = `Quote Review: ${clientName}`;
       document.getElementById('qmodal-ref').textContent = ref;
-      document.getElementById('qmodal-subtotal').value = '$' + (subtotalCents / 100).toFixed(2);
+      document.getElementById('qmodal-info-date').textContent = `${details.eventDate || 'Date Selected'} (${details.startTime || '1:00 PM'} – ${details.endTime || '4:00 PM'})`;
+      document.getElementById('qmodal-info-location').textContent = `${details.address || details.cityZip || 'Southern California'} (${details.venueType || 'Outdoor'})`;
+      document.getElementById('qmodal-info-guests').textContent = `${details.childrenCount || 15} kids (${details.childAgeGroup || 'Ages 4-10'})`;
+      document.getElementById('qmodal-info-theme').textContent = `${details.theme || details.eventType || 'Celebration'} ${details.musicPrefs ? '• ' + details.musicPrefs : ''}`;
+
+      // Check if existing quote exists in php_quotes
+      const quotes = JSON.parse(localStorage.getItem('php_quotes') || '[]');
+      const existingQuote = quotes.find(q => q.refCode === ref);
+
+      // Populate Line Items
+      const tbody = document.getElementById('qmodal-line-items');
+      tbody.innerHTML = '';
+
+      if (existingQuote && existingQuote.lineItems && existingQuote.lineItems.length > 0) {
+        existingQuote.lineItems.forEach(item => {
+          addLineItemRow(item.description, item.qty, item.unitRate);
+        });
+        document.getElementById('qmodal-travel').value = existingQuote.travelFee || 0;
+        document.getElementById('qmodal-discount').value = existingQuote.discount || 0;
+        if (existingQuote.clientNotes) document.getElementById('qmodal-client-notes').value = existingQuote.clientNotes;
+      } else {
+        // Build initial line items from inquiry selections or estimates
+        let itemsAdded = 0;
+        if (details.selectedServices && details.selectedServices.length > 0) {
+          details.selectedServices.forEach(s => {
+            const desc = typeof s === 'string' ? s : (s.name || 'Entertainment Service');
+            const rate = desc.toLowerCase().includes('dj') ? 350 : (desc.toLowerCase().includes('karaoke') ? 220 : 180);
+            addLineItemRow(desc, 1, rate);
+            itemsAdded++;
+          });
+        }
+        if (details.selectedRentals && details.selectedRentals.length > 0) {
+          details.selectedRentals.forEach(r => {
+            const desc = typeof r === 'string' ? r : (r.name || 'Rental Item');
+            const rate = desc.toLowerCase().includes('bounce') ? 220 : (desc.toLowerCase().includes('generator') ? 95 : 12);
+            const qty = desc.toLowerCase().includes('chair') ? 16 : (desc.toLowerCase().includes('table') ? 4 : 1);
+            addLineItemRow(desc, qty, rate);
+            itemsAdded++;
+          });
+        }
+        if (itemsAdded === 0) {
+          // Default package items
+          addLineItemRow('Kids DJ & Music Host (Interactive Dance Games)', 1, 350);
+          addLineItemRow('Commercial Pastel Castle Bounce House (Hospital-Grade Sanitized)', 1, 220);
+          addLineItemRow('6ft Heavy-Duty Tables (x4) & White Resin Chairs (x16)', 1, 96);
+        }
+
+        // Auto-detect travel zone from city/address
+        const loc = ((details.address || '') + ' ' + (details.cityZip || '')).toLowerCase();
+        let travelZoneVal = '0';
+        if (loc.includes('san diego') || loc.includes('chula vista') || loc.includes('coronado')) {
+          travelZoneVal = '85';
+        } else if (loc.includes('oceanside') || loc.includes('carlsbad') || loc.includes('escondido') || loc.includes('encinitas')) {
+          travelZoneVal = '60';
+        } else if (loc.includes('santa monica') || loc.includes('westside') || loc.includes('valley') || loc.includes('burbank')) {
+          travelZoneVal = '75';
+        } else if (loc.includes('pasadena') || loc.includes('glendale') || loc.includes('los angeles') || loc.includes('la')) {
+          travelZoneVal = '65';
+        } else if (loc.includes('long beach') || loc.includes('south bay') || loc.includes('torrance')) {
+          travelZoneVal = '45';
+        } else if (loc.includes('anaheim') || loc.includes('fullerton') || loc.includes('mission viejo') || loc.includes('san clemente')) {
+          travelZoneVal = '35';
+        }
+        document.getElementById('qmodal-travel-zone').value = travelZoneVal;
+        document.getElementById('qmodal-travel').value = travelZoneVal;
+        document.getElementById('qmodal-discount').value = 0;
+      }
+
       recalcModalQuote();
+
+      // Show editing form, hide success view
+      document.getElementById('qmodal-body-form').style.display = 'block';
+      document.getElementById('qmodal-body-success').style.display = 'none';
       document.getElementById('quote-review-modal').style.display = 'flex';
     }
 
-    function recalcModalQuote() {
-      const travel = parseFloat(document.getElementById('qmodal-travel').value || 0);
-      const totalCents = activeSubtotalCents + Math.round(travel * 100);
-      const depositCents = Math.round(totalCents * 0.25);
-
-      document.getElementById('qmodal-total').value = '$' + (totalCents / 100).toFixed(2);
-      document.getElementById('qmodal-deposit').value = '$' + (depositCents / 100).toFixed(2);
+    function addLineItemRow(desc, qty, unitRate) {
+      const tbody = document.getElementById('qmodal-line-items');
+      const tr = document.createElement('tr');
+      tr.className = 'qmodal-row';
+      const subtotal = (qty * unitRate).toFixed(2);
+      tr.innerHTML = `
+        <td style="padding: 0.5rem 0.75rem;">
+          <input type="text" class="executive-input qitem-desc" value="${desc.replace(/"/g, '&quot;')}" style="font-size: 0.88rem; padding: 0.4rem 0.65rem !important;">
+        </td>
+        <td style="padding: 0.5rem 0.75rem;">
+          <input type="number" min="1" class="executive-input qitem-qty" value="${qty}" oninput="recalcModalQuote()" style="font-size: 0.88rem; padding: 0.4rem 0.5rem !important; text-align: center;">
+        </td>
+        <td style="padding: 0.5rem 0.75rem;">
+          <input type="number" step="5" min="0" class="executive-input qitem-rate" value="${unitRate}" oninput="recalcModalQuote()" style="font-size: 0.88rem; padding: 0.4rem 0.5rem !important;">
+        </td>
+        <td style="padding: 0.5rem 0.75rem; font-weight: 700; color: #38BDF8;">
+          <span class="qitem-subtotal">$${subtotal}</span>
+        </td>
+        <td style="padding: 0.5rem 0.25rem; text-align: center;">
+          <button type="button" onclick="removeLineItem(this)" style="background: none; border: none; color: #EF4444; font-size: 1.1rem; cursor: pointer; padding: 0.2rem;" title="Delete Line Item">🗑️</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
     }
 
-    function approveAndSendQuote() {
-      alert('Quote approved! Client has been emailed a secure quote link with 7-day expiration guarantee and 25% deposit checkout.');
+    function addCustomLineItem() {
+      addLineItemRow('Custom Entertainment / Rental Inclusion', 1, 75);
+      recalcModalQuote();
+    }
+
+    function removeLineItem(btn) {
+      const row = btn.closest('tr');
+      if (row) row.remove();
+      recalcModalQuote();
+    }
+
+    function applyTravelZonePreset() {
+      const sel = document.getElementById('qmodal-travel-zone');
+      if (sel.value !== 'custom') {
+        document.getElementById('qmodal-travel').value = sel.value;
+      }
+      recalcModalQuote();
+    }
+
+    function recalcModalQuote() {
+      const rows = document.querySelectorAll('#qmodal-line-items tr');
+      let lineItemsSum = 0;
+
+      rows.forEach(r => {
+        const qty = parseFloat(r.querySelector('.qitem-qty')?.value || 1);
+        const rate = parseFloat(r.querySelector('.qitem-rate')?.value || 0);
+        const sub = Math.max(0, qty * rate);
+        lineItemsSum += sub;
+        const subEl = r.querySelector('.qitem-subtotal');
+        if (subEl) subEl.textContent = '$' + sub.toFixed(2);
+      });
+
+      const travel = parseFloat(document.getElementById('qmodal-travel')?.value || 0);
+      const discount = parseFloat(document.getElementById('qmodal-discount')?.value || 0);
+
+      const total = Math.max(0, lineItemsSum + travel - discount);
+      const deposit = Math.round(total * 0.25 * 100) / 100;
+      const balance = Math.round((total - deposit) * 100) / 100;
+
+      if (document.getElementById('qmodal-subtotal')) document.getElementById('qmodal-subtotal').value = '$' + lineItemsSum.toFixed(2);
+      if (document.getElementById('qmodal-total')) document.getElementById('qmodal-total').value = '$' + total.toFixed(2);
+      if (document.getElementById('qmodal-deposit')) document.getElementById('qmodal-deposit').value = '$' + deposit.toFixed(2);
+      if (document.getElementById('qmodal-balance')) document.getElementById('qmodal-balance').value = '$' + balance.toFixed(2);
+    }
+
+    function closeQuoteModal() {
       document.getElementById('quote-review-modal').style.display = 'none';
+    }
+
+    async function approveAndSendQuote() {
+      const rows = document.querySelectorAll('#qmodal-line-items tr');
+      const lineItems = [];
+      let lineItemsSum = 0;
+
+      rows.forEach(r => {
+        const desc = r.querySelector('.qitem-desc')?.value.trim() || 'Custom Item';
+        const qty = parseInt(r.querySelector('.qitem-qty')?.value || 1, 10);
+        const unitRate = parseFloat(r.querySelector('.qitem-rate')?.value || 0);
+        const subtotal = Math.round(qty * unitRate * 100) / 100;
+        lineItemsSum += subtotal;
+        lineItems.push({ description: desc, qty, unitRate, subtotal });
+      });
+
+      const travelFee = parseFloat(document.getElementById('qmodal-travel')?.value || 0);
+      const discount = parseFloat(document.getElementById('qmodal-discount')?.value || 0);
+      const total = Math.max(0, lineItemsSum + travelFee - discount);
+      const deposit = Math.round(total * 0.25 * 100) / 100;
+      const balance = Math.round((total - deposit) * 100) / 100;
+      const clientNotes = document.getElementById('qmodal-client-notes')?.value.trim() || '';
+
+      const now = new Date();
+      const expires = new Date(now.getTime() + 7 * 86400000); // Strict 7-day guarantee
+
+      const details = currentQuoteInquiry ? (currentQuoteInquiry.details || {}) : {};
+      const clientName = details.contactName || 'Valued Client';
+      const clientEmail = details.contactEmail || '';
+      const clientPhone = details.contactPhone || '';
+      const eventDate = details.eventDate || 'Scheduled Date';
+
+      const quoteRecord = {
+        refCode: currentQuoteRef,
+        quoteId: 'PHP-Q-' + Math.floor(1000 + Math.random() * 9000),
+        status: 'QUOTE_SENT',
+        issuedAt: now.toISOString(),
+        expiresAt: expires.toISOString(),
+        clientName,
+        clientEmail,
+        clientPhone,
+        eventDate,
+        eventLocation: details.address || details.cityZip || 'Southern California',
+        lineItems,
+        travelFee,
+        discount,
+        clientNotes,
+        totalCents: Math.round(total * 100),
+        depositCents: Math.round(deposit * 100),
+        balanceCents: Math.round(balance * 100),
+        totalFormatted: '$' + total.toFixed(2),
+        depositFormatted: '$' + deposit.toFixed(2),
+        balanceFormatted: '$' + balance.toFixed(2)
+      };
+
+      // 1. Save quote locally into php_quotes
+      const quotes = JSON.parse(localStorage.getItem('php_quotes') || '[]');
+      const existingIdx = quotes.findIndex(q => q.refCode === currentQuoteRef);
+      if (existingIdx >= 0) {
+        quotes[existingIdx] = quoteRecord;
+      } else {
+        quotes.unshift(quoteRecord);
+      }
+      localStorage.setItem('php_quotes', JSON.stringify(quotes));
+
+      // 2. Update status in php_inquiries
+      const inquiries = JSON.parse(localStorage.getItem('php_inquiries') || '[]');
+      const inqIdx = inquiries.findIndex(i => i.refCode === currentQuoteRef);
+      if (inqIdx >= 0) {
+        inquiries[inqIdx].status = 'quote_sent';
+        inquiries[inqIdx].quote = quoteRecord;
+        localStorage.setItem('php_inquiries', JSON.stringify(inquiries));
+      }
+
+      // 3. Post to Netlify Function /api/quotes
+      try {
+        fetch('/api/quotes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(quoteRecord)
+        }).catch(() => {});
+      } catch(e) {}
+
+      // 4. Record workforce audit log
+      if (typeof WorkforceManager !== 'undefined' && WorkforceManager.recordAudit) {
+        WorkforceManager.recordAudit(
+          'QUOTE_OFFICIALLY_ISSUED',
+          `Executive approved quote ${currentQuoteRef} for ${clientName} ($${total.toFixed(2)} total, 25% deposit $${deposit.toFixed(2)}, expires ${expires.toLocaleDateString()}).`,
+          'Bryant Hua (Super Admin)'
+        );
+      }
+
+      // 5. Generate secure checkout link
+      const checkoutUrl = `${window.location.origin}${window.location.pathname.replace('admin.html', '')}checkout.html?ref=${currentQuoteRef}`;
+      document.getElementById('qmodal-quote-link').value = checkoutUrl;
+      const previewBtn = document.getElementById('qmodal-preview-btn');
+      if (previewBtn) previewBtn.href = checkoutUrl;
+
+      // 6. Generate ready-to-send SMS/Email template
+      const clientMsg = `Hi ${clientName}! Great news from Party Hard People LLC — your customized entertainment & rental quote for your celebration on ${eventDate} is ready.\n\nReview your itemized party plan and lock in your date with your 25% deposit ($${deposit.toFixed(2)}) here:\n${checkoutUrl}\n\n*Strict 7-day price guarantee. Includes our 12-month Weather-Flex rescheduling protection.`;
+      document.getElementById('qmodal-client-message').value = clientMsg;
+
+      // Switch to success view in modal
+      document.getElementById('qmodal-body-form').style.display = 'none';
+      document.getElementById('qmodal-body-success').style.display = 'block';
+
+      loadInquiriesTable();
+      showToast('🎉 Quote officially approved and locked for 7 days!');
+    }
+
+    function copyQuoteLink() {
+      const input = document.getElementById('qmodal-quote-link');
+      if (input) {
+        input.select();
+        navigator.clipboard.writeText(input.value).then(() => {
+          showToast('📋 Checkout link copied to clipboard!');
+        });
+      }
+    }
+
+    function copyClientMessage() {
+      const ta = document.getElementById('qmodal-client-message');
+      if (ta) {
+        ta.select();
+        navigator.clipboard.writeText(ta.value).then(() => {
+          showToast('📱 Client SMS/Email text copied to clipboard!');
+        });
+      }
     }
 
     function loadInquiriesTable() {
       const stored = localStorage.getItem('php_inquiries');
+      const quotes = JSON.parse(localStorage.getItem('php_quotes') || '[]');
+      const tbody = document.getElementById('inquiries-table-body');
+      if (!tbody) return;
+
+      let list = [];
       if (stored) {
-        try {
-          const list = JSON.parse(stored);
-          const tbody = document.getElementById('inquiries-table-body');
-          if (list.length > 0 && tbody) {
-            list.forEach(inq => {
-              const tr = document.createElement('tr');
-              tr.innerHTML = `
-                <td><strong style="color: var(--accent-coral); font-family: monospace;">${inq.refCode}</strong></td>
-                <td>${inq.details.contactName || 'Parent'}<br><span style="font-size: 0.8rem; color: #94A3B8;">${inq.details.contactEmail || ''}</span></td>
-                <td>${inq.details.eventDate || 'Pending'}<br><span style="font-size: 0.8rem; color: #94A3B8;">${inq.details.address || ''}</span></td>
-                <td>${inq.details.eventType} (${inq.details.childrenCount} kids)</td>
-                <td><strong>${inq.estimate.subtotalFormatted}</strong></td>
-                <td style="color: #A78BFA;">${inq.estimate.depositFormatted}</td>
-                <td><span class="badge badge-coral">New Submission</span></td>
-                <td><button class="btn btn-primary btn-sm" onclick="openQuoteModal('${inq.refCode}', '${inq.details.contactName}', ${inq.estimate.subtotalCents})">Review & Quote</button></td>
-              `;
-              tbody.prepend(tr);
-            });
-            document.getElementById('stat-pending-inquiries').textContent = 3 + list.length;
+        try { list = JSON.parse(stored); } catch(e) {}
+      }
+
+      // Ensure demo entries exist if no custom ones
+      const has1048 = list.some(i => i.refCode === 'PHP-2026-1048');
+      const has1032 = list.some(i => i.refCode === 'PHP-2026-1032');
+
+      const allRows = [...list];
+      if (!has1048) {
+        allRows.push({
+          refCode: 'PHP-2026-1048',
+          details: { contactName: 'Sarah Jenkins', contactEmail: 'sarah@example.com', address: 'Irvine, CA (Backyard)', eventDate: 'Nov 14, 2026', eventType: 'Birthday', childrenCount: 15 },
+          estimate: { subtotalFormatted: '$678.00', depositFormatted: '$169.50', subtotalCents: 67800 }
+        });
+      }
+      if (!has1032) {
+        allRows.push({
+          refCode: 'PHP-2026-1032',
+          details: { contactName: 'David Robinson', contactEmail: 'drobinson@gmail.com', address: 'Pasadena, CA (Park)', eventDate: 'Nov 07, 2026', eventType: 'School Event', childrenCount: 35 },
+          estimate: { subtotalFormatted: '$940.00', depositFormatted: '$235.00', subtotalCents: 94000 }
+        });
+      }
+
+      tbody.innerHTML = allRows.map(inq => {
+        const ref = inq.refCode;
+        const name = (inq.details && inq.details.contactName) ? inq.details.contactName : 'Parent';
+        const email = (inq.details && inq.details.contactEmail) ? inq.details.contactEmail : '';
+        const date = (inq.details && inq.details.eventDate) ? inq.details.eventDate : 'Pending';
+        const addr = (inq.details && (inq.details.address || inq.details.cityZip)) ? (inq.details.address || inq.details.cityZip) : 'Southern California';
+        const type = (inq.details && inq.details.eventType) ? inq.details.eventType : 'Party';
+        const kids = (inq.details && inq.details.childrenCount) ? inq.details.childrenCount : '15';
+        const subtotal = (inq.estimate && inq.estimate.subtotalFormatted) ? inq.estimate.subtotalFormatted : '$678.00';
+        const deposit = (inq.estimate && inq.estimate.depositFormatted) ? inq.estimate.depositFormatted : '$169.50';
+        const subtotalCents = (inq.estimate && inq.estimate.subtotalCents) ? inq.estimate.subtotalCents : 67800;
+
+        // Check quote status
+        const quote = quotes.find(q => q.refCode === ref);
+        let statusBadge = '<span class="badge badge-coral">New Submission</span>';
+        let actionBtn = `<button class="btn btn-primary btn-sm" onclick="openQuoteModal('${ref}', '${name.replace(/'/g, "\\'")}', ${subtotalCents})">Review & Quote</button>`;
+
+        if (inq.status === 'confirmed' || (quote && quote.status === 'CONFIRMED')) {
+          statusBadge = '<span class="badge" style="background: rgba(16,185,129,0.2); color: #34D399; font-weight: 700;">✅ Confirmed (Paid)</span>';
+          actionBtn = `<a href="checkout.html?ref=${ref}" target="_blank" class="btn btn-secondary btn-sm">View Booking ↗</a>`;
+        } else if (quote) {
+          const now = new Date().getTime();
+          const exp = new Date(quote.expiresAt).getTime();
+          const msLeft = exp - now;
+          const daysLeft = Math.ceil(msLeft / 86400000);
+
+          if (msLeft <= 0) {
+            statusBadge = '<span class="badge" style="background: rgba(239,68,68,0.2); color: #FCA5A5;">⚠️ Expired Quote</span>';
+            actionBtn = `<button class="btn btn-secondary btn-sm" onclick="openQuoteModal('${ref}', '${name.replace(/'/g, "\\'")}', ${subtotalCents})">Refresh Quote</button>`;
+          } else {
+            statusBadge = `<span class="badge badge-amber">Quote Sent (${daysLeft}d left)</span>`;
+            actionBtn = `<button class="btn btn-secondary btn-sm" onclick="openQuoteModal('${ref}', '${name.replace(/'/g, "\\'")}', ${subtotalCents})">Edit / Resend</button>`;
           }
-        } catch(e) {}
+        }
+
+        return `
+          <tr>
+            <td><strong style="color: var(--accent-coral); font-family: monospace;">${ref}</strong></td>
+            <td>${name}<br><span style="font-size: 0.8rem; color: #94A3B8;">${email}</span></td>
+            <td>${date}<br><span style="font-size: 0.8rem; color: #94A3B8;">${addr}</span></td>
+            <td>${type} (${kids} kids)</td>
+            <td><strong>${quote ? quote.totalFormatted : subtotal}</strong></td>
+            <td style="color: #A78BFA; font-weight: 700;">${quote ? quote.depositFormatted : deposit}</td>
+            <td>
+              <div style="display: flex; gap: 0.35rem; align-items: center;">
+                ${actionBtn}
+                <button class="btn btn-sm" onclick="deleteInquiry('${ref}')" style="background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.35); color: #FF476F; padding: 0.35rem 0.55rem; font-size: 0.78rem;" title="Delete this inquiry">🗑️</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      const statPending = document.getElementById('stat-pending-inquiries');
+      if (statPending) statPending.textContent = allRows.filter(r => !quotes.some(q => q.refCode === r.refCode && q.status === 'CONFIRMED')).length;
+    }
+
+    function deleteInquiry(refCode) {
+      if (confirm(`Are you sure you want to delete inquiry "${refCode}" from your portal?`)) {
+        let list = JSON.parse(localStorage.getItem('php_inquiries') || '[]');
+        list = list.filter(i => i.refCode !== refCode);
+        localStorage.setItem('php_inquiries', JSON.stringify(list));
+
+        let quotes = JSON.parse(localStorage.getItem('php_quotes') || '[]');
+        quotes = quotes.filter(q => q.refCode !== refCode);
+        localStorage.setItem('php_quotes', JSON.stringify(quotes));
+
+        loadInquiriesTable();
+        showToast(`🗑️ Inquiry "${refCode}" deleted.`);
+      }
+    }
+
+    function clearTestInquiries() {
+      if (confirm("Are you sure you want to clear all test quote requests?\n\nThis will wipe all inquiry rows from your portal so you can start with a clean dashboard.")) {
+        localStorage.removeItem('php_inquiries');
+        localStorage.removeItem('php_quotes');
+        loadInquiriesTable();
+        showToast("🧹 All quote requests have been cleaned up.");
       }
     }
 
@@ -1720,7 +2332,16 @@
       if (!tbody) return;
 
       if (candidates.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #94A3B8; padding: 2rem;">No candidates found in this stage filter.</td></tr>`;
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align: center; color: #94A3B8; padding: 3rem 1.5rem;">
+              <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🧹</div>
+              <h4 style="color: #FFFFFF; font-size: 1.15rem; margin-bottom: 0.35rem;">Pipeline Clean & Clear</h4>
+              <p style="font-size: 0.88rem; max-width: 480px; margin: 0 auto 1.25rem;">There are no candidate applications in your recruitment dashboard. New submissions from the public careers page will appear here automatically.</p>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="resetDefaultHiringSubmissions()">🔄 Restore Sample Demo Applicants</button>
+            </td>
+          </tr>
+        `;
         return;
       }
 
@@ -1764,15 +2385,58 @@
               </span>
             </td>
             <td>
-              <div style="display: flex; gap: 0.4rem;">
+              <div style="display: flex; gap: 0.4rem; align-items: center;">
                 <button class="btn btn-secondary btn-sm" onclick="openCandidateModal('${app.id}')" style="padding: 0.35rem 0.65rem; font-size: 0.78rem;">
                   Review Bio & Reel
+                </button>
+                <button class="btn btn-sm" onclick="deleteCandidate('${app.id}', '${app.fullName.replace(/'/g, "\\'")}')" style="background: rgba(239,68,68,0.22); border: 1px solid #EF4444; color: #FCA5A5; font-weight: 600; padding: 0.35rem 0.65rem; font-size: 0.78rem;" title="Delete this applicant">
+                  🗑️ Delete
                 </button>
               </div>
             </td>
           </tr>
         `;
       }).join('');
+    }
+
+    function deleteCandidate(id, name) {
+      if (confirm(`Are you sure you want to permanently delete the application for "${name}"?\n\nThis will remove the candidate from your portal and clean up pipeline data.`)) {
+        WorkforceManager.deleteApplication(id);
+        renderRecruitmentTable();
+        showToast(`🗑️ Application for "${name}" deleted.`);
+      }
+    }
+
+    function deleteCurrentCandidateModal() {
+      if (!activeCandidateId) return;
+      const app = WorkforceManager.getApplication(activeCandidateId);
+      const name = app ? app.fullName : 'this candidate';
+      if (confirm(`Are you sure you want to permanently delete the application for "${name}"?\n\nThis will remove all candidate notes, resume text, and scores.`)) {
+        WorkforceManager.deleteApplication(activeCandidateId);
+        document.getElementById('candidate-detail-modal').style.display = 'none';
+        renderRecruitmentTable();
+        showToast(`🗑️ Application for "${name}" deleted.`);
+      }
+    }
+
+    function clearAllHiringSubmissions() {
+      if (confirm("Are you sure you want to permanently delete ALL applicant hiring submissions?\n\nThis will wipe all candidate records and clean up your recruitment dashboard.")) {
+        WorkforceManager.clearAllApplications();
+        renderRecruitmentTable();
+        showToast('🧹 All candidate submissions have been wiped clean.');
+      }
+    }
+
+    function resetDefaultHiringSubmissions() {
+      if (confirm("Restore sample candidate applications to test the hiring pipeline?")) {
+        WorkforceManager.resetDefaultApplications();
+        renderRecruitmentTable();
+        showToast('🔄 Sample applications restored.');
+      }
+    }
+
+    function promptClearOrResetCandidates() {
+      clearAllHiringSubmissions();
     }
 
     function filterRecruitment(stageKey, btn) {

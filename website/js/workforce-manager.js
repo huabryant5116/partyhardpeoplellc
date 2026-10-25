@@ -458,6 +458,26 @@ const WorkforceManager = (() => {
       logAudit('UPDATE_APPLICATION_STAGE', `Moved ${apps[index].fullName} from ${oldStage} to ${newStage}. Notes: ${adminNotes}`);
       return apps[index];
     },
+    deleteApplication: (id) => {
+      let apps = loadData(STORAGE_KEYS.APPLICATIONS, DEFAULT_APPLICATIONS);
+      const app = apps.find(a => a.id === id);
+      apps = apps.filter(a => a.id !== id);
+      saveData(STORAGE_KEYS.APPLICATIONS, apps);
+      if (app) {
+        logAudit('DELETE_APPLICATION', `Deleted application for ${app.fullName} (${app.refCode || id})`, 'Bryant Hua (Super Admin)');
+      }
+      return true;
+    },
+    clearAllApplications: () => {
+      saveData(STORAGE_KEYS.APPLICATIONS, []);
+      logAudit('PURGE_APPLICATIONS', `Cleared all recruitment pipeline applications`, 'Bryant Hua (Super Admin)');
+      return true;
+    },
+    resetDefaultApplications: () => {
+      saveData(STORAGE_KEYS.APPLICATIONS, DEFAULT_APPLICATIONS);
+      logAudit('RESET_APPLICATIONS', `Reset recruitment pipeline to default sample applications`, 'Bryant Hua (Super Admin)');
+      return true;
+    },
 
     // Skills Assessments (1-5 Rubrics)
     getCompetencies: () => loadData(STORAGE_KEYS.COMPETENCIES, DEFAULT_COMPETENCIES),

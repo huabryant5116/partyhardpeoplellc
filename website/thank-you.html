@@ -125,13 +125,29 @@
   </footer>
 
   <script>
-    // Read reference code from URL parameter if present
+    // Read parameters from URL to display inquiry confirmation or confirmed booking
     document.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
       const ref = urlParams.get('ref');
+      const isBookingConfirmed = urlParams.get('booking') === 'confirmed';
+
       if (ref) {
         const el = document.getElementById('thank-you-ref');
         if (el) el.textContent = ref;
+      }
+
+      if (isBookingConfirmed) {
+        const badge = document.querySelector('.badge-coral');
+        if (badge) {
+          badge.textContent = '🎉 25% Deposit Paid — Booking Confirmed';
+          badge.style.background = '#ECFDF5';
+          badge.style.color = '#059669';
+          badge.style.borderColor = '#10B981';
+        }
+        const h1 = document.querySelector('h1');
+        if (h1) h1.textContent = 'Your Party Date is Officially Locked In!';
+        const p = document.querySelector('p.lead, main p');
+        if (p) p.textContent = 'Your 25% reservation deposit has been authorized and verified. Your entertainer and equipment have been reserved in our dispatch schedule.';
       }
     });
   </script>

@@ -559,8 +559,8 @@ function updateSummarySidebar() {
   if (guestsEl) guestsEl.textContent = `${partyState.childrenCount} kids / ${partyState.estimatedGuests} guests`;
 }
 
-// Submission handler
-function handleQuoteSubmission(e) {
+// Submission handler with Serverless API dispatch & local recovery
+async function handleQuoteSubmission(e) {
   if (e) e.preventDefault();
 
   const name = document.getElementById('pb-contact-name');
@@ -583,6 +583,12 @@ function handleQuoteSubmission(e) {
 
   if (!valid) return;
 
+  const submitBtn = document.getElementById('pb-submit-quote');
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '✨ Submitting Your Custom Quote Request...';
+  }
+
   // Generate Reference ID: PHP-2026-XXXX
   const randomSuffix = Math.floor(1000 + Math.random() * 9000);
   const refCode = `PHP-2026-${randomSuffix}`;
@@ -591,6 +597,16 @@ function handleQuoteSubmission(e) {
 
   const estimate = calculateEstimate();
 
+  // Capture attribution
+  const urlParams = new URLSearchParams(window.location.search);
+  const attribution = {
+    source: urlParams.get('utm_source') || 'direct',
+    medium: urlParams.get('utm_medium') || 'web',
+    campaign: urlParams.get('utm_campaign') || '',
+    referrer: document.referrer || '',
+    selfReported: partyState.referral || 'other'
+  };
+
   const inquiryRecord = {
     id: 'inq_' + Date.now(),
     refCode,
@@ -598,10 +614,34 @@ function handleQuoteSubmission(e) {
     expiresAt: expiryDate.toISOString(),
     status: 'pending_review',
     estimate,
+    attribution,
     details: { ...partyState }
   };
 
-  // Store into localStorage
+  // Attempt serverless API dispatch to Netlify Function if available
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 4000);
+
+    const apiResponse = await fetch('/api/inquiries', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(inquiryRecord),
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+
+    if (apiResponse.ok) {
+      const data = await apiResponse.json();
+      if (data && data.refCode) {
+        inquiryRecord.refCode = data.refCode;
+      }
+    }
+  } catch (err) {
+    console.info('Serverless API dispatch offline or fallback; saving to local cache.', err.message);
+  }
+
+  // Store into localStorage as infallible local backup
   const existingInquiries = JSON.parse(localStorage.getItem('php_inquiries') || '[]');
   existingInquiries.unshift(inquiryRecord);
   localStorage.setItem('php_inquiries', JSON.stringify(existingInquiries));
@@ -609,382 +649,17 @@ function handleQuoteSubmission(e) {
   // Clear session draft state
   sessionStorage.removeItem('php_party_state');
 
+  // Audit log integration
+  if (typeof WorkforceManager !== 'undefined' && WorkforceManager.recordAudit) {
+    WorkforceManager.recordAudit(
+      'NEW_QUOTE_INQUIRY_RECEIVED',
+      `Inquiry ${inquiryRecord.refCode} received from ${partyState.contactName} (${partyState.eventDate || 'Date Pending'}, est. ${estimate.subtotalFormatted}).`,
+      'Public Customer Funnel'
+    );
+  }
+
   // Seamless redirect to thank-you.html
-  window.location.href = `thank-you.html?ref=${refCode}&name=${encodeURIComponent(partyState.contactName)}&total=${encodeURIComponent(estimate.subtotalFormatted)}&deposit=${encodeURIComponent(estimate.depositFormatted)}`;
-}
-
-// ========================================================
-// OPTION A: "LOCK IT IN NOW" INSTANT BOOKING & DEPOSIT FLOW
-// ========================================================
-let checkoutState = {
-  currentStep: 1,
-  signatureDrawn: false,
-  signatureDataUrl: null,
-  confirmedBooking: null
-};
-
-let signaturePadContext = null;
-let isDrawingSignature = false;
-
-function validateContactStep() {
-  const name = document.getElementById('pb-contact-name');
-  const email = document.getElementById('pb-contact-email');
-  const phone = document.getElementById('pb-contact-phone');
-
-  let valid = true;
-  if (!name || !name.value.trim()) {
-    showFieldError(name, 'Please enter your full name');
-    valid = false;
-  }
-  if (!email || !email.value.trim() || !email.value.includes('@')) {
-    showFieldError(email, 'Please enter a valid email address');
-    valid = false;
-  }
-  if (!phone || !phone.value.trim()) {
-    showFieldError(phone, 'Please enter your phone number');
-    valid = false;
-  }
-
-  return valid;
-}
-
-function openInstantBookingModal() {
-  if (!validateContactStep()) return;
-
-  const modal = document.getElementById('option-a-checkout-modal');
-  if (!modal) return;
-
-  const est = calculateEstimate();
-  
-  // Populate Step 1 Breakdown
-  const exp = PARTY_EXPERIENCES[partyState.eventType] || { label: 'Custom Party Experience' };
-  const eventTitleEl = document.getElementById('checkout-event-title');
-  const eventDateEl = document.getElementById('checkout-event-date');
-  const eventVenueEl = document.getElementById('checkout-event-venue');
-  const contactEl = document.getElementById('checkout-client-name');
-  
-  if (eventTitleEl) eventTitleEl.textContent = exp.label;
-  if (eventDateEl) eventDateEl.textContent = `${partyState.eventDate || 'Date Selected'} (${partyState.startTime} – ${partyState.endTime})`;
-  if (eventVenueEl) eventVenueEl.textContent = `${partyState.address || 'Southern California Venue'} (${partyState.venueType})`;
-  if (contactEl) contactEl.textContent = `${partyState.contactName} • ${partyState.contactPhone}`;
-
-  // Line items
-  const itemsListEl = document.getElementById('checkout-items-list');
-  if (itemsListEl) {
-    let itemsHtml = '';
-    partyState.entertainment.forEach(k => {
-      const item = CATALOG.entertainment[k];
-      if (item) {
-        itemsHtml += `<li style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed rgba(255,255,255,0.08); font-size: 0.9rem;">
-          <span>🎭 ${item.name}</span>
-          <span style="font-weight: 600;">$${(item.basePriceCents / 100).toFixed(2)}</span>
-        </li>`;
-      }
-    });
-
-    Object.keys(partyState.rentals).forEach(k => {
-      const count = partyState.rentals[k] || 0;
-      const rental = CATALOG.rentals[k];
-      if (count > 0 && rental) {
-        itemsHtml += `<li style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed rgba(255,255,255,0.08); font-size: 0.9rem;">
-          <span>📦 ${rental.name} (x${count})</span>
-          <span style="font-weight: 600;">$${((count * rental.unitPriceCents) / 100).toFixed(2)}</span>
-        </li>`;
-      }
-    });
-
-    itemsListEl.innerHTML = itemsHtml || '<li style="color: #94A3B8; font-size: 0.9rem;">Standard Package Inclusions</li>';
-  }
-
-  // Populate Financials
-  const subtotalEl = document.getElementById('checkout-subtotal');
-  const depositEl = document.getElementById('checkout-deposit');
-  const balanceEl = document.getElementById('checkout-balance');
-  const depositBtnEl = document.getElementById('checkout-pay-btn-text');
-
-  if (subtotalEl) subtotalEl.textContent = est.subtotalFormatted;
-  if (depositEl) depositEl.textContent = est.depositFormatted;
-  if (balanceEl) balanceEl.textContent = est.balanceFormatted;
-  if (depositBtnEl) depositBtnEl.textContent = `Authorize 25% Deposit (${est.depositFormatted})`;
-
-  goToCheckoutStep(1);
-  modal.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-
-  // Initialize canvas on step 2 transition or timeout
-  setTimeout(initSignaturePad, 100);
-}
-
-function closeInstantBookingModal() {
-  const modal = document.getElementById('option-a-checkout-modal');
-  if (modal) modal.style.display = 'none';
-  document.body.style.overflow = 'auto';
-}
-
-function goToCheckoutStep(step) {
-  // Step validation
-  if (step === 2) {
-    // Advancing to contract: ensure signature pad is sized properly
-    setTimeout(initSignaturePad, 80);
-  } else if (step === 3) {
-    // Advancing to payment: require signature and agreement checkbox
-    const agreeCheck = document.getElementById('agreement-terms-check');
-    if (agreeCheck && !agreeCheck.checked) {
-      alert('Please check the box confirming you accept the Party Hard People LLC Event Service Agreement.');
-      agreeCheck.focus();
-      return;
-    }
-    if (!checkoutState.signatureDrawn) {
-      alert('Please provide your digital e-signature in the box below to authorize the reservation.');
-      return;
-    }
-    // Save signature data
-    const canvas = document.getElementById('checkout-signature-canvas');
-    if (canvas) checkoutState.signatureDataUrl = canvas.toDataURL('image/png');
-  }
-
-  checkoutState.currentStep = step;
-
-  // Toggle step panes
-  for (let i = 1; i <= 4; i++) {
-    const pane = document.getElementById(`checkout-step-${i}`);
-    const indicator = document.getElementById(`checkout-indicator-${i}`);
-    if (pane) pane.style.display = (i === step) ? 'block' : 'none';
-    if (indicator) {
-      indicator.classList.remove('active', 'completed');
-      if (i === step) indicator.classList.add('active');
-      else if (i < step) indicator.classList.add('completed');
-    }
-  }
-}
-
-// HTML5 Smooth Signature Pad Controller
-function initSignaturePad() {
-  const canvas = document.getElementById('checkout-signature-canvas');
-  if (!canvas) return;
-
-  // Set physical display resolution for sharp rendering
-  const rect = canvas.getBoundingClientRect();
-  if (rect.width > 0 && canvas.width !== rect.width) {
-    canvas.width = rect.width;
-    canvas.height = rect.height;
-  }
-
-  const ctx = canvas.getContext('2d');
-  signaturePadContext = ctx;
-  ctx.strokeStyle = '#8B5CF6';
-  ctx.lineWidth = 2.5;
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-
-  function getPos(e) {
-    const r = canvas.getBoundingClientRect();
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    return {
-      x: clientX - r.left,
-      y: clientY - r.top
-    };
-  }
-
-  function startDraw(e) {
-    e.preventDefault();
-    isDrawingSignature = true;
-    checkoutState.signatureDrawn = true;
-    const pos = getPos(e);
-    ctx.beginPath();
-    ctx.moveTo(pos.x, pos.y);
-  }
-
-  function draw(e) {
-    if (!isDrawingSignature) return;
-    e.preventDefault();
-    const pos = getPos(e);
-    ctx.lineTo(pos.x, pos.y);
-    ctx.stroke();
-  }
-
-  function endDraw() {
-    isDrawingSignature = false;
-  }
-
-  canvas.onmousedown = startDraw;
-  canvas.onmousemove = draw;
-  window.onmouseup = endDraw;
-
-  canvas.ontouchstart = startDraw;
-  canvas.ontouchmove = draw;
-  canvas.ontouchend = endDraw;
-}
-
-function clearSignaturePad() {
-  const canvas = document.getElementById('checkout-signature-canvas');
-  if (!canvas || !signaturePadContext) return;
-  signaturePadContext.clearRect(0, 0, canvas.width, canvas.height);
-  checkoutState.signatureDrawn = false;
-  checkoutState.signatureDataUrl = null;
-}
-
-// Payment Card Formatting and Brand Detection
-function formatCardNumber(input) {
-  let val = input.value.replace(/\D/g, '');
-  if (val.length > 16) val = val.substring(0, 16);
-  let formatted = val.replace(/(\d{4})/g, '$1 ').trim();
-  input.value = formatted;
-
-  // Brand detection
-  const brandIcon = document.getElementById('card-brand-icon');
-  if (brandIcon) {
-    if (val.startsWith('4')) {
-      brandIcon.textContent = '💳 Visa';
-      brandIcon.style.color = '#38BDF8';
-    } else if (/^5[1-5]/.test(val) || /^2[2-7]/.test(val)) {
-      brandIcon.textContent = '💳 Mastercard';
-      brandIcon.style.color = '#F97316';
-    } else if (/^3[47]/.test(val)) {
-      brandIcon.textContent = '💳 Amex';
-      brandIcon.style.color = '#34D399';
-    } else if (/^6(?:011|5)/.test(val)) {
-      brandIcon.textContent = '💳 Discover';
-      brandIcon.style.color = '#F59E0B';
-    } else {
-      brandIcon.textContent = '💳 Card';
-      brandIcon.style.color = '#94A3B8';
-    }
-  }
-}
-
-function formatCardExpiry(input) {
-  let val = input.value.replace(/\D/g, '');
-  if (val.length > 4) val = val.substring(0, 4);
-  if (val.length >= 2) {
-    input.value = val.substring(0, 2) + '/' + val.substring(2);
-  } else {
-    input.value = val;
-  }
-}
-
-// Process Instant 25% Deposit Authorization
-function processDepositPayment(e) {
-  if (e) e.preventDefault();
-
-  const cardName = document.getElementById('card-holder-name');
-  const cardNumber = document.getElementById('card-number');
-  const cardExpiry = document.getElementById('card-expiry');
-  const cardCvc = document.getElementById('card-cvc');
-  const cardZip = document.getElementById('card-zip');
-
-  if (!cardName || !cardName.value.trim()) {
-    alert('Please enter the name on the credit card.');
-    cardName.focus();
-    return;
-  }
-
-  const rawNum = cardNumber ? cardNumber.value.replace(/\s/g, '') : '';
-  if (rawNum.length < 15) {
-    alert('Please enter a valid 15 or 16-digit credit card number.');
-    cardNumber.focus();
-    return;
-  }
-
-  if (!cardExpiry || cardExpiry.value.length < 5) {
-    alert('Please enter a valid card expiration date (MM/YY).');
-    cardExpiry.focus();
-    return;
-  }
-
-  if (!cardCvc || cardCvc.value.length < 3) {
-    alert('Please enter the 3 or 4-digit CVC code on the back of your card.');
-    cardCvc.focus();
-    return;
-  }
-
-  if (!cardZip || cardZip.value.length < 5) {
-    alert('Please enter a valid 5-digit billing ZIP code.');
-    cardZip.focus();
-    return;
-  }
-
-  const payBtn = document.getElementById('checkout-submit-pay-btn');
-  if (payBtn) {
-    payBtn.disabled = true;
-    payBtn.innerHTML = '⚡ Authorizing 25% Deposit with Gateway...';
-  }
-
-  const est = calculateEstimate();
-  const bookingSuffix = Math.floor(1000 + Math.random() * 9000);
-  const bookingRef = `PHP-BOOK-${bookingSuffix}`;
-  const now = new Date();
-
-  // Simulating 1.2s gateway authorization turnaround
-  setTimeout(() => {
-    const bookingRecord = {
-      id: 'book_' + Date.now(),
-      refCode: bookingRef,
-      bookingType: 'Option A: Lock It In Now (Instant Deposit)',
-      status: 'confirmed_paid',
-      submittedAt: now.toISOString(),
-      depositPaidCents: est.depositCents,
-      depositPaidFormatted: est.depositFormatted,
-      balanceDueCents: est.balanceCents,
-      balanceDueFormatted: est.balanceFormatted,
-      totalAmountFormatted: est.subtotalFormatted,
-      paymentMethod: {
-        brand: document.getElementById('card-brand-icon') ? document.getElementById('card-brand-icon').textContent.replace('💳 ', '') : 'Visa',
-        last4: rawNum.slice(-4),
-        cardholder: cardName.value.trim(),
-        zip: cardZip.value.trim(),
-        authorizedAt: now.toISOString(),
-        authTransactionId: 'tx_' + Math.random().toString(36).substring(2, 11).toUpperCase()
-      },
-      eSignature: {
-        signerName: cardName.value.trim(),
-        signedAt: now.toISOString(),
-        signatureImage: checkoutState.signatureDataUrl || 'digital_esign_captured'
-      },
-      details: { ...partyState }
-    };
-
-    checkoutState.confirmedBooking = bookingRecord;
-
-    // Persist into database
-    const inquiries = JSON.parse(localStorage.getItem('php_inquiries') || '[]');
-    inquiries.unshift(bookingRecord);
-    localStorage.setItem('php_inquiries', JSON.stringify(inquiries));
-
-    // Audit log integration
-    if (typeof WorkforceManager !== 'undefined' && WorkforceManager.recordAudit) {
-      WorkforceManager.recordAudit(
-        'INSTANT_BOOKING_DEPOSIT_PAID',
-        `Client ${partyState.contactName} locked in booking ${bookingRef} with 25% deposit (${est.depositFormatted}). Date: ${partyState.eventDate}.`,
-        'Payment Gateway (Client Self-Service)'
-      );
-    }
-
-    // Populate Receipt View
-    const recRefEl = document.getElementById('receipt-booking-ref');
-    const recPaidEl = document.getElementById('receipt-paid-amount');
-    const recBalanceEl = document.getElementById('receipt-balance-amount');
-    const recEventEl = document.getElementById('receipt-event-summary');
-    const recCardEl = document.getElementById('receipt-card-summary');
-
-    if (recRefEl) recRefEl.textContent = bookingRef;
-    if (recPaidEl) recPaidEl.textContent = est.depositFormatted;
-    if (recBalanceEl) recBalanceEl.textContent = est.balanceFormatted;
-    if (recEventEl) recEventEl.textContent = `${partyState.eventDate} (${partyState.startTime} – ${partyState.endTime}) at ${partyState.address}`;
-    if (recCardEl) recCardEl.textContent = `${bookingRecord.paymentMethod.brand} ending in ${bookingRecord.paymentMethod.last4}`;
-
-    if (payBtn) {
-      payBtn.disabled = false;
-      payBtn.innerHTML = 'Deposit Confirmed! ✓';
-    }
-
-    goToCheckoutStep(4);
-  }, 1200);
-}
-
-function printBookingReceipt() {
-  window.print();
+  window.location.href = `thank-you.html?ref=${inquiryRecord.refCode}&name=${encodeURIComponent(partyState.contactName)}&total=${encodeURIComponent(estimate.subtotalFormatted)}&deposit=${encodeURIComponent(estimate.depositFormatted)}`;
 }
 
 // ==========================================================================

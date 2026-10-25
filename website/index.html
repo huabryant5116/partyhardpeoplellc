@@ -17,8 +17,105 @@
   <!-- Preconnect for Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,500;1,600&family=Montserrat:wght@500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
+  <!-- Schema.org Structured Data: LocalBusiness & Service Catalog -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "EntertainmentBusiness",
+        "@id": "https://partyhardpeoplellc.com/#business",
+        "name": "Party Hard People LLC",
+        "url": "https://partyhardpeoplellc.com/",
+        "logo": "https://partyhardpeoplellc.com/assets/images/hero-celebration.jpg",
+        "image": "https://partyhardpeoplellc.com/assets/images/hero-celebration.jpg",
+        "description": "Customized kids party entertainment, DJ services, interactive dancing, themed characters, and sanitized inflatable rentals across Los Angeles, Orange County, and San Diego.",
+        "telephone": "+1-949-555-7278",
+        "priceRange": "$$",
+        "paymentAccepted": "Credit Card, Debit Card, Stripe",
+        "currenciesAccepted": "USD",
+        "areaServed": [
+          {
+            "@type": "AdministrativeArea",
+            "name": "Orange County",
+            "containedIn": { "@type": "State", "name": "California" }
+          },
+          {
+            "@type": "AdministrativeArea",
+            "name": "Los Angeles County",
+            "containedIn": { "@type": "State", "name": "California" }
+          },
+          {
+            "@type": "AdministrativeArea",
+            "name": "San Diego County",
+            "containedIn": { "@type": "State", "name": "California" }
+          }
+        ],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Children & Family Party Services",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Kids Party DJ & Music Host",
+                "description": "Interactive DJ entertainment, youth-friendly curated playlists, games, and bubble blast dances."
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Commercial Bounce House Rentals",
+                "description": "Hospital-grade sanitized commercial inflatables and pastel bouncy castles."
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Karaoke Lounge & Sound Setup",
+                "description": "Full wireless microphones, digital lyric monitors, and child-safe high-definition audio."
+              }
+            }
+          ]
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://partyhardpeoplellc.com/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How does the quote and booking process work?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Submit an inquiry through our Party Builder, receive a personalized owner-reviewed quote valid for 7 days, and lock in your date with a 25% deposit."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is your weather rescheduling guarantee?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "If adverse weather makes operating outdoor entertainment unsafe, you may reschedule your celebration to any open date within 12 months with 100% of your deposit applied."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What areas in Southern California do you serve?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Party Hard People provides entertainment and rental delivery across Orange County, Los Angeles County, and San Diego County."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
   <link rel="stylesheet" href="css/main.css?v=5.2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎉</text></svg>">
   <style>
@@ -1106,47 +1203,41 @@
                   <textarea class="form-textarea" id="pb-notes" rows="3" placeholder="Tell us about parking, stairs, gate codes, or your child's favorite music."></textarea>
                 </div>
 
-                <!-- Dual Action Selection: Option A (Lock In Now) vs Option B (Free Quote) -->
+                <!-- Transparent Quote Request Submission -->
                 <div style="margin-top: 2rem; border-top: 1px solid var(--border-subtle); padding-top: 1.75rem;">
-                  <h4 style="font-size: 1.15rem; margin-bottom: 0.5rem; text-align: center;">How Would You Like to Proceed?</h4>
-                  <p style="text-align: center; font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem; max-width: 580px; margin-left: auto; margin-right: auto;">
-                    Choose instant reservation to lock in entertainers and equipment today, or request a free itemized quote for review.
-                  </p>
-
-                  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem;">
-                    <!-- OPTION A: INSTANT LOCK IN (HIGHLIGHTED) -->
-                    <div style="background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(255, 71, 111, 0.05)); border: 2px solid var(--primary); border-radius: var(--radius-md); padding: 1.5rem; display: flex; flex-direction: column; position: relative; box-shadow: 0 4px 20px rgba(124, 58, 237, 0.15);">
-                      <div style="position: absolute; top: -12px; right: 16px;">
-                        <span class="badge badge-coral" style="font-weight: 800; font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase;">⚡ Recommended: Guaranteed Date</span>
+                  <div style="background: linear-gradient(135deg, rgba(124, 58, 237, 0.06), rgba(255, 71, 111, 0.04)); border: 1.5px solid var(--primary-light); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                      <span style="font-size: 1.75rem;">✨</span>
+                      <div>
+                        <h4 style="font-size: 1.15rem; font-family: var(--font-heading); color: var(--text-primary); margin: 0;">
+                          Request Your Custom Event Quote
+                        </h4>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+                          Itemized pricing, travel logistics & inventory verification within 24 hours. Zero high-pressure sales.
+                        </p>
                       </div>
-                      <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; margin-top: 0.25rem;">
-                        <span style="font-size: 1.5rem;">⚡</span>
-                        <h5 style="font-size: 1.15rem; font-family: var(--font-heading); color: var(--text-primary); margin: 0;">
-                          Option A: Lock It In Now
-                        </h5>
-                      </div>
-                      <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 1.25rem; flex-grow: 1;">
-                        Pay initial 25% deposit, sign our digital service agreement, and immediately guarantee entertainer & equipment availability. 100% Weather-Flex rescheduling protection.
-                      </p>
-                      <button type="button" class="btn btn-primary btn-glow btn-lg" onclick="openInstantBookingModal()" style="width: 100%; justify-content: center; font-size: 1rem; padding: 0.85rem 1rem;">
-                        ⚡ Lock It In Now (Pay 25% Deposit) &rarr;
-                      </button>
                     </div>
 
-                    <!-- OPTION B: FREE QUOTE REQUEST -->
-                    <div style="background: #F8FAFC; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.5rem; display: flex; flex-direction: column;">
-                      <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; margin-top: 0.25rem;">
-                        <span style="font-size: 1.5rem;">📄</span>
-                        <h5 style="font-size: 1.15rem; font-family: var(--font-heading); color: var(--text-primary); margin: 0;">
-                          Option B: Send Free Quote
-                        </h5>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; margin: 1rem 0; font-size: 0.82rem; color: var(--text-secondary);">
+                      <div style="display: flex; align-items: center; gap: 0.4rem;">
+                        <span style="color: #10B981; font-weight: bold;">✓</span>
+                        <span><strong>7-Day Price Lock</strong> on all quotes</span>
                       </div>
-                      <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 1.25rem; flex-grow: 1;">
-                        Receive a transparent itemized quote within 24 hours via email with a 7-day price lock guarantee. Zero obligation to book.
-                      </p>
-                      <button type="button" class="btn btn-secondary btn-lg" id="pb-submit-quote" style="width: 100%; justify-content: center; font-size: 0.95rem; padding: 0.85rem 1rem;">
-                        📄 Send Me a Free Quote
-                      </button>
+                      <div style="display: flex; align-items: center; gap: 0.4rem;">
+                        <span style="color: #10B981; font-weight: bold;">✓</span>
+                        <span><strong>25% Deposit</strong> only after approval</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 0.4rem;">
+                        <span style="color: #10B981; font-weight: bold;">✓</span>
+                        <span><strong>12-Month Weather-Flex</strong> rescheduling</span>
+                      </div>
+                    </div>
+
+                    <button type="button" class="btn btn-primary btn-glow btn-lg" id="pb-submit-quote" style="width: 100%; justify-content: center; font-size: 1.05rem; padding: 0.95rem 1.25rem;">
+                      🎉 Submit My Custom Quote Request &rarr;
+                    </button>
+                    <div style="text-align: center; font-size: 0.78rem; color: var(--text-muted); margin-top: 0.65rem;">
+                      Submitting requests a custom quote and does not obligate you to book.
                     </div>
                   </div>
 
@@ -1412,250 +1503,7 @@
     </div>
   </footer>
 
-  <!-- ========================================================
-       OPTION A: "LOCK IT IN NOW" 4-STEP CHECKOUT MODAL
-       ======================================================== -->
-  <div id="option-a-checkout-modal" class="job-modal" role="dialog" aria-modal="true" style="display: none; align-items: center; justify-content: center; z-index: 9999; padding: 1.5rem;">
-    <div class="job-modal-content" style="max-width: 680px; width: 100%; max-height: 90vh; overflow-y: auto; background: #0C1222; border: 1px solid rgba(139, 92, 246, 0.35); box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 40px rgba(139, 92, 246, 0.2); border-radius: 16px; color: #E2E8F0; padding: 2rem;">
-      
-      <!-- Modal Header -->
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 1rem;">
-        <div>
-          <span class="badge badge-coral" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em;">⚡ Option A: Instant Reservation</span>
-          <h3 style="font-size: 1.5rem; font-family: var(--font-heading); color: #FFFFFF; margin-top: 0.35rem; margin-bottom: 0.2rem;">
-            Lock In Your Party Reservation
-          </h3>
-          <div style="font-size: 0.85rem; color: #94A3B8;">
-            Direct date confirmation, digital agreement, and 25% deposit checkout
-          </div>
-        </div>
-        <button type="button" onclick="closeInstantBookingModal()" style="background: none; border: none; font-size: 1.6rem; color: #94A3B8; cursor: pointer; padding: 0.25rem;">✕</button>
-      </div>
 
-      <!-- Checkout Step Indicators -->
-      <div style="display: flex; gap: 0.5rem; margin-bottom: 1.75rem; background: rgba(255,255,255,0.03); padding: 0.5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); font-size: 0.82rem;">
-        <div id="checkout-indicator-1" class="active" style="flex: 1; text-align: center; padding: 0.4rem; border-radius: 6px; font-weight: 600; color: #A78BFA; background: rgba(139,92,246,0.15);">
-          1. Summary
-        </div>
-        <div id="checkout-indicator-2" style="flex: 1; text-align: center; padding: 0.4rem; border-radius: 6px; font-weight: 600; color: #64748B;">
-          2. E-Sign
-        </div>
-        <div id="checkout-indicator-3" style="flex: 1; text-align: center; padding: 0.4rem; border-radius: 6px; font-weight: 600; color: #64748B;">
-          3. 25% Deposit
-        </div>
-        <div id="checkout-indicator-4" style="flex: 1; text-align: center; padding: 0.4rem; border-radius: 6px; font-weight: 600; color: #64748B;">
-          4. Confirmed
-        </div>
-      </div>
-
-      <!-- ==============================================
-           STEP 1: RESERVATION & PACKAGE SUMMARY
-           ============================================== -->
-      <div id="checkout-step-1">
-        <div style="background: #111A30; border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem;">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
-            <div>
-              <span class="badge" style="background: #EDE9FE; color: #7C3AED; font-size: 0.75rem;" id="checkout-event-title">Party Package</span>
-              <h4 id="checkout-client-name" style="color: #FFFFFF; font-size: 1.15rem; margin-top: 0.35rem; margin-bottom: 0.2rem;">Client Contact</h4>
-            </div>
-            <div style="text-align: right;">
-              <div style="font-size: 0.8rem; color: #94A3B8;">Event Date & Time</div>
-              <div id="checkout-event-date" style="font-weight: 700; color: #F8FAFC; font-size: 0.95rem;">Pending</div>
-            </div>
-          </div>
-          <div style="font-size: 0.88rem; color: #94A3B8; margin-bottom: 0.75rem;" id="checkout-event-venue">
-            Venue Address
-          </div>
-
-          <!-- Itemized Breakdown -->
-          <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.75rem;">
-            <div style="font-size: 0.8rem; text-transform: uppercase; color: #64748B; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
-              Selected Shows & Equipment
-            </div>
-            <ul id="checkout-items-list" style="list-style: none; padding: 0; margin: 0;">
-              <!-- Dynamic line items -->
-            </ul>
-          </div>
-        </div>
-
-        <!-- Financial Summary Box -->
-        <div style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.35); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem;">
-          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.95rem;">
-            <span style="color: #94A3B8;">Total Package Subtotal:</span>
-            <strong id="checkout-subtotal" style="color: #FFFFFF;">$0.00</strong>
-          </div>
-          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 1.1rem; color: #10B981; font-weight: 700;">
-            <span>Initial 25% Deposit Due Today:</span>
-            <span id="checkout-deposit">$0.00</span>
-          </div>
-          <div style="display: flex; justify-content: space-between; font-size: 0.88rem; color: #94A3B8; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 0.5rem;">
-            <span>Remaining 75% Balance (Due Event Day):</span>
-            <span id="checkout-balance">$0.00</span>
-          </div>
-        </div>
-
-        <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; padding: 0.85rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: #A7F3D0; line-height: 1.45;">
-          ✓ <strong>100% Weather-Flex Guarantee:</strong> If severe rain occurs on your outdoor party date, you can transfer 100% of your deposit to any reschedule date within 12 months with zero penalty.
-        </div>
-
-        <div style="display: flex; justify-content: space-between; gap: 1rem;">
-          <button type="button" class="btn btn-secondary" onclick="closeInstantBookingModal()" style="flex: 1; justify-content: center;">Cancel</button>
-          <button type="button" class="btn btn-primary btn-glow" onclick="goToCheckoutStep(2)" style="flex: 2; justify-content: center;">
-            Next: Review Agreement & E-Sign &rarr;
-          </button>
-        </div>
-      </div>
-
-      <!-- ==============================================
-           STEP 2: SERVICE AGREEMENT & DIGITAL E-SIGNATURE
-           ============================================== -->
-      <div id="checkout-step-2" style="display: none;">
-        <div style="background: #111A30; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1.25rem; max-height: 180px; overflow-y: auto; font-size: 0.82rem; color: #94A3B8; line-height: 1.5; margin-bottom: 1.25rem;">
-          <strong style="color: #FFFFFF; display: block; margin-bottom: 0.5rem; font-size: 0.92rem;">Party Hard People LLC — Event Service Terms & Policies:</strong>
-          <p style="margin-bottom: 0.5rem;"><strong>1. Setup & Access:</strong> Party Hard People crew will arrive 60 to 90 minutes prior to scheduled start time. Client guarantees safe vehicle access, flat turf/indoor setup surface, and standard 110V/15A electrical outlet within 75ft (or reserved inverter generator).</p>
-          <p style="margin-bottom: 0.5rem;"><strong>2. Safety & Minor Supervision:</strong> Inflatable safety rules strictly prohibit shoes, food, drinks, or sharp objects. Adult supervision is required at all times. All company entertainers dispatched to children's parties have cleared California AB 506 Live Scan fingerprint background clearances.</p>
-          <p style="margin-bottom: 0.5rem;"><strong>3. Deposit & Payment:</strong> The 25% initial deposit is applied toward your event total and officially locks your performers and rental gear. The remaining 75% balance is due on event day prior to entertainment start time.</p>
-          <p><strong>4. Weather-Flex Policy:</strong> Rain/high-wind reschedules notify us at least 24 hours in advance to transfer full deposit credit to a new date within 12 calendar months.</p>
-        </div>
-
-        <!-- HTML5 Signature Pad -->
-        <div style="margin-bottom: 1.25rem;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
-            <label class="form-label" style="color: #CBD5E1; margin: 0; font-size: 0.88rem;">
-              Digital Signature of Contracting Client <span class="req">*</span>
-            </label>
-            <button type="button" onclick="clearSignaturePad()" style="background: none; border: none; color: #F87171; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">
-              Clear Signature ↺
-            </button>
-          </div>
-          <div style="border: 2px dashed rgba(139, 92, 246, 0.5); border-radius: 8px; background: #FFFFFF; overflow: hidden; position: relative;">
-            <canvas id="checkout-signature-canvas" height="130" style="display: block; width: 100%; cursor: crosshair; touch-action: none;"></canvas>
-            <div style="position: absolute; bottom: 6px; right: 10px; font-size: 0.72rem; color: #94A3B8; pointer-events: none;">
-              ✍️ Sign with finger or mouse
-            </div>
-          </div>
-        </div>
-
-        <div style="margin-bottom: 1.5rem;">
-          <label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer; font-size: 0.85rem; color: #CBD5E1;">
-            <input type="checkbox" id="agreement-terms-check" checked style="margin-top: 3px;">
-            <span>I acknowledge that I am an authorized adult, agree to the Party Hard People Event Service Agreement, and authorize the 25% deposit charge.</span>
-          </label>
-        </div>
-
-        <div style="display: flex; justify-content: space-between; gap: 1rem;">
-          <button type="button" class="btn btn-secondary" onclick="goToCheckoutStep(1)" style="flex: 1; justify-content: center;">&larr; Back</button>
-          <button type="button" class="btn btn-primary btn-glow" onclick="goToCheckoutStep(3)" style="flex: 2; justify-content: center;">
-            Next: Pay 25% Deposit &rarr;
-          </button>
-        </div>
-      </div>
-
-      <!-- ==============================================
-           STEP 3: SECURE 25% DEPOSIT PAYMENT
-           ============================================== -->
-      <div id="checkout-step-3" style="display: none;">
-        <!-- Secure Encrypted Payment Form -->
-        <div style="background: #111A30; border: 1px solid rgba(139, 92, 246, 0.25); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-            <div>
-              <span style="font-size: 0.8rem; text-transform: uppercase; color: #94A3B8; letter-spacing: 0.05em;">Payment Authorization</span>
-              <div style="font-size: 1.25rem; font-weight: 800; color: #10B981;" id="checkout-deposit-display">$0.00</div>
-            </div>
-            <div style="text-align: right;">
-              <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #10B981; font-size: 0.75rem;">🔒 256-Bit Encrypted</span>
-              <div id="card-brand-icon" style="font-size: 0.85rem; color: #94A3B8; margin-top: 0.2rem; font-weight: 600;">💳 Card</div>
-            </div>
-          </div>
-
-          <form id="checkout-card-form" onsubmit="processDepositPayment(event)">
-            <div class="form-group" style="margin-bottom: 1rem;">
-              <label class="form-label" for="card-holder-name" style="color: #CBD5E1; font-size: 0.85rem;">Cardholder Name <span class="req">*</span></label>
-              <input type="text" class="executive-input" id="card-holder-name" placeholder="Name as it appears on card" required style="width: 100%;">
-            </div>
-
-            <div class="form-group" style="margin-bottom: 1rem;">
-              <label class="form-label" for="card-number" style="color: #CBD5E1; font-size: 0.85rem;">Card Number <span class="req">*</span></label>
-              <input type="text" class="executive-input" id="card-number" placeholder="4242 •••• •••• 4242" maxlength="19" oninput="formatCardNumber(this)" required style="width: 100%; letter-spacing: 0.1em; font-family: monospace;">
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
-              <div class="form-group">
-                <label class="form-label" for="card-expiry" style="color: #CBD5E1; font-size: 0.85rem;">Exp (MM/YY) <span class="req">*</span></label>
-                <input type="text" class="executive-input" id="card-expiry" placeholder="12/28" maxlength="5" oninput="formatCardExpiry(this)" required style="width: 100%; text-align: center;">
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="card-cvc" style="color: #CBD5E1; font-size: 0.85rem;">CVC <span class="req">*</span></label>
-                <input type="password" class="executive-input" id="card-cvc" placeholder="123" maxlength="4" required style="width: 100%; text-align: center;">
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="card-zip" style="color: #CBD5E1; font-size: 0.85rem;">Billing Zip <span class="req">*</span></label>
-                <input type="text" class="executive-input" id="card-zip" placeholder="92618" maxlength="5" required style="width: 100%; text-align: center;">
-              </div>
-            </div>
-
-            <div style="font-size: 0.8rem; color: #94A3B8; margin-bottom: 1.5rem; text-align: center;">
-              Sandbox Test Mode active. Enter any valid test card (e.g. <code>4242 4242 4242 4242</code>). Zero live transaction will be processed without gateway credentials.
-            </div>
-
-            <div style="display: flex; justify-content: space-between; gap: 1rem;">
-              <button type="button" class="btn btn-secondary" onclick="goToCheckoutStep(2)" style="flex: 1; justify-content: center;">&larr; Back</button>
-              <button type="submit" class="btn btn-primary btn-glow" id="checkout-submit-pay-btn" style="flex: 2; justify-content: center;">
-                <span id="checkout-pay-btn-text">Authorize 25% Deposit</span>
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      <!-- ==============================================
-           STEP 4: CONFIRMED RESERVATION RECEIPT
-           ============================================== -->
-      <div id="checkout-step-4" style="display: none; text-align: center;">
-        <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">🎉</div>
-        <div class="badge badge-pass" style="font-size: 0.85rem; margin-bottom: 0.75rem;">Booking Officially Confirmed</div>
-        
-        <h3 style="font-size: 1.6rem; font-family: var(--font-heading); color: #FFFFFF; margin-bottom: 0.35rem;">
-          Your Party Date is Locked In!
-        </h3>
-        <p style="font-size: 0.92rem; color: #94A3B8; margin-bottom: 1.5rem;">
-          Your 25% deposit has been authorized and your reservation is logged in our operations dispatch system.
-        </p>
-
-        <!-- Receipt Card -->
-        <div style="background: #111A30; border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 12px; padding: 1.5rem; text-align: left; margin-bottom: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
-          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.75rem; margin-bottom: 0.75rem;">
-            <div>
-              <div style="font-size: 0.75rem; text-transform: uppercase; color: #94A3B8; letter-spacing: 0.05em;">Confirmed Booking Code</div>
-              <div id="receipt-booking-ref" style="font-family: monospace; font-size: 1.35rem; font-weight: 800; color: #10B981;">PHP-BOOK-1001</div>
-            </div>
-            <div style="text-align: right;">
-              <span class="badge" style="background: rgba(16,185,129,0.2); color: #34D399;">PAID: 25% DEPOSIT</span>
-            </div>
-          </div>
-
-          <div style="font-size: 0.88rem; line-height: 1.6; color: #CBD5E1;">
-            <div><strong>Event:</strong> <span id="receipt-event-summary">Date & Venue</span></div>
-            <div><strong>Deposit Authorized:</strong> <span id="receipt-paid-amount" style="color: #10B981; font-weight: 700;">$0.00</span> via <span id="receipt-card-summary">Card</span></div>
-            <div><strong>Remaining 75% Balance:</strong> <span id="receipt-balance-amount" style="color: #F8FAFC; font-weight: 600;">$0.00</span> (Due day of event prior to entertainer setup)</div>
-            <div style="margin-top: 0.5rem; font-size: 0.82rem; color: #34D399;">
-              ✓ Dispatched to Party Hard People California AB 506 Certified Staffing Dispatcher
-            </div>
-          </div>
-        </div>
-
-        <div style="display: flex; gap: 0.75rem; justify-content: center;">
-          <button type="button" class="btn btn-secondary" onclick="printBookingReceipt()" style="flex: 1; justify-content: center;">
-            🖨️ Print / Save Receipt
-          </button>
-          <button type="button" class="btn btn-primary btn-glow" onclick="closeInstantBookingModal()" style="flex: 1; justify-content: center;">
-            Done / Return Home
-          </button>
-        </div>
-      </div>
-
-    </div>
-  </div>
 
   <!-- Sticky Mobile Action Bar -->
   <aside class="mobile-sticky-bar" aria-label="Mobile quick action">
