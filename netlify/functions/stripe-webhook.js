@@ -50,7 +50,7 @@ exports.handler = async (event, context) => {
 
     // Trigger confirmation notification via Resend
     const resendApiKey = process.env.RESEND_API_KEY;
-    const ownerEmail = process.env.OWNER_EMAIL || 'hello@partyhardpeople.com';
+    const ownerEmail = process.env.OWNER_EMAIL || 'bookings@partypeoplellc.com';
 
     if (resendApiKey && clientEmail) {
       try {
@@ -61,7 +61,7 @@ exports.handler = async (event, context) => {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            from: 'Party Hard People Bookings <bookings@partyhardpeople.com>',
+            from: 'Party Hard People Bookings <bookings@partypeoplellc.com>',
             to: [clientEmail, ownerEmail],
             subject: `🎉 Booking Confirmed! 25% Deposit Received (${quoteRef})`,
             html: `

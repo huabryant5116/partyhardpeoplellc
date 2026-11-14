@@ -84,7 +84,7 @@ exports.handler = async (event, context) => {
 
       // Email Notification Dispatch (Resend API if configured)
       const resendApiKey = process.env.RESEND_API_KEY;
-      const ownerEmail = process.env.OWNER_EMAIL || 'hello@partyhardpeople.com';
+      const ownerEmail = process.env.OWNER_EMAIL || 'bookings@partypeoplellc.com';
 
       if (resendApiKey) {
         try {
@@ -96,7 +96,7 @@ exports.handler = async (event, context) => {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              from: 'Party Hard People Quotes <quotes@partyhardpeople.com>',
+              from: 'Party Hard People Quotes <bookings@partypeoplellc.com>',
               to: [ownerEmail],
               subject: `🎉 New Quote Inquiry: ${refCode} — ${contactName} (${inquiryRecord.event.eventDate})`,
               html: `
@@ -122,7 +122,7 @@ exports.handler = async (event, context) => {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              from: 'Party Hard People <hello@partyhardpeople.com>',
+              from: 'Party Hard People <hello@partyhardpeoplellc.com>',
               to: [contactEmail],
               subject: `We Received Your Party Request! (Ref: ${refCode})`,
               html: `
@@ -142,7 +142,7 @@ exports.handler = async (event, context) => {
                     <li><strong>Lock in Your Date:</strong> You can review, accept, and submit a 25% deposit to officially confirm your booking.</li>
                   </ol>
                   
-                  <p style="font-size: 13px; color: #64748B;">Questions? Simply reply to this email or call us at (714) 609-5261.</p>
+                  <p style="font-size: 13px; color: #64748B;">Questions? Simply reply to this email, call us at (714) 609-5261, or write to hello@partyhardpeoplellc.com.</p>
                 </div>
               `
             })
