@@ -142,7 +142,7 @@ exports.handler = async (event, context) => {
                     <li><strong>Lock in Your Date:</strong> You can review, accept, and submit a 25% deposit to officially confirm your booking.</li>
                   </ol>
                   
-                  <p style="font-size: 13px; color: #64748B;">Questions? Simply reply to this email or call us at (555) 727-8947.</p>
+                  <p style="font-size: 13px; color: #64748B;">Questions? Simply reply to this email or call us at (714) 609-5261.</p>
                 </div>
               `
             })
